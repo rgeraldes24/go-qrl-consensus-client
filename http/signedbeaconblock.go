@@ -19,16 +19,11 @@ import (
 	"errors"
 	"fmt"
 
-	client "github.com/attestantio/go-eth2-client"
-	"github.com/attestantio/go-eth2-client/api"
-	"github.com/attestantio/go-eth2-client/spec"
-	"github.com/attestantio/go-eth2-client/spec/altair"
-	"github.com/attestantio/go-eth2-client/spec/bellatrix"
-	"github.com/attestantio/go-eth2-client/spec/capella"
-	"github.com/attestantio/go-eth2-client/spec/deneb"
-	"github.com/attestantio/go-eth2-client/spec/electra"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	dynssz "github.com/pk910/dynamic-ssz"
+	client "github.com/theQRL/go-qrl-consensus-client"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // SignedBeaconBlock fetches a signed beacon block given a block ID.
@@ -102,39 +97,6 @@ func (s *Service) signedBeaconBlockFromSSZ(ctx context.Context,
 	var err error
 
 	switch res.consensusVersion {
-	case spec.DataVersionPhase0:
-		response.Data.Phase0 = &phase0.SignedBeaconBlock{}
-		if s.customSpecSupport {
-			err = dynSSZ.UnmarshalSSZ(response.Data.Phase0, res.body)
-		} else {
-			err = response.Data.Phase0.UnmarshalSSZ(res.body)
-		}
-
-		if err != nil {
-			return nil, errors.Join(errors.New("failed to decode phase0 signed beacon block"), err)
-		}
-	case spec.DataVersionAltair:
-		response.Data.Altair = &altair.SignedBeaconBlock{}
-		if s.customSpecSupport {
-			err = dynSSZ.UnmarshalSSZ(response.Data.Altair, res.body)
-		} else {
-			err = response.Data.Altair.UnmarshalSSZ(res.body)
-		}
-
-		if err != nil {
-			return nil, errors.Join(errors.New("failed to decode altair signed beacon block"), err)
-		}
-	case spec.DataVersionBellatrix:
-		response.Data.Bellatrix = &bellatrix.SignedBeaconBlock{}
-		if s.customSpecSupport {
-			err = dynSSZ.UnmarshalSSZ(response.Data.Bellatrix, res.body)
-		} else {
-			err = response.Data.Bellatrix.UnmarshalSSZ(res.body)
-		}
-
-		if err != nil {
-			return nil, errors.Join(errors.New("failed to decode bellatrix signed beacon block"), err)
-		}
 	case spec.DataVersionCapella:
 		response.Data.Capella = &capella.SignedBeaconBlock{}
 		if s.customSpecSupport {
@@ -145,39 +107,6 @@ func (s *Service) signedBeaconBlockFromSSZ(ctx context.Context,
 
 		if err != nil {
 			return nil, errors.Join(errors.New("failed to decode capella signed beacon block"), err)
-		}
-	case spec.DataVersionDeneb:
-		response.Data.Deneb = &deneb.SignedBeaconBlock{}
-		if s.customSpecSupport {
-			err = dynSSZ.UnmarshalSSZ(response.Data.Deneb, res.body)
-		} else {
-			err = response.Data.Deneb.UnmarshalSSZ(res.body)
-		}
-
-		if err != nil {
-			return nil, errors.Join(errors.New("failed to decode deneb signed block contents"), err)
-		}
-	case spec.DataVersionElectra:
-		response.Data.Electra = &electra.SignedBeaconBlock{}
-		if s.customSpecSupport {
-			err = dynSSZ.UnmarshalSSZ(response.Data.Electra, res.body)
-		} else {
-			err = response.Data.Electra.UnmarshalSSZ(res.body)
-		}
-
-		if err != nil {
-			return nil, errors.Join(errors.New("failed to decode electra signed block contents"), err)
-		}
-	case spec.DataVersionFulu:
-		response.Data.Fulu = &electra.SignedBeaconBlock{}
-		if s.customSpecSupport {
-			err = dynSSZ.UnmarshalSSZ(response.Data.Fulu, res.body)
-		} else {
-			err = response.Data.Fulu.UnmarshalSSZ(res.body)
-		}
-
-		if err != nil {
-			return nil, errors.Join(errors.New("failed to decode fulu signed block contents"), err)
 		}
 	default:
 		return nil, fmt.Errorf("unhandled block version %s", res.consensusVersion)
@@ -196,33 +125,9 @@ func (*Service) signedBeaconBlockFromJSON(res *httpResponse) (*api.Response[*spe
 	var err error
 
 	switch res.consensusVersion {
-	case spec.DataVersionPhase0:
-		response.Data.Phase0, response.Metadata, err = decodeJSONResponse(bytes.NewReader(res.body),
-			&phase0.SignedBeaconBlock{},
-		)
-	case spec.DataVersionAltair:
-		response.Data.Altair, response.Metadata, err = decodeJSONResponse(bytes.NewReader(res.body),
-			&altair.SignedBeaconBlock{},
-		)
-	case spec.DataVersionBellatrix:
-		response.Data.Bellatrix, response.Metadata, err = decodeJSONResponse(bytes.NewReader(res.body),
-			&bellatrix.SignedBeaconBlock{},
-		)
 	case spec.DataVersionCapella:
 		response.Data.Capella, response.Metadata, err = decodeJSONResponse(bytes.NewReader(res.body),
 			&capella.SignedBeaconBlock{},
-		)
-	case spec.DataVersionDeneb:
-		response.Data.Deneb, response.Metadata, err = decodeJSONResponse(bytes.NewReader(res.body),
-			&deneb.SignedBeaconBlock{},
-		)
-	case spec.DataVersionElectra:
-		response.Data.Electra, response.Metadata, err = decodeJSONResponse(bytes.NewReader(res.body),
-			&electra.SignedBeaconBlock{},
-		)
-	case spec.DataVersionFulu:
-		response.Data.Fulu, response.Metadata, err = decodeJSONResponse(bytes.NewReader(res.body),
-			&electra.SignedBeaconBlock{},
 		)
 	default:
 		return nil, fmt.Errorf("unhandled version %s", res.consensusVersion)

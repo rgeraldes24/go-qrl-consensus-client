@@ -18,11 +18,11 @@ import (
 	"os"
 	"testing"
 
-	client "github.com/attestantio/go-eth2-client"
-	"github.com/attestantio/go-eth2-client/http"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	client "github.com/theQRL/go-qrl-consensus-client"
+	"github.com/theQRL/go-qrl-consensus-client/http"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 func TestDomain(t *testing.T) {

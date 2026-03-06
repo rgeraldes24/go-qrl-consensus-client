@@ -16,8 +16,8 @@ package mock
 import (
 	"context"
 
-	"github.com/attestantio/go-eth2-client/api"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // AttestationData fetches the attestation data for the given slot and committee index.

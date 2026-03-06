@@ -17,8 +17,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/pkg/errors"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // Finality is the data regarding finality checkpoints at a given state.

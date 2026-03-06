@@ -13,7 +13,7 @@
 
 package api
 
-import "github.com/attestantio/go-eth2-client/spec/phase0"
+import "github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 
 // SyncCommitteeRewardsOpts are the options for obtaining sync committee rewards.
 type SyncCommitteeRewardsOpts struct {

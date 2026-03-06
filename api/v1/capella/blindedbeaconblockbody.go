@@ -16,16 +16,16 @@ package capella
 import (
 	"fmt"
 
-	"github.com/attestantio/go-eth2-client/spec/altair"
-	"github.com/attestantio/go-eth2-client/spec/capella"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/goccy/go-yaml"
+	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // BlindedBeaconBlockBody represents the body of a blinded beacon block.
 type BlindedBeaconBlockBody struct {
 	RANDAOReveal           phase0.BLSSignature `ssz-size:"96"`
-	ETH1Data               *phase0.ETH1Data
+	ExecutionData          *phase0.ExecutionData
 	Graffiti               [32]byte                      `ssz-size:"32"`
 	ProposerSlashings      []*phase0.ProposerSlashing    `ssz-max:"16"`
 	AttesterSlashings      []*phase0.AttesterSlashing    `ssz-max:"2"`
@@ -34,7 +34,6 @@ type BlindedBeaconBlockBody struct {
 	VoluntaryExits         []*phase0.SignedVoluntaryExit `ssz-max:"16"`
 	SyncAggregate          *altair.SyncAggregate
 	ExecutionPayloadHeader *capella.ExecutionPayloadHeader
-	BLSToExecutionChanges  []*capella.SignedBLSToExecutionChange `ssz-max:"16"`
 }
 
 // String returns a string version of the structure.

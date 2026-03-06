@@ -17,8 +17,8 @@ package altair_test
 import (
 	"testing"
 
-	"github.com/attestantio/go-eth2-client/spec/altair"
 	require "github.com/stretchr/testify/require"
+	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
 )
 
 func TestParticipationFlagsUnmarshalJSON(t *testing.T) {

@@ -19,16 +19,16 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/attestantio/go-eth2-client/spec/altair"
-	"github.com/attestantio/go-eth2-client/spec/bellatrix"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/pkg/errors"
+	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
+	"github.com/theQRL/go-qrl-consensus-client/spec/bellatrix"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // blindedBeaconBlockBodyJSON is the spec representation of the struct.
 type blindedBeaconBlockBodyJSON struct {
 	RANDAOReveal           string                            `json:"randao_reveal"`
-	ETH1Data               *phase0.ETH1Data                  `json:"eth1_data"`
+	ExecutionData          *phase0.ExecutionData             `json:"execution_data"`
 	Graffiti               string                            `json:"graffiti"`
 	ProposerSlashings      []*phase0.ProposerSlashing        `json:"proposer_slashings"`
 	AttesterSlashings      []*phase0.AttesterSlashing        `json:"attester_slashings"`
@@ -43,7 +43,7 @@ type blindedBeaconBlockBodyJSON struct {
 func (b *BlindedBeaconBlockBody) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&blindedBeaconBlockBodyJSON{
 		RANDAOReveal:           fmt.Sprintf("%#x", b.RANDAOReveal),
-		ETH1Data:               b.ETH1Data,
+		ExecutionData:          b.ExecutionData,
 		Graffiti:               fmt.Sprintf("%#x", b.Graffiti),
 		ProposerSlashings:      b.ProposerSlashings,
 		AttesterSlashings:      b.AttesterSlashings,
@@ -81,11 +81,11 @@ func (b *BlindedBeaconBlockBody) unpack(data *blindedBeaconBlockBodyJSON) error 
 
 	copy(b.RANDAOReveal[:], randaoReveal)
 
-	if data.ETH1Data == nil {
+	if data.ExecutionData == nil {
 		return errors.New("ETH1 data missing")
 	}
 
-	b.ETH1Data = data.ETH1Data
+	b.ExecutionData = data.ExecutionData
 	if data.Graffiti == "" {
 		return errors.New("graffiti missing")
 	}

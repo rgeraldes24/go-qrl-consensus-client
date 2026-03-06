@@ -16,8 +16,8 @@ package mock
 import (
 	"context"
 
-	"github.com/attestantio/go-eth2-client/api"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // ForkSchedule provides details of past and future changes in the chain's fork version.

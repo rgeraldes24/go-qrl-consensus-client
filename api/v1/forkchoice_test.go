@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"testing"
 
-	api "github.com/attestantio/go-eth2-client/api/v1"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	api "github.com/theQRL/go-qrl-consensus-client/api/v1"
 )
 
 func TestForkChoiceJSON(t *testing.T) {

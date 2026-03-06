@@ -19,9 +19,9 @@ import (
 	"encoding/json"
 	"errors"
 
-	client "github.com/attestantio/go-eth2-client"
-	"github.com/attestantio/go-eth2-client/api"
-	"github.com/attestantio/go-eth2-client/spec"
+	client "github.com/theQRL/go-qrl-consensus-client"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
 )
 
 // SubmitBlindedBeaconBlock submits a blinded beacon block.
@@ -42,20 +42,8 @@ func (s *Service) SubmitBlindedBeaconBlock(ctx context.Context, block *api.Versi
 	}
 
 	switch block.Version {
-	case spec.DataVersionPhase0:
-		err = errors.New("blinded phase0 blocks not supported")
-	case spec.DataVersionAltair:
-		err = errors.New("blinded altair blocks not supported")
-	case spec.DataVersionBellatrix:
-		specJSON, err = json.Marshal(block.Bellatrix)
 	case spec.DataVersionCapella:
 		specJSON, err = json.Marshal(block.Capella)
-	case spec.DataVersionDeneb:
-		specJSON, err = json.Marshal(block.Deneb)
-	case spec.DataVersionElectra:
-		specJSON, err = json.Marshal(block.Electra)
-	case spec.DataVersionFulu:
-		specJSON, err = json.Marshal(block.Fulu)
 	default:
 		err = errors.New("unknown block version")
 	}

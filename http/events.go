@@ -25,16 +25,15 @@ import (
 	"strings"
 	"time"
 
-	client "github.com/attestantio/go-eth2-client"
-	"github.com/attestantio/go-eth2-client/api"
-	apiv1 "github.com/attestantio/go-eth2-client/api/v1"
-	"github.com/attestantio/go-eth2-client/spec"
-	"github.com/attestantio/go-eth2-client/spec/altair"
-	"github.com/attestantio/go-eth2-client/spec/capella"
-	"github.com/attestantio/go-eth2-client/spec/electra"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/r3labs/sse/v2"
 	"github.com/rs/zerolog"
+	client "github.com/theQRL/go-qrl-consensus-client"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
+	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
+	"github.com/theQRL/go-qrl-consensus-client/spec/electra"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // Events feeds requested events with the given topics to the supplied handler.
@@ -131,14 +130,10 @@ func (*Service) checkEventSpecificHandler(opts *api.EventsOpts, topic string) er
 		hasHandler = opts.AttestationHandler != nil
 	case "attester_slashing":
 		hasHandler = opts.AttesterSlashingHandler != nil
-	case "blob_sidecar":
-		hasHandler = opts.BlobSidecarHandler != nil
 	case "block":
 		hasHandler = opts.BlockHandler != nil
 	case "block_gossip":
 		hasHandler = opts.BlockGossipHandler != nil
-	case "bls_to_execution_change":
-		hasHandler = opts.BLSToExecutionChangeHandler != nil
 	case "chain_reorg":
 		hasHandler = opts.ChainReorgHandler != nil
 	case "contribution_and_proof":
@@ -186,14 +181,10 @@ func (s *Service) handleEvent(ctx context.Context,
 		s.handleAttestationEvent(ctx, msg, opts)
 	case "attester_slashing":
 		s.handleAttesterSlashingEvent(ctx, msg, opts)
-	case "blob_sidecar":
-		s.handleBlobSidecarEvent(ctx, msg, opts)
 	case "block":
 		s.handleBlockEvent(ctx, msg, opts)
 	case "block_gossip":
 		s.handleBlockGossipEvent(ctx, msg, opts)
-	case "bls_to_execution_change":
-		s.handleBLSToExecutionChangeEvent(ctx, msg, opts)
 	case "chain_reorg":
 		s.handleChainReorgEvent(ctx, msg, opts)
 	case "contribution_and_proof":
@@ -273,33 +264,6 @@ func (*Service) handleAttesterSlashingEvent(ctx context.Context,
 	}
 }
 
-func (*Service) handleBlobSidecarEvent(ctx context.Context,
-	msg *sse.Event,
-	opts *api.EventsOpts,
-) {
-	log := zerolog.Ctx(ctx)
-	data := &apiv1.BlobSidecarEvent{}
-
-	err := json.Unmarshal(msg.Data, data)
-	if err != nil {
-		log.Error().Err(err).RawJSON("data", msg.Data).Msg("Failed to parse blob sidecar event")
-
-		return
-	}
-
-	switch {
-	case opts.BlobSidecarHandler != nil:
-		opts.BlobSidecarHandler(ctx, data)
-	case opts.Handler != nil:
-		opts.Handler(&apiv1.Event{
-			Topic: string(msg.Event),
-			Data:  data,
-		})
-	default:
-		log.Debug().Msg("No specific or generic handler supplied; ignoring")
-	}
-}
-
 func (*Service) handleBlockEvent(ctx context.Context,
 	msg *sse.Event,
 	opts *api.EventsOpts,
@@ -344,33 +308,6 @@ func (*Service) handleBlockGossipEvent(ctx context.Context,
 	switch {
 	case opts.BlockGossipHandler != nil:
 		opts.BlockGossipHandler(ctx, data)
-	case opts.Handler != nil:
-		opts.Handler(&apiv1.Event{
-			Topic: string(msg.Event),
-			Data:  data,
-		})
-	default:
-		log.Debug().Msg("No specific or generic handler supplied; ignoring")
-	}
-}
-
-func (*Service) handleBLSToExecutionChangeEvent(ctx context.Context,
-	msg *sse.Event,
-	opts *api.EventsOpts,
-) {
-	log := zerolog.Ctx(ctx)
-	data := &capella.SignedBLSToExecutionChange{}
-
-	err := json.Unmarshal(msg.Data, data)
-	if err != nil {
-		log.Error().Err(err).RawJSON("data", msg.Data).Msg("Failed to parse bls to execution change event")
-
-		return
-	}
-
-	switch {
-	case opts.BLSToExecutionChangeHandler != nil:
-		opts.BLSToExecutionChangeHandler(ctx, data)
 	case opts.Handler != nil:
 		opts.Handler(&apiv1.Event{
 			Topic: string(msg.Event),

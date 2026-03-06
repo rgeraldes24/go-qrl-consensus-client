@@ -17,9 +17,9 @@ import (
 	"context"
 
 	"github.com/OffchainLabs/go-bitfield"
-	"github.com/attestantio/go-eth2-client/api"
-	"github.com/attestantio/go-eth2-client/spec"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // Proposal fetches a proposal for signing.
@@ -88,7 +88,7 @@ func (s *Service) Proposal(ctx context.Context,
 		}),
 		Body: &phase0.BeaconBlockBody{
 			RANDAOReveal: opts.RandaoReveal,
-			ETH1Data: &phase0.ETH1Data{
+			ExecutionData: &phase0.ExecutionData{
 				DepositRoot: phase0.Root([32]byte{
 					0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f,
 					0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5a, 0x5b, 0x5c, 0x5d, 0x5e, 0x5f,

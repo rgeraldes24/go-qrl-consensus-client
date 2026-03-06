@@ -20,9 +20,9 @@ import (
 	"errors"
 	"strings"
 
-	client "github.com/attestantio/go-eth2-client"
-	"github.com/attestantio/go-eth2-client/api"
-	"github.com/attestantio/go-eth2-client/spec"
+	client "github.com/theQRL/go-qrl-consensus-client"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
 )
 
 // SubmitBlindedProposal submits a blinded proposal.
@@ -47,20 +47,8 @@ func (s *Service) SubmitBlindedProposal(ctx context.Context,
 	)
 
 	switch opts.Proposal.Version {
-	case spec.DataVersionPhase0:
-		err = errors.New("blinded phase0 proposals not supported")
-	case spec.DataVersionAltair:
-		err = errors.New("blinded altair proposals not supported")
-	case spec.DataVersionBellatrix:
-		specJSON, err = json.Marshal(opts.Proposal.Bellatrix)
 	case spec.DataVersionCapella:
 		specJSON, err = json.Marshal(opts.Proposal.Capella)
-	case spec.DataVersionDeneb:
-		specJSON, err = json.Marshal(opts.Proposal.Deneb)
-	case spec.DataVersionElectra:
-		specJSON, err = json.Marshal(opts.Proposal.Electra)
-	case spec.DataVersionFulu:
-		specJSON, err = json.Marshal(opts.Proposal.Fulu)
 	default:
 		err = errors.New("unknown proposal version")
 	}

@@ -18,8 +18,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/attestantio/go-eth2-client/api"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // Domain provides a domain for a given domain type at a given epoch.

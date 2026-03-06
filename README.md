@@ -1,16 +1,8 @@
-# go-eth2-client
+# go-qrl-consensus-client
 
-[![Tag](https://img.shields.io/github/tag/attestantio/go-eth2-client.svg)](https://github.com/attestantio/go-eth2-client/releases/)
-[![License](https://img.shields.io/github/license/attestantio/go-eth2-client.svg)](LICENSE)
-[![GoDoc](https://godoc.org/github.com/attestantio/go-eth2-client?status.svg)](https://godoc.org/github.com/attestantio/go-eth2-client)
-![Lint](https://github.com/attestantio/go-eth2-client/workflows/golangci-lint/badge.svg)
-[![Go Report Card](https://goreportcard.com/badge/github.com/attestantio/go-eth2-client)](https://goreportcard.com/report/github.com/attestantio/go-eth2-client)
-
-Go library providing an abstraction to multiple Ethereum 2 beacon nodes.  Its external API follows the official [Ethereum beacon APIs](https://github.com/ethereum/beacon-APIs) specification.
+Go library providing an abstraction to multiple QRL beacon nodes.  Its external API follows the official [QRL beacon APIs](https://github.com/ethereum/beacon-APIs) specification.
 
 This library is under development; expect APIs and data structures to change until it reaches version 1.0.  In addition, clients' implementations of both their own and the standard API are themselves under development so implementation of the full API can be incomplete.
-
-> Between versions 0.18.0 and 0.19.0 the API has undergone a number of changes.  Please see [the detailed documentation](docs/0.19.0-changes.md) regarding these changes.
 
 ## Table of Contents
 
@@ -22,24 +14,21 @@ This library is under development; expect APIs and data structures to change unt
 
 ## Install
 
-`go-eth2-client` is a standard Go module which can be installed with:
+`go-qrl-consensus-client` is a standard Go module which can be installed with:
 
 ```sh
-go get github.com/attestantio/go-eth2-client
+go get github.com/theQRL/go-qrl-consensus-client
 ```
 
 ## Support
 
-`go-eth2-client` supports beacon nodes that comply with the standard beacon node API.  To date it has been tested against the following beacon nodes:
+`go-qrl-consensus-client` supports beacon nodes that comply with the standard beacon node API.  To date it has been tested against the following beacon nodes:
 
-  - [Lighthouse](https://github.com/sigp/lighthouse/) minimum version 2.0.0
-  - [Nimbus](https://github.com/status-im/nimbus-eth2) minimum version 1.7.0
-  - [Prysm](https://github.com/prysmaticlabs/prysm) minimum version ?
-  - [Teku](https://github.com/consensys/teku) minimum version 21.9.2
+  - [Qrysm](https://github.com/theQRL/qrysm)
 
 ## Usage
 
-Please read the [Go documentation for this library](https://godoc.org/github.com/attestantio/go-eth2-client) for interface information.
+Please read the [Go documentation for this library](https://godoc.org/github.com/theQRL/go-qrl-consensus-client) for interface information.
 
 ## Example
 
@@ -52,9 +41,9 @@ import (
     "context"
     "fmt"
     
-    eth2client "github.com/attestantio/go-eth2-client"
-    "github.com/attestantio/go-eth2-client/api"
-    "github.com/attestantio/go-eth2-client/http"
+    consensusclient "github.com/theQRL/go-qrl-consensus-client"
+    "github.com/theQRL/go-qrl-consensus-client/api"
+    "github.com/theQRL/go-qrl-consensus-client/http"
     "github.com/rs/zerolog"
 )
 
@@ -76,7 +65,7 @@ func main() {
     // Client functions have their own interfaces.  Not all functions are
     // supported by all clients, so checks should be made for each function when
     // casting the service to the relevant interface.
-    if provider, isProvider := client.(eth2client.GenesisProvider); isProvider {
+    if provider, isProvider := client.(consensusclient.GenesisProvider); isProvider {
         genesisResponse, err := provider.Genesis(ctx, &api.GenesisOpts{})
         if err != nil {
             // Errors may be API errors, in which case they will have more detail
@@ -109,13 +98,9 @@ func main() {
 }
 ```
 
-## Maintainers
-
-Chris Berry: [@bez625](https://github.com/Bez625).
-
 ## Contribute
 
-Contributions welcome. Please check out [the issues](https://github.com/attestantio/go-eth2-client/issues).
+Contributions welcome. Please check out [the issues](https://github.com/theQRL/go-qrl-consensus-client/issues).
 
 ## License
 

@@ -17,12 +17,12 @@ import (
 	"context"
 	"testing"
 
-	client "github.com/attestantio/go-eth2-client"
-	"github.com/attestantio/go-eth2-client/mock"
-	"github.com/attestantio/go-eth2-client/multi"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	client "github.com/theQRL/go-qrl-consensus-client"
+	"github.com/theQRL/go-qrl-consensus-client/mock"
+	"github.com/theQRL/go-qrl-consensus-client/multi"
 )
 
 func TestService(t *testing.T) {
@@ -115,8 +115,6 @@ func TestInterfaces(t *testing.T) {
 	assert.Implements(t, (*client.BeaconStateProvider)(nil), s)
 	assert.Implements(t, (*client.BlindedBeaconBlockSubmitter)(nil), s)
 	assert.Implements(t, (*client.BlockRewardsProvider)(nil), s)
-	assert.Implements(t, (*client.BlobsProvider)(nil), s)
-	assert.Implements(t, (*client.BlobSidecarsProvider)(nil), s)
 	assert.Implements(t, (*client.ValidatorRegistrationsSubmitter)(nil), s)
 	assert.Implements(t, (*client.DepositContractProvider)(nil), s)
 	assert.Implements(t, (*client.EventsProvider)(nil), s)

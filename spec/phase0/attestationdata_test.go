@@ -18,10 +18,10 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/goccy/go-yaml"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 func TestAttestationDataJSON(t *testing.T) {

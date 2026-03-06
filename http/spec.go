@@ -21,9 +21,9 @@ import (
 	"strings"
 	"time"
 
-	client "github.com/attestantio/go-eth2-client"
-	"github.com/attestantio/go-eth2-client/api"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
+	client "github.com/theQRL/go-qrl-consensus-client"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // Spec provides the spec information of the chain.
@@ -83,10 +83,6 @@ func (s *Service) Spec(ctx context.Context,
 	// The application mask domain type is not provided by all nodes, so add it here if not present.
 	if _, exists := config["DOMAIN_APPLICATION_MASK"]; !exists {
 		config["DOMAIN_APPLICATION_MASK"] = phase0.DomainType{0x00, 0x00, 0x00, 0x01}
-	}
-	// The BLS to execution change domain type is not provided by all nodes, so add it here if not present.
-	if _, exists := config["DOMAIN_BLS_TO_EXECUTION_CHANGE"]; !exists {
-		config["DOMAIN_BLS_TO_EXECUTION_CHANGE"] = phase0.DomainType{0x0a, 0x00, 0x00, 0x00}
 	}
 	// The builder application domain type is not officially part of the spec, so add it here if not present.
 	if _, exists := config["DOMAIN_APPLICATION_BUILDER"]; !exists {

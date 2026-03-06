@@ -16,80 +16,32 @@ package spec
 import (
 	"errors"
 
-	"github.com/attestantio/go-eth2-client/spec/altair"
-	"github.com/attestantio/go-eth2-client/spec/bellatrix"
-	"github.com/attestantio/go-eth2-client/spec/capella"
-	"github.com/attestantio/go-eth2-client/spec/deneb"
-	"github.com/attestantio/go-eth2-client/spec/electra"
-	"github.com/attestantio/go-eth2-client/spec/fulu"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
-	proofutil "github.com/attestantio/go-eth2-client/util/proof"
 	ssz "github.com/ferranbt/fastssz"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	proofutil "github.com/theQRL/go-qrl-consensus-client/util/proof"
 )
 
 // VersionedBeaconState contains a versioned beacon state.
 type VersionedBeaconState struct {
-	Version   DataVersion
-	Phase0    *phase0.BeaconState
-	Altair    *altair.BeaconState
-	Bellatrix *bellatrix.BeaconState
-	Capella   *capella.BeaconState
-	Deneb     *deneb.BeaconState
-	Electra   *electra.BeaconState
-	Fulu      *fulu.BeaconState
+	Version DataVersion
+	Capella *capella.BeaconState
 }
 
 // IsEmpty returns true if there is no block.
 func (v *VersionedBeaconState) IsEmpty() bool {
-	return v.Phase0 == nil && v.Altair == nil && v.Bellatrix == nil &&
-		v.Capella == nil && v.Deneb == nil && v.Electra == nil && v.Fulu == nil
+	return v.Capella == nil
 }
 
 // Slot returns the slot of the state.
 func (v *VersionedBeaconState) Slot() (phase0.Slot, error) {
 	switch v.Version {
-	case DataVersionPhase0:
-		if v.Phase0 == nil {
-			return 0, errors.New("no Phase0 state")
-		}
-
-		return v.Phase0.Slot, nil
-	case DataVersionAltair:
-		if v.Altair == nil {
-			return 0, errors.New("no Altair state")
-		}
-
-		return v.Altair.Slot, nil
-	case DataVersionBellatrix:
-		if v.Bellatrix == nil {
-			return 0, errors.New("no Bellatrix state")
-		}
-
-		return v.Bellatrix.Slot, nil
 	case DataVersionCapella:
 		if v.Capella == nil {
 			return 0, errors.New("no Capella state")
 		}
 
 		return v.Capella.Slot, nil
-	case DataVersionDeneb:
-		if v.Deneb == nil {
-			return 0, errors.New("no Deneb state")
-		}
-
-		return v.Deneb.Slot, nil
-	case DataVersionElectra:
-		if v.Electra == nil {
-			return 0, errors.New("no Electra state")
-		}
-
-		return v.Electra.Slot, nil
-	case DataVersionFulu:
-		if v.Fulu == nil {
-			return 0, errors.New("no Fulu state")
-		}
-
-		return v.Fulu.Slot, nil
 	default:
 		return 0, errors.New("unknown version")
 	}
@@ -98,32 +50,12 @@ func (v *VersionedBeaconState) Slot() (phase0.Slot, error) {
 // NextWithdrawalValidatorIndex returns the next withdrawal validator index of the state.
 func (v *VersionedBeaconState) NextWithdrawalValidatorIndex() (phase0.ValidatorIndex, error) {
 	switch v.Version {
-	case DataVersionPhase0, DataVersionAltair, DataVersionBellatrix:
-		return 0, errors.New("state does not provide next withdrawal validator index")
 	case DataVersionCapella:
 		if v.Capella == nil {
 			return 0, errors.New("no Capella state")
 		}
 
 		return v.Capella.NextWithdrawalValidatorIndex, nil
-	case DataVersionDeneb:
-		if v.Deneb == nil {
-			return 0, errors.New("no Deneb state")
-		}
-
-		return v.Deneb.NextWithdrawalValidatorIndex, nil
-	case DataVersionElectra:
-		if v.Electra == nil {
-			return 0, errors.New("no Electra state")
-		}
-
-		return v.Electra.NextWithdrawalValidatorIndex, nil
-	case DataVersionFulu:
-		if v.Fulu == nil {
-			return 0, errors.New("no Fulu state")
-		}
-
-		return v.Fulu.NextWithdrawalValidatorIndex, nil
 	default:
 		return 0, errors.New("unknown version")
 	}
@@ -132,48 +64,12 @@ func (v *VersionedBeaconState) NextWithdrawalValidatorIndex() (phase0.ValidatorI
 // Validators returns the validators of the state.
 func (v *VersionedBeaconState) Validators() ([]*phase0.Validator, error) {
 	switch v.Version {
-	case DataVersionPhase0:
-		if v.Phase0 == nil {
-			return nil, errors.New("no Phase0 state")
-		}
-
-		return v.Phase0.Validators, nil
-	case DataVersionAltair:
-		if v.Altair == nil {
-			return nil, errors.New("no Altair state")
-		}
-
-		return v.Altair.Validators, nil
-	case DataVersionBellatrix:
-		if v.Bellatrix == nil {
-			return nil, errors.New("no Bellatrix state")
-		}
-
-		return v.Bellatrix.Validators, nil
 	case DataVersionCapella:
 		if v.Capella == nil {
 			return nil, errors.New("no Capella state")
 		}
 
 		return v.Capella.Validators, nil
-	case DataVersionDeneb:
-		if v.Deneb == nil {
-			return nil, errors.New("no Deneb state")
-		}
-
-		return v.Deneb.Validators, nil
-	case DataVersionElectra:
-		if v.Electra == nil {
-			return nil, errors.New("no Electra state")
-		}
-
-		return v.Electra.Validators, nil
-	case DataVersionFulu:
-		if v.Fulu == nil {
-			return nil, errors.New("no Fulu state")
-		}
-
-		return v.Fulu.Validators, nil
 	default:
 		return nil, errors.New("unknown version")
 	}
@@ -182,48 +78,12 @@ func (v *VersionedBeaconState) Validators() ([]*phase0.Validator, error) {
 // ValidatorBalances returns the validator balances of the state.
 func (v *VersionedBeaconState) ValidatorBalances() ([]phase0.Gwei, error) {
 	switch v.Version {
-	case DataVersionPhase0:
-		if v.Phase0 == nil {
-			return nil, errors.New("no Phase0 state")
-		}
-
-		return v.Phase0.Balances, nil
-	case DataVersionAltair:
-		if v.Altair == nil {
-			return nil, errors.New("no Altair state")
-		}
-
-		return v.Altair.Balances, nil
-	case DataVersionBellatrix:
-		if v.Bellatrix == nil {
-			return nil, errors.New("no Bellatrix state")
-		}
-
-		return v.Bellatrix.Balances, nil
 	case DataVersionCapella:
 		if v.Capella == nil {
 			return nil, errors.New("no Capella state")
 		}
 
 		return v.Capella.Balances, nil
-	case DataVersionDeneb:
-		if v.Deneb == nil {
-			return nil, errors.New("no Deneb state")
-		}
-
-		return v.Deneb.Balances, nil
-	case DataVersionElectra:
-		if v.Electra == nil {
-			return nil, errors.New("no Electra state")
-		}
-
-		return v.Electra.Balances, nil
-	case DataVersionFulu:
-		if v.Fulu == nil {
-			return nil, errors.New("no Fulu state")
-		}
-
-		return v.Fulu.Balances, nil
 	default:
 		return nil, errors.New("unknown version")
 	}
@@ -232,20 +92,8 @@ func (v *VersionedBeaconState) ValidatorBalances() ([]phase0.Gwei, error) {
 // DepositRequestsStartIndex returns the deposit requests start index of the state.
 func (v *VersionedBeaconState) DepositRequestsStartIndex() (uint64, error) {
 	switch v.Version {
-	case DataVersionPhase0, DataVersionAltair, DataVersionBellatrix, DataVersionCapella, DataVersionDeneb:
+	case DataVersionCapella:
 		return 0, errors.New("state does not provide deposit requests start index")
-	case DataVersionElectra:
-		if v.Electra == nil {
-			return 0, errors.New("no Electra state")
-		}
-
-		return v.Electra.DepositRequestsStartIndex, nil
-	case DataVersionFulu:
-		if v.Fulu == nil {
-			return 0, errors.New("no Fulu state")
-		}
-
-		return v.Fulu.DepositRequestsStartIndex, nil
 	default:
 		return 0, errors.New("unknown version")
 	}
@@ -254,20 +102,8 @@ func (v *VersionedBeaconState) DepositRequestsStartIndex() (uint64, error) {
 // DepositBalanceToConsume returns the deposit balance to consume of the state.
 func (v *VersionedBeaconState) DepositBalanceToConsume() (phase0.Gwei, error) {
 	switch v.Version {
-	case DataVersionPhase0, DataVersionAltair, DataVersionBellatrix, DataVersionCapella, DataVersionDeneb:
+	case DataVersionCapella:
 		return 0, errors.New("state does not provide deposit balance to consume")
-	case DataVersionElectra:
-		if v.Electra == nil {
-			return 0, errors.New("no Electra state")
-		}
-
-		return v.Electra.DepositBalanceToConsume, nil
-	case DataVersionFulu:
-		if v.Fulu == nil {
-			return 0, errors.New("no Fulu state")
-		}
-
-		return v.Fulu.DepositBalanceToConsume, nil
 	default:
 		return 0, errors.New("unknown version")
 	}
@@ -276,20 +112,8 @@ func (v *VersionedBeaconState) DepositBalanceToConsume() (phase0.Gwei, error) {
 // ExitBalanceToConsume returns the deposit balance to consume of the state.
 func (v *VersionedBeaconState) ExitBalanceToConsume() (phase0.Gwei, error) {
 	switch v.Version {
-	case DataVersionPhase0, DataVersionAltair, DataVersionBellatrix, DataVersionCapella, DataVersionDeneb:
+	case DataVersionCapella:
 		return 0, errors.New("state does not provide exit balance to consume")
-	case DataVersionElectra:
-		if v.Electra == nil {
-			return 0, errors.New("no Electra state")
-		}
-
-		return v.Electra.ExitBalanceToConsume, nil
-	case DataVersionFulu:
-		if v.Fulu == nil {
-			return 0, errors.New("no Fulu state")
-		}
-
-		return v.Fulu.ExitBalanceToConsume, nil
 	default:
 		return 0, errors.New("unknown version")
 	}
@@ -298,20 +122,8 @@ func (v *VersionedBeaconState) ExitBalanceToConsume() (phase0.Gwei, error) {
 // EarliestExitEpoch returns the earliest exit epoch of the state.
 func (v *VersionedBeaconState) EarliestExitEpoch() (phase0.Epoch, error) {
 	switch v.Version {
-	case DataVersionPhase0, DataVersionAltair, DataVersionBellatrix, DataVersionCapella, DataVersionDeneb:
+	case DataVersionCapella:
 		return 0, errors.New("state does not provide earliest exit epoch")
-	case DataVersionElectra:
-		if v.Electra == nil {
-			return 0, errors.New("no Electra state")
-		}
-
-		return v.Electra.EarliestExitEpoch, nil
-	case DataVersionFulu:
-		if v.Fulu == nil {
-			return 0, errors.New("no Fulu state")
-		}
-
-		return v.Fulu.EarliestExitEpoch, nil
 	default:
 		return 0, errors.New("unknown version")
 	}
@@ -320,20 +132,8 @@ func (v *VersionedBeaconState) EarliestExitEpoch() (phase0.Epoch, error) {
 // ConsolidationBalanceToConsume returns the consolidation balance to consume of the state.
 func (v *VersionedBeaconState) ConsolidationBalanceToConsume() (phase0.Gwei, error) {
 	switch v.Version {
-	case DataVersionPhase0, DataVersionAltair, DataVersionBellatrix, DataVersionCapella, DataVersionDeneb:
+	case DataVersionCapella:
 		return 0, errors.New("state does not provide consolidation balance to consume")
-	case DataVersionElectra:
-		if v.Electra == nil {
-			return 0, errors.New("no Electra state")
-		}
-
-		return v.Electra.ConsolidationBalanceToConsume, nil
-	case DataVersionFulu:
-		if v.Fulu == nil {
-			return 0, errors.New("no Fulu state")
-		}
-
-		return v.Fulu.ConsolidationBalanceToConsume, nil
 	default:
 		return 0, errors.New("unknown version")
 	}
@@ -342,88 +142,10 @@ func (v *VersionedBeaconState) ConsolidationBalanceToConsume() (phase0.Gwei, err
 // EarliestConsolidationEpoch returns the earliest consolidation epoch of the state.
 func (v *VersionedBeaconState) EarliestConsolidationEpoch() (phase0.Epoch, error) {
 	switch v.Version {
-	case DataVersionPhase0, DataVersionAltair, DataVersionBellatrix, DataVersionCapella, DataVersionDeneb:
+	case DataVersionCapella:
 		return 0, errors.New("state does not provide earliest consolidation epoch")
-	case DataVersionElectra:
-		if v.Electra == nil {
-			return 0, errors.New("no Electra state")
-		}
-
-		return v.Electra.EarliestConsolidationEpoch, nil
-	case DataVersionFulu:
-		if v.Fulu == nil {
-			return 0, errors.New("no Fulu state")
-		}
-
-		return v.Fulu.EarliestConsolidationEpoch, nil
 	default:
 		return 0, errors.New("unknown version")
-	}
-}
-
-// PendingDeposits returns the pending deposits of the state.
-func (v *VersionedBeaconState) PendingDeposits() ([]*electra.PendingDeposit, error) {
-	switch v.Version {
-	case DataVersionPhase0, DataVersionAltair, DataVersionBellatrix, DataVersionCapella, DataVersionDeneb:
-		return nil, errors.New("state does not provide pending deposits")
-	case DataVersionElectra:
-		if v.Electra == nil {
-			return nil, errors.New("no Electra state")
-		}
-
-		return v.Electra.PendingDeposits, nil
-	case DataVersionFulu:
-		if v.Fulu == nil {
-			return nil, errors.New("no Fulu state")
-		}
-
-		return v.Fulu.PendingDeposits, nil
-	default:
-		return nil, errors.New("unknown version")
-	}
-}
-
-// PendingPartialWithdrawals returns the pending partial withdrawals of the state.
-func (v *VersionedBeaconState) PendingPartialWithdrawals() ([]*electra.PendingPartialWithdrawal, error) {
-	switch v.Version {
-	case DataVersionPhase0, DataVersionAltair, DataVersionBellatrix, DataVersionCapella, DataVersionDeneb:
-		return nil, errors.New("state does not provide pending partial withdrawals")
-	case DataVersionElectra:
-		if v.Electra == nil {
-			return nil, errors.New("no Electra state")
-		}
-
-		return v.Electra.PendingPartialWithdrawals, nil
-	case DataVersionFulu:
-		if v.Fulu == nil {
-			return nil, errors.New("no Fulu state")
-		}
-
-		return v.Fulu.PendingPartialWithdrawals, nil
-	default:
-		return nil, errors.New("unknown version")
-	}
-}
-
-// PendingConsolidations returns the pending consolidations of the state.
-func (v *VersionedBeaconState) PendingConsolidations() ([]*electra.PendingConsolidation, error) {
-	switch v.Version {
-	case DataVersionPhase0, DataVersionAltair, DataVersionBellatrix, DataVersionCapella, DataVersionDeneb:
-		return nil, errors.New("state does not provide pending consolidations")
-	case DataVersionElectra:
-		if v.Electra == nil {
-			return nil, errors.New("no Electra state")
-		}
-
-		return v.Electra.PendingConsolidations, nil
-	case DataVersionFulu:
-		if v.Fulu == nil {
-			return nil, errors.New("no Fulu state")
-		}
-
-		return v.Fulu.PendingConsolidations, nil
-	default:
-		return nil, errors.New("unknown version")
 	}
 }
 
@@ -472,48 +194,12 @@ func (v *VersionedBeaconState) ValidatorBalance(index phase0.ValidatorIndex) (ph
 // GetTree returns the GetTree of the specific beacon state version.
 func (v *VersionedBeaconState) GetTree() (*ssz.Node, error) {
 	switch v.Version {
-	case DataVersionPhase0:
-		if v.Phase0 == nil {
-			return nil, errors.New("no Phase0 state")
-		}
-
-		return v.Phase0.GetTree()
-	case DataVersionAltair:
-		if v.Altair == nil {
-			return nil, errors.New("no Altair state")
-		}
-
-		return v.Altair.GetTree()
-	case DataVersionBellatrix:
-		if v.Bellatrix == nil {
-			return nil, errors.New("no Bellatrix state")
-		}
-
-		return v.Bellatrix.GetTree()
 	case DataVersionCapella:
 		if v.Capella == nil {
 			return nil, errors.New("no Capella state")
 		}
 
 		return v.Capella.GetTree()
-	case DataVersionDeneb:
-		if v.Deneb == nil {
-			return nil, errors.New("no Deneb state")
-		}
-
-		return v.Deneb.GetTree()
-	case DataVersionElectra:
-		if v.Electra == nil {
-			return nil, errors.New("no Electra state")
-		}
-
-		return v.Electra.GetTree()
-	case DataVersionFulu:
-		if v.Fulu == nil {
-			return nil, errors.New("no Fulu state")
-		}
-
-		return v.Fulu.GetTree()
 	default:
 		return nil, errors.New("unknown version")
 	}
@@ -522,48 +208,12 @@ func (v *VersionedBeaconState) GetTree() (*ssz.Node, error) {
 // HashTreeRoot returns the HashTreeRoot of the specific beacon state version.
 func (v *VersionedBeaconState) HashTreeRoot() (phase0.Hash32, error) {
 	switch v.Version {
-	case DataVersionPhase0:
-		if v.Phase0 == nil {
-			return phase0.Hash32{}, errors.New("no Phase0 state")
-		}
-
-		return v.Phase0.HashTreeRoot()
-	case DataVersionAltair:
-		if v.Altair == nil {
-			return phase0.Hash32{}, errors.New("no Altair state")
-		}
-
-		return v.Altair.HashTreeRoot()
-	case DataVersionBellatrix:
-		if v.Bellatrix == nil {
-			return phase0.Hash32{}, errors.New("no Bellatrix state")
-		}
-
-		return v.Bellatrix.HashTreeRoot()
 	case DataVersionCapella:
 		if v.Capella == nil {
 			return phase0.Hash32{}, errors.New("no Capella state")
 		}
 
 		return v.Capella.HashTreeRoot()
-	case DataVersionDeneb:
-		if v.Deneb == nil {
-			return phase0.Hash32{}, errors.New("no Deneb state")
-		}
-
-		return v.Deneb.HashTreeRoot()
-	case DataVersionElectra:
-		if v.Electra == nil {
-			return phase0.Hash32{}, errors.New("no Electra state")
-		}
-
-		return v.Electra.HashTreeRoot()
-	case DataVersionFulu:
-		if v.Fulu == nil {
-			return phase0.Hash32{}, errors.New("no Fulu state")
-		}
-
-		return v.Fulu.HashTreeRoot()
 	default:
 		return phase0.Hash32{}, errors.New("unknown version")
 	}
@@ -574,48 +224,12 @@ func (v *VersionedBeaconState) HashTreeRoot() (phase0.Hash32, error) {
 // Returns an error if the field doesn't exist or the state is empty.
 func (v *VersionedBeaconState) FieldIndex(name string) (int, error) {
 	switch v.Version {
-	case DataVersionPhase0:
-		if v.Phase0 == nil {
-			return 0, errors.New("no Phase0 state")
-		}
-
-		return proofutil.FieldIndex(v.Phase0, name)
-	case DataVersionAltair:
-		if v.Altair == nil {
-			return 0, errors.New("no Altair state")
-		}
-
-		return proofutil.FieldIndex(v.Altair, name)
-	case DataVersionBellatrix:
-		if v.Bellatrix == nil {
-			return 0, errors.New("no Bellatrix state")
-		}
-
-		return proofutil.FieldIndex(v.Bellatrix, name)
 	case DataVersionCapella:
 		if v.Capella == nil {
 			return 0, errors.New("no Capella state")
 		}
 
 		return proofutil.FieldIndex(v.Capella, name)
-	case DataVersionDeneb:
-		if v.Deneb == nil {
-			return 0, errors.New("no Deneb state")
-		}
-
-		return proofutil.FieldIndex(v.Deneb, name)
-	case DataVersionElectra:
-		if v.Electra == nil {
-			return 0, errors.New("no Electra state")
-		}
-
-		return proofutil.FieldIndex(v.Electra, name)
-	case DataVersionFulu:
-		if v.Fulu == nil {
-			return 0, errors.New("no Fulu state")
-		}
-
-		return proofutil.FieldIndex(v.Fulu, name)
 	default:
 		return 0, errors.New("unknown version")
 	}
@@ -627,48 +241,12 @@ func (v *VersionedBeaconState) FieldIndex(name string) (int, error) {
 // Returns an error if the field doesn't exist or the state is empty.
 func (v *VersionedBeaconState) FieldGeneralizedIndex(name string) (int, error) {
 	switch v.Version {
-	case DataVersionPhase0:
-		if v.Phase0 == nil {
-			return 0, errors.New("no Phase0 state")
-		}
-
-		return proofutil.FieldGeneralizedIndex(v.Phase0, name)
-	case DataVersionAltair:
-		if v.Altair == nil {
-			return 0, errors.New("no Altair state")
-		}
-
-		return proofutil.FieldGeneralizedIndex(v.Altair, name)
-	case DataVersionBellatrix:
-		if v.Bellatrix == nil {
-			return 0, errors.New("no Bellatrix state")
-		}
-
-		return proofutil.FieldGeneralizedIndex(v.Bellatrix, name)
 	case DataVersionCapella:
 		if v.Capella == nil {
 			return 0, errors.New("no Capella state")
 		}
 
 		return proofutil.FieldGeneralizedIndex(v.Capella, name)
-	case DataVersionDeneb:
-		if v.Deneb == nil {
-			return 0, errors.New("no Deneb state")
-		}
-
-		return proofutil.FieldGeneralizedIndex(v.Deneb, name)
-	case DataVersionElectra:
-		if v.Electra == nil {
-			return 0, errors.New("no Electra state")
-		}
-
-		return proofutil.FieldGeneralizedIndex(v.Electra, name)
-	case DataVersionFulu:
-		if v.Fulu == nil {
-			return 0, errors.New("no Fulu state")
-		}
-
-		return proofutil.FieldGeneralizedIndex(v.Fulu, name)
 	default:
 		return 0, errors.New("unknown version")
 	}
@@ -786,48 +364,12 @@ func (v *VersionedBeaconState) VerifyFieldProof(proof []phase0.Hash32, name stri
 // String returns a string version of the structure.
 func (v *VersionedBeaconState) String() string {
 	switch v.Version {
-	case DataVersionPhase0:
-		if v.Phase0 == nil {
-			return ""
-		}
-
-		return v.Phase0.String()
-	case DataVersionAltair:
-		if v.Altair == nil {
-			return ""
-		}
-
-		return v.Altair.String()
-	case DataVersionBellatrix:
-		if v.Bellatrix == nil {
-			return ""
-		}
-
-		return v.Bellatrix.String()
 	case DataVersionCapella:
 		if v.Capella == nil {
 			return ""
 		}
 
 		return v.Capella.String()
-	case DataVersionDeneb:
-		if v.Deneb == nil {
-			return ""
-		}
-
-		return v.Deneb.String()
-	case DataVersionElectra:
-		if v.Electra == nil {
-			return ""
-		}
-
-		return v.Electra.String()
-	case DataVersionFulu:
-		if v.Fulu == nil {
-			return ""
-		}
-
-		return v.Fulu.String()
 	default:
 		return "unknown version"
 	}

@@ -17,7 +17,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/attestantio/go-eth2-client/api"
+	"github.com/theQRL/go-qrl-consensus-client/api"
 )
 
 // Spec provides the spec information of the chain.

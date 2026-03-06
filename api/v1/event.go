@@ -17,12 +17,10 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/attestantio/go-eth2-client/spec"
-	"github.com/attestantio/go-eth2-client/spec/altair"
-	"github.com/attestantio/go-eth2-client/spec/capella"
-	"github.com/attestantio/go-eth2-client/spec/electra"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/pkg/errors"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
+	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // Event is the container for events sent from the API.
@@ -35,21 +33,19 @@ type Event struct {
 
 // SupportedEventTopics is a map of supported event topics.
 var SupportedEventTopics = map[string]bool{
-	"attestation":             true,
-	"attester_slashing":       true,
-	"blob_sidecar":            true,
-	"block":                   true,
-	"block_gossip":            true,
-	"bls_to_execution_change": true,
-	"chain_reorg":             true,
-	"contribution_and_proof":  true,
-	"data_column_sidecar":     true,
-	"finalized_checkpoint":    true,
-	"head":                    true,
-	"payload_attributes":      true,
-	"proposer_slashing":       true,
-	"single_attestation":      true,
-	"voluntary_exit":          true,
+	"attestation":            true,
+	"attester_slashing":      true,
+	"block":                  true,
+	"block_gossip":           true,
+	"chain_reorg":            true,
+	"contribution_and_proof": true,
+	"data_column_sidecar":    true,
+	"finalized_checkpoint":   true,
+	"head":                   true,
+	"payload_attributes":     true,
+	"proposer_slashing":      true,
+	"single_attestation":     true,
+	"voluntary_exit":         true,
 }
 
 // eventJSON is the spec representation of the struct.
@@ -101,20 +97,14 @@ func (e *Event) UnmarshalJSON(input []byte) error {
 		e.Data = &spec.VersionedAttestation{}
 	case "attester_slashing":
 		e.Data = &phase0.AttesterSlashing{}
-	case "blob_sidecar":
-		e.Data = &BlobSidecarEvent{}
 	case "block":
 		e.Data = &BlockEvent{}
 	case "block_gossip":
 		e.Data = &BlockGossipEvent{}
-	case "bls_to_execution_change":
-		e.Data = &capella.SignedBLSToExecutionChange{}
 	case "chain_reorg":
 		e.Data = &ChainReorgEvent{}
 	case "contribution_and_proof":
 		e.Data = &altair.SignedContributionAndProof{}
-	case "data_column_sidecar":
-		e.Data = &DataColumnSidecarEvent{}
 	case "finalized_checkpoint":
 		e.Data = &FinalizedCheckpointEvent{}
 	case "head":
@@ -123,8 +113,6 @@ func (e *Event) UnmarshalJSON(input []byte) error {
 		e.Data = &PayloadAttributesEvent{}
 	case "proposer_slashing":
 		e.Data = &phase0.ProposerSlashing{}
-	case "single_attestation":
-		e.Data = &electra.SingleAttestation{}
 	case "voluntary_exit":
 		e.Data = &phase0.SignedVoluntaryExit{}
 	default:

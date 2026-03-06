@@ -20,14 +20,12 @@ import (
 	"math/rand"
 	"time"
 
-	consensusclient "github.com/attestantio/go-eth2-client"
-	"github.com/attestantio/go-eth2-client/api"
-	apiv1 "github.com/attestantio/go-eth2-client/api/v1"
-	"github.com/attestantio/go-eth2-client/spec"
-	"github.com/attestantio/go-eth2-client/spec/altair"
-	"github.com/attestantio/go-eth2-client/spec/deneb"
-	"github.com/attestantio/go-eth2-client/spec/electra"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
+	consensusclient "github.com/theQRL/go-qrl-consensus-client"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
+	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // Erroring is an Ethereum 2 client that errors at a given rate.
@@ -908,44 +906,6 @@ func (s *Erroring) SignedBeaconBlock(ctx context.Context,
 	return next.SignedBeaconBlock(ctx, opts)
 }
 
-// Blobs fetches the blobs given a block ID.
-func (s *Erroring) Blobs(ctx context.Context,
-	opts *api.BlobsOpts,
-) (
-	*api.Response[apiv1.Blobs],
-	error,
-) {
-	if err := s.maybeError(ctx); err != nil {
-		return nil, err
-	}
-
-	next, isNext := s.next.(consensusclient.BlobsProvider)
-	if !isNext {
-		return nil, fmt.Errorf("%s@%s does not support this call", s.next.Name(), s.next.Address())
-	}
-
-	return next.Blobs(ctx, opts)
-}
-
-// BlobSidecars fetches the blobs given a block ID.
-func (s *Erroring) BlobSidecars(ctx context.Context,
-	opts *api.BlobSidecarsOpts,
-) (
-	*api.Response[[]*deneb.BlobSidecar],
-	error,
-) {
-	if err := s.maybeError(ctx); err != nil {
-		return nil, err
-	}
-
-	next, isNext := s.next.(consensusclient.BlobSidecarsProvider)
-	if !isNext {
-		return nil, fmt.Errorf("%s@%s does not support this call", s.next.Name(), s.next.Address())
-	}
-
-	return next.BlobSidecars(ctx, opts)
-}
-
 // BeaconStateRoot fetches a beacon state root given a state ID.
 func (s *Erroring) BeaconStateRoot(ctx context.Context,
 	opts *api.BeaconStateRootOpts,
@@ -1058,23 +1018,4 @@ func (s *Erroring) ValidatorLiveness(ctx context.Context,
 	}
 
 	return next.ValidatorLiveness(ctx, opts)
-}
-
-// PendingDeposits provides the pending deposits for a given state.
-func (s *Erroring) PendingDeposits(ctx context.Context,
-	opts *api.PendingDepositsOpts,
-) (
-	*api.Response[[]*electra.PendingDeposit],
-	error,
-) {
-	if err := s.maybeError(ctx); err != nil {
-		return nil, err
-	}
-
-	next, isNext := s.next.(consensusclient.PendingDepositProvider)
-	if !isNext {
-		return nil, fmt.Errorf("%s@%s does not support this call", s.next.Name(), s.next.Address())
-	}
-
-	return next.PendingDeposits(ctx, opts)
 }

@@ -18,8 +18,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/attestantio/go-eth2-client/metrics"
 	"github.com/rs/zerolog"
+	"github.com/theQRL/go-qrl-consensus-client/metrics"
 )
 
 type parameters struct {

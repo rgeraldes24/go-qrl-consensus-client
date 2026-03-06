@@ -20,8 +20,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/pkg/errors"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // blindedBeaconBlockJSON is the spec representation of the struct.

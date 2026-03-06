@@ -17,9 +17,9 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/attestantio/go-eth2-client/spec/altair"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/goccy/go-yaml"
+	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // beaconStateYAML is the spec representation of the struct.
@@ -32,8 +32,8 @@ type beaconStateYAML struct {
 	BlockRoots                   []string                  `json:"block_roots"`
 	StateRoots                   []string                  `json:"state_roots"`
 	HistoricalRoots              []string                  `json:"historical_roots"`
-	ETH1Data                     *phase0.ETH1Data          `json:"eth1_data"`
-	ETH1DataVotes                []*phase0.ETH1Data        `json:"eth1_data_votes"`
+	ExecutionData                *phase0.ExecutionData     `json:"execution_data"`
+	ExecutionDataVotes           []*phase0.ExecutionData   `json:"execution_data_votes"`
 	ETH1DepositIndex             uint64                    `json:"eth1_deposit_index"`
 	Validators                   []*phase0.Validator       `json:"validators"`
 	Balances                     []uint64                  `json:"balances"`
@@ -105,8 +105,8 @@ func (s *BeaconState) MarshalYAML() ([]byte, error) {
 		BlockRoots:                   blockRoots,
 		StateRoots:                   stateRoots,
 		HistoricalRoots:              historicalRoots,
-		ETH1Data:                     s.ETH1Data,
-		ETH1DataVotes:                s.ETH1DataVotes,
+		ExecutionData:                s.ExecutionData,
+		ExecutionDataVotes:           s.ExecutionDataVotes,
 		ETH1DepositIndex:             s.ETH1DepositIndex,
 		Validators:                   s.Validators,
 		Balances:                     balances,

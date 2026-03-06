@@ -4,8 +4,8 @@
 package bellatrix
 
 import (
-	"github.com/attestantio/go-eth2-client/spec/bellatrix"
 	ssz "github.com/ferranbt/fastssz"
+	"github.com/theQRL/go-qrl-consensus-client/spec/bellatrix"
 )
 
 // MarshalSSZ ssz marshals the Transactions object

@@ -22,7 +22,6 @@ import (
 	client "github.com/attestantio/go-eth2-client"
 	"github.com/attestantio/go-eth2-client/api"
 	"github.com/attestantio/go-eth2-client/spec"
-	"github.com/attestantio/go-eth2-client/spec/electra"
 	"github.com/attestantio/go-eth2-client/spec/phase0"
 )
 
@@ -103,70 +102,10 @@ func decodeAggregateAttestation(httpResponse *httpResponse) (*spec.VersionedAtte
 		Version: httpResponse.consensusVersion,
 	}
 	switch httpResponse.consensusVersion {
-	case spec.DataVersionPhase0:
-		phase0Data, phase0Metadata, decodeErr := decodeJSONResponse(bytes.NewReader(httpResponse.body), &phase0.Attestation{})
-		metadata = phase0Metadata
-		data.Phase0 = phase0Data
-
-		if decodeErr != nil {
-			return &spec.VersionedAttestation{}, nil, decodeErr
-		}
-
-		return data, metadata, nil
-	case spec.DataVersionAltair:
-		phase0Data, phase0Metadata, decodeErr := decodeJSONResponse(bytes.NewReader(httpResponse.body), &phase0.Attestation{})
-		metadata = phase0Metadata
-		data.Altair = phase0Data
-
-		if decodeErr != nil {
-			return &spec.VersionedAttestation{}, nil, decodeErr
-		}
-
-		return data, metadata, nil
-	case spec.DataVersionBellatrix:
-		phase0Data, phase0Metadata, decodeErr := decodeJSONResponse(bytes.NewReader(httpResponse.body), &phase0.Attestation{})
-		metadata = phase0Metadata
-		data.Bellatrix = phase0Data
-
-		if decodeErr != nil {
-			return &spec.VersionedAttestation{}, nil, decodeErr
-		}
-
-		return data, metadata, nil
 	case spec.DataVersionCapella:
 		phase0Data, phase0Metadata, decodeErr := decodeJSONResponse(bytes.NewReader(httpResponse.body), &phase0.Attestation{})
 		metadata = phase0Metadata
 		data.Capella = phase0Data
-
-		if decodeErr != nil {
-			return &spec.VersionedAttestation{}, nil, decodeErr
-		}
-
-		return data, metadata, nil
-	case spec.DataVersionDeneb:
-		phase0Data, phase0Metadata, decodeErr := decodeJSONResponse(bytes.NewReader(httpResponse.body), &phase0.Attestation{})
-		metadata = phase0Metadata
-		data.Deneb = phase0Data
-
-		if decodeErr != nil {
-			return &spec.VersionedAttestation{}, nil, decodeErr
-		}
-
-		return data, metadata, nil
-	case spec.DataVersionElectra:
-		electraData, electraMetadata, decodeErr := decodeJSONResponse(bytes.NewReader(httpResponse.body), &electra.Attestation{})
-		metadata = electraMetadata
-		data.Electra = electraData
-
-		if decodeErr != nil {
-			return &spec.VersionedAttestation{}, nil, decodeErr
-		}
-
-		return data, metadata, nil
-	case spec.DataVersionFulu:
-		fuluData, fuluMetadata, decodeErr := decodeJSONResponse(bytes.NewReader(httpResponse.body), &electra.Attestation{})
-		metadata = fuluMetadata
-		data.Fulu = fuluData
 
 		if decodeErr != nil {
 			return &spec.VersionedAttestation{}, nil, decodeErr

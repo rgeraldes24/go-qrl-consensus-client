@@ -16,8 +16,8 @@ package multi
 import (
 	"context"
 
-	consensusclient "github.com/attestantio/go-eth2-client"
-	api "github.com/attestantio/go-eth2-client/api/v1"
+	consensusclient "github.com/theQRL/go-qrl-consensus-client"
+	api "github.com/theQRL/go-qrl-consensus-client/api/v1"
 )
 
 // SubmitSyncCommitteeSubscriptions subscribes to sync committees.

@@ -16,9 +16,9 @@ package mock
 import (
 	"context"
 
-	"github.com/attestantio/go-eth2-client/api"
-	"github.com/attestantio/go-eth2-client/spec"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // BeaconState fetches a beacon state given a state ID.
@@ -36,7 +36,7 @@ func (s *Service) BeaconState(ctx context.Context,
 		Version: spec.DataVersionPhase0,
 		Phase0: &phase0.BeaconState{
 			LatestBlockHeader:           &phase0.BeaconBlockHeader{},
-			ETH1Data:                    &phase0.ETH1Data{},
+			ExecutionData:               &phase0.ExecutionData{},
 			PreviousJustifiedCheckpoint: &phase0.Checkpoint{},
 			CurrentJustifiedCheckpoint:  &phase0.Checkpoint{},
 			FinalizedCheckpoint:         &phase0.Checkpoint{},

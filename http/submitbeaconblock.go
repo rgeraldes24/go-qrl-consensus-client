@@ -19,9 +19,9 @@ import (
 	"encoding/json"
 	"errors"
 
-	client "github.com/attestantio/go-eth2-client"
-	"github.com/attestantio/go-eth2-client/api"
-	"github.com/attestantio/go-eth2-client/spec"
+	client "github.com/theQRL/go-qrl-consensus-client"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
 )
 
 // SubmitBeaconBlock submits a beacon block.
@@ -42,20 +42,8 @@ func (s *Service) SubmitBeaconBlock(ctx context.Context, block *spec.VersionedSi
 	}
 
 	switch block.Version {
-	case spec.DataVersionPhase0:
-		specJSON, err = json.Marshal(block.Phase0)
-	case spec.DataVersionAltair:
-		specJSON, err = json.Marshal(block.Altair)
-	case spec.DataVersionBellatrix:
-		specJSON, err = json.Marshal(block.Bellatrix)
 	case spec.DataVersionCapella:
 		specJSON, err = json.Marshal(block.Capella)
-	case spec.DataVersionDeneb:
-		specJSON, err = json.Marshal(block.Deneb)
-	case spec.DataVersionElectra:
-		specJSON, err = json.Marshal(block.Electra)
-	case spec.DataVersionFulu:
-		specJSON, err = json.Marshal(block.Fulu)
 	default:
 		err = errors.New("unknown block version")
 	}

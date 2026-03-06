@@ -22,9 +22,9 @@ import (
 	"strings"
 
 	bitfield "github.com/OffchainLabs/go-bitfield"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/goccy/go-yaml"
 	"github.com/pkg/errors"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // BeaconState represents a beacon state.
@@ -37,8 +37,8 @@ type BeaconState struct {
 	BlockRoots                  []phase0.Root `dynssz-size:"SLOTS_PER_HISTORICAL_ROOT,32" ssz-size:"8192,32"`
 	StateRoots                  []phase0.Root `dynssz-size:"SLOTS_PER_HISTORICAL_ROOT,32" ssz-size:"8192,32"`
 	HistoricalRoots             []phase0.Root `dynssz-max:"HISTORICAL_ROOTS_LIMIT"        ssz-max:"16777216" ssz-size:"?,32"`
-	ETH1Data                    *phase0.ETH1Data
-	ETH1DataVotes               []*phase0.ETH1Data `dynssz-max:"EPOCHS_PER_ETH1_VOTING_PERIOD*SLOTS_PER_EPOCH" ssz-max:"2048"`
+	ExecutionData               *phase0.ExecutionData
+	ExecutionDataVotes          []*phase0.ExecutionData `dynssz-max:"EPOCHS_PER_ETH1_VOTING_PERIOD*SLOTS_PER_EPOCH" ssz-max:"2048"`
 	ETH1DepositIndex            uint64
 	Validators                  []*phase0.Validator  `dynssz-max:"VALIDATOR_REGISTRY_LIMIT"         ssz-max:"1099511627776"`
 	Balances                    []phase0.Gwei        `dynssz-max:"VALIDATOR_REGISTRY_LIMIT"         ssz-max:"1099511627776"`
@@ -65,8 +65,8 @@ type beaconStateJSON struct {
 	BlockRoots                  []string                  `json:"block_roots"`
 	StateRoots                  []string                  `json:"state_roots"`
 	HistoricalRoots             []string                  `json:"historical_roots"`
-	ETH1Data                    *phase0.ETH1Data          `json:"eth1_data"`
-	ETH1DataVotes               []*phase0.ETH1Data        `json:"eth1_data_votes"`
+	ExecutionData               *phase0.ExecutionData     `json:"execution_data"`
+	ExecutionDataVotes          []*phase0.ExecutionData   `json:"execution_data_votes"`
 	ETH1DepositIndex            string                    `json:"eth1_deposit_index"`
 	Validators                  []*phase0.Validator       `json:"validators"`
 	Balances                    []string                  `json:"balances"`
@@ -93,8 +93,8 @@ type beaconStateYAML struct {
 	BlockRoots                  []string                  `json:"block_roots"`
 	StateRoots                  []string                  `json:"state_roots"`
 	HistoricalRoots             []string                  `json:"historical_roots"`
-	ETH1Data                    *phase0.ETH1Data          `json:"eth1_data"`
-	ETH1DataVotes               []*phase0.ETH1Data        `json:"eth1_data_votes"`
+	ExecutionData               *phase0.ExecutionData     `json:"execution_data"`
+	ExecutionDataVotes          []*phase0.ExecutionData   `json:"execution_data_votes"`
 	ETH1DepositIndex            uint64                    `json:"eth1_deposit_index"`
 	Validators                  []*phase0.Validator       `json:"validators"`
 	Balances                    []uint64                  `json:"balances"`
@@ -167,8 +167,8 @@ func (s *BeaconState) MarshalJSON() ([]byte, error) {
 		BlockRoots:                  blockRoots,
 		StateRoots:                  stateRoots,
 		HistoricalRoots:             historicalRoots,
-		ETH1Data:                    s.ETH1Data,
-		ETH1DataVotes:               s.ETH1DataVotes,
+		ExecutionData:               s.ExecutionData,
+		ExecutionDataVotes:          s.ExecutionDataVotes,
 		ETH1DepositIndex:            strconv.FormatUint(s.ETH1DepositIndex, 10),
 		Validators:                  s.Validators,
 		Balances:                    balances,
@@ -305,13 +305,13 @@ func (s *BeaconState) unpack(data *beaconStateJSON) error {
 		copy(s.HistoricalRoots[i][:], historicalRoot)
 	}
 
-	if data.ETH1Data == nil {
+	if data.ExecutionData == nil {
 		return errors.New("eth1 data missing")
 	}
 
-	s.ETH1Data = data.ETH1Data
-	// ETH1DataVotes can be empty, but if present the individual votes must not be null.
-	if data.ETH1DataVotes != nil {
+	s.ExecutionData = data.ExecutionData
+	// ExecutionDataVotes can be empty, but if present the individual votes must not be null.
+	if data.ExecutionDataVotes != nil {
 		for i := range data.Validators {
 			if data.Validators[i] == nil {
 				return fmt.Errorf("validators entry %d missing", i)
@@ -319,7 +319,7 @@ func (s *BeaconState) unpack(data *beaconStateJSON) error {
 		}
 	}
 
-	s.ETH1DataVotes = data.ETH1DataVotes
+	s.ExecutionDataVotes = data.ExecutionDataVotes
 	if data.Validators == nil {
 		return errors.New("validators missing")
 	}
@@ -513,8 +513,8 @@ func (s *BeaconState) MarshalYAML() ([]byte, error) {
 		BlockRoots:                  blockRoots,
 		StateRoots:                  stateRoots,
 		HistoricalRoots:             historicalRoots,
-		ETH1Data:                    s.ETH1Data,
-		ETH1DataVotes:               s.ETH1DataVotes,
+		ExecutionData:               s.ExecutionData,
+		ExecutionDataVotes:          s.ExecutionDataVotes,
 		ETH1DepositIndex:            s.ETH1DepositIndex,
 		Validators:                  s.Validators,
 		Balances:                    balances,

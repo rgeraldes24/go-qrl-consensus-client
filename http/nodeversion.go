@@ -17,8 +17,8 @@ import (
 	"bytes"
 	"context"
 
-	client "github.com/attestantio/go-eth2-client"
-	"github.com/attestantio/go-eth2-client/api"
+	client "github.com/theQRL/go-qrl-consensus-client"
+	"github.com/theQRL/go-qrl-consensus-client/api"
 )
 
 type nodeVersionJSON struct {

@@ -21,19 +21,12 @@ import (
 	"math/big"
 	"strings"
 
-	client "github.com/attestantio/go-eth2-client"
-	"github.com/attestantio/go-eth2-client/api"
-	apiv1bellatrix "github.com/attestantio/go-eth2-client/api/v1/bellatrix"
-	apiv1capella "github.com/attestantio/go-eth2-client/api/v1/capella"
-	apiv1deneb "github.com/attestantio/go-eth2-client/api/v1/deneb"
-	apiv1electra "github.com/attestantio/go-eth2-client/api/v1/electra"
-	apiv1fulu "github.com/attestantio/go-eth2-client/api/v1/fulu"
-	"github.com/attestantio/go-eth2-client/spec"
-	"github.com/attestantio/go-eth2-client/spec/altair"
-	"github.com/attestantio/go-eth2-client/spec/bellatrix"
-	"github.com/attestantio/go-eth2-client/spec/capella"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	dynssz "github.com/pk910/dynamic-ssz"
+	client "github.com/theQRL/go-qrl-consensus-client"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	apiv1capella "github.com/theQRL/go-qrl-consensus-client/api/v1/capella"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 	"go.opentelemetry.io/otel"
 )
 
@@ -165,36 +158,6 @@ func (s *Service) beaconBlockProposalFromSSZ(ctx context.Context,
 	var err error
 
 	switch res.consensusVersion {
-	case spec.DataVersionPhase0:
-		response.Data.Phase0 = &phase0.BeaconBlock{}
-		if s.customSpecSupport {
-			err = dynSSZ.UnmarshalSSZ(response.Data.Phase0, res.body)
-		} else {
-			err = response.Data.Phase0.UnmarshalSSZ(res.body)
-		}
-	case spec.DataVersionAltair:
-		response.Data.Altair = &altair.BeaconBlock{}
-		if s.customSpecSupport {
-			err = dynSSZ.UnmarshalSSZ(response.Data.Altair, res.body)
-		} else {
-			err = response.Data.Altair.UnmarshalSSZ(res.body)
-		}
-	case spec.DataVersionBellatrix:
-		if response.Data.Blinded {
-			response.Data.BellatrixBlinded = &apiv1bellatrix.BlindedBeaconBlock{}
-			if s.customSpecSupport {
-				err = dynSSZ.UnmarshalSSZ(response.Data.BellatrixBlinded, res.body)
-			} else {
-				err = response.Data.BellatrixBlinded.UnmarshalSSZ(res.body)
-			}
-		} else {
-			response.Data.Bellatrix = &bellatrix.BeaconBlock{}
-			if s.customSpecSupport {
-				err = dynSSZ.UnmarshalSSZ(response.Data.Bellatrix, res.body)
-			} else {
-				err = response.Data.Bellatrix.UnmarshalSSZ(res.body)
-			}
-		}
 	case spec.DataVersionCapella:
 		if response.Data.Blinded {
 			response.Data.CapellaBlinded = &apiv1capella.BlindedBeaconBlock{}
@@ -209,54 +172,6 @@ func (s *Service) beaconBlockProposalFromSSZ(ctx context.Context,
 				err = dynSSZ.UnmarshalSSZ(response.Data.Capella, res.body)
 			} else {
 				err = response.Data.Capella.UnmarshalSSZ(res.body)
-			}
-		}
-	case spec.DataVersionDeneb:
-		if response.Data.Blinded {
-			response.Data.DenebBlinded = &apiv1deneb.BlindedBeaconBlock{}
-			if s.customSpecSupport {
-				err = dynSSZ.UnmarshalSSZ(response.Data.DenebBlinded, res.body)
-			} else {
-				err = response.Data.DenebBlinded.UnmarshalSSZ(res.body)
-			}
-		} else {
-			response.Data.Deneb = &apiv1deneb.BlockContents{}
-			if s.customSpecSupport {
-				err = dynSSZ.UnmarshalSSZ(response.Data.Deneb, res.body)
-			} else {
-				err = response.Data.Deneb.UnmarshalSSZ(res.body)
-			}
-		}
-	case spec.DataVersionElectra:
-		if response.Data.Blinded {
-			response.Data.ElectraBlinded = &apiv1electra.BlindedBeaconBlock{}
-			if s.customSpecSupport {
-				err = dynSSZ.UnmarshalSSZ(response.Data.ElectraBlinded, res.body)
-			} else {
-				err = response.Data.ElectraBlinded.UnmarshalSSZ(res.body)
-			}
-		} else {
-			response.Data.Electra = &apiv1electra.BlockContents{}
-			if s.customSpecSupport {
-				err = dynSSZ.UnmarshalSSZ(response.Data.Electra, res.body)
-			} else {
-				err = response.Data.Electra.UnmarshalSSZ(res.body)
-			}
-		}
-	case spec.DataVersionFulu:
-		if response.Data.Blinded {
-			response.Data.FuluBlinded = &apiv1electra.BlindedBeaconBlock{}
-			if s.customSpecSupport {
-				err = dynSSZ.UnmarshalSSZ(response.Data.FuluBlinded, res.body)
-			} else {
-				err = response.Data.FuluBlinded.UnmarshalSSZ(res.body)
-			}
-		} else {
-			response.Data.Fulu = &apiv1fulu.BlockContents{}
-			if s.customSpecSupport {
-				err = dynSSZ.UnmarshalSSZ(response.Data.Fulu, res.body)
-			} else {
-				err = response.Data.Fulu.UnmarshalSSZ(res.body)
 			}
 		}
 	default:
@@ -290,28 +205,6 @@ func (s *Service) beaconBlockProposalFromJSON(res *httpResponse) (*api.Response[
 	var err error
 
 	switch res.consensusVersion {
-	case spec.DataVersionPhase0:
-		response.Data.Phase0, response.Metadata, err = decodeJSONResponse(
-			bytes.NewReader(res.body),
-			&phase0.BeaconBlock{},
-		)
-	case spec.DataVersionAltair:
-		response.Data.Altair, response.Metadata, err = decodeJSONResponse(
-			bytes.NewReader(res.body),
-			&altair.BeaconBlock{},
-		)
-	case spec.DataVersionBellatrix:
-		if response.Data.Blinded {
-			response.Data.BellatrixBlinded, response.Metadata, err = decodeJSONResponse(
-				bytes.NewReader(res.body),
-				&apiv1bellatrix.BlindedBeaconBlock{},
-			)
-		} else {
-			response.Data.Bellatrix, response.Metadata, err = decodeJSONResponse(
-				bytes.NewReader(res.body),
-				&bellatrix.BeaconBlock{},
-			)
-		}
 	case spec.DataVersionCapella:
 		if response.Data.Blinded {
 			response.Data.CapellaBlinded, response.Metadata, err = decodeJSONResponse(
@@ -322,42 +215,6 @@ func (s *Service) beaconBlockProposalFromJSON(res *httpResponse) (*api.Response[
 			response.Data.Capella, response.Metadata, err = decodeJSONResponse(
 				bytes.NewReader(res.body),
 				&capella.BeaconBlock{},
-			)
-		}
-	case spec.DataVersionDeneb:
-		if response.Data.Blinded {
-			response.Data.DenebBlinded, response.Metadata, err = decodeJSONResponse(
-				bytes.NewReader(res.body),
-				&apiv1deneb.BlindedBeaconBlock{},
-			)
-		} else {
-			response.Data.Deneb, response.Metadata, err = decodeJSONResponse(
-				bytes.NewReader(res.body),
-				&apiv1deneb.BlockContents{},
-			)
-		}
-	case spec.DataVersionElectra:
-		if response.Data.Blinded {
-			response.Data.ElectraBlinded, response.Metadata, err = decodeJSONResponse(
-				bytes.NewReader(res.body),
-				&apiv1electra.BlindedBeaconBlock{},
-			)
-		} else {
-			response.Data.Electra, response.Metadata, err = decodeJSONResponse(
-				bytes.NewReader(res.body),
-				&apiv1electra.BlockContents{},
-			)
-		}
-	case spec.DataVersionFulu:
-		if response.Data.Blinded {
-			response.Data.FuluBlinded, response.Metadata, err = decodeJSONResponse(
-				bytes.NewReader(res.body),
-				&apiv1electra.BlindedBeaconBlock{},
-			)
-		} else {
-			response.Data.Fulu, response.Metadata, err = decodeJSONResponse(
-				bytes.NewReader(res.body),
-				&apiv1fulu.BlockContents{},
 			)
 		}
 	default:

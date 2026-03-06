@@ -7,10 +7,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	consensusclient "github.com/attestantio/go-eth2-client"
-	"github.com/attestantio/go-eth2-client/api"
-	"github.com/attestantio/go-eth2-client/http"
 	"github.com/stretchr/testify/require"
+	consensusclient "github.com/theQRL/go-qrl-consensus-client"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-consensus-client/http"
 )
 
 func TestError(t *testing.T) {

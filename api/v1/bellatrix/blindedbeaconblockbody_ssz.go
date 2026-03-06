@@ -4,10 +4,10 @@
 package bellatrix
 
 import (
-	"github.com/attestantio/go-eth2-client/spec/altair"
-	"github.com/attestantio/go-eth2-client/spec/bellatrix"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	ssz "github.com/ferranbt/fastssz"
+	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
+	"github.com/theQRL/go-qrl-consensus-client/spec/bellatrix"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // MarshalSSZ ssz marshals the BlindedBeaconBlockBody object
@@ -23,11 +23,11 @@ func (b *BlindedBeaconBlockBody) MarshalSSZTo(buf []byte) (dst []byte, err error
 	// Field (0) 'RANDAOReveal'
 	dst = append(dst, b.RANDAOReveal[:]...)
 
-	// Field (1) 'ETH1Data'
-	if b.ETH1Data == nil {
-		b.ETH1Data = new(phase0.ETH1Data)
+	// Field (1) 'ExecutionData'
+	if b.ExecutionData == nil {
+		b.ExecutionData = new(phase0.ExecutionData)
 	}
-	if dst, err = b.ETH1Data.MarshalSSZTo(dst); err != nil {
+	if dst, err = b.ExecutionData.MarshalSSZTo(dst); err != nil {
 		return
 	}
 
@@ -166,11 +166,11 @@ func (b *BlindedBeaconBlockBody) UnmarshalSSZ(buf []byte) error {
 	// Field (0) 'RANDAOReveal'
 	copy(b.RANDAOReveal[:], buf[0:96])
 
-	// Field (1) 'ETH1Data'
-	if b.ETH1Data == nil {
-		b.ETH1Data = new(phase0.ETH1Data)
+	// Field (1) 'ExecutionData'
+	if b.ExecutionData == nil {
+		b.ExecutionData = new(phase0.ExecutionData)
 	}
-	if err = b.ETH1Data.UnmarshalSSZ(buf[96:168]); err != nil {
+	if err = b.ExecutionData.UnmarshalSSZ(buf[96:168]); err != nil {
 		return err
 	}
 
@@ -376,11 +376,11 @@ func (b *BlindedBeaconBlockBody) HashTreeRootWith(hh ssz.HashWalker) (err error)
 	// Field (0) 'RANDAOReveal'
 	hh.PutBytes(b.RANDAOReveal[:])
 
-	// Field (1) 'ETH1Data'
-	if b.ETH1Data == nil {
-		b.ETH1Data = new(phase0.ETH1Data)
+	// Field (1) 'ExecutionData'
+	if b.ExecutionData == nil {
+		b.ExecutionData = new(phase0.ExecutionData)
 	}
-	if err = b.ETH1Data.HashTreeRootWith(hh); err != nil {
+	if err = b.ExecutionData.HashTreeRootWith(hh); err != nil {
 		return
 	}
 

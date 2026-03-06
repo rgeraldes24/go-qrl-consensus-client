@@ -17,8 +17,8 @@ import (
 	"context"
 	"time"
 
-	consensusclient "github.com/attestantio/go-eth2-client"
 	"github.com/pkg/errors"
+	consensusclient "github.com/theQRL/go-qrl-consensus-client"
 )
 
 // SlotDuration provides the duration of a slot of the chain.

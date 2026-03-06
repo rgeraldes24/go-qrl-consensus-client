@@ -20,9 +20,9 @@ import (
 	"errors"
 	"strings"
 
-	client "github.com/attestantio/go-eth2-client"
-	"github.com/attestantio/go-eth2-client/api"
-	"github.com/attestantio/go-eth2-client/spec"
+	client "github.com/theQRL/go-qrl-consensus-client"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
 )
 
 // SubmitAggregateAttestations submits aggregate attestations.
@@ -91,20 +91,8 @@ func createUnversionedAggregates(aggregateAndProofs []*spec.VersionedSignedAggre
 
 		// Append to unversionedAggregates.
 		switch aggregateAndProofs[i].Version {
-		case spec.DataVersionPhase0:
-			unversionedAggregates = append(unversionedAggregates, aggregateAndProofs[i].Phase0)
-		case spec.DataVersionAltair:
-			unversionedAggregates = append(unversionedAggregates, aggregateAndProofs[i].Altair)
-		case spec.DataVersionBellatrix:
-			unversionedAggregates = append(unversionedAggregates, aggregateAndProofs[i].Bellatrix)
 		case spec.DataVersionCapella:
 			unversionedAggregates = append(unversionedAggregates, aggregateAndProofs[i].Capella)
-		case spec.DataVersionDeneb:
-			unversionedAggregates = append(unversionedAggregates, aggregateAndProofs[i].Deneb)
-		case spec.DataVersionElectra:
-			unversionedAggregates = append(unversionedAggregates, aggregateAndProofs[i].Electra)
-		case spec.DataVersionFulu:
-			unversionedAggregates = append(unversionedAggregates, aggregateAndProofs[i].Fulu)
 		default:
 			return nil, errors.Join(errors.New("unknown aggregate and proof version"), client.ErrInvalidOptions)
 		}

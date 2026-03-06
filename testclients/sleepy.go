@@ -20,13 +20,11 @@ import (
 	"math/rand"
 	"time"
 
-	consensusclient "github.com/attestantio/go-eth2-client"
-	"github.com/attestantio/go-eth2-client/api"
-	apiv1 "github.com/attestantio/go-eth2-client/api/v1"
-	"github.com/attestantio/go-eth2-client/spec"
-	"github.com/attestantio/go-eth2-client/spec/deneb"
-	"github.com/attestantio/go-eth2-client/spec/electra"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
+	consensusclient "github.com/theQRL/go-qrl-consensus-client"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // Sleepy is an Ethereum 2 client that sleeps for a random amount of time within a
@@ -666,40 +664,6 @@ func (s *Sleepy) ForkChoice(ctx context.Context,
 	return next.ForkChoice(ctx, opts)
 }
 
-// Blobs fetches the blobs given a block ID.
-func (s *Sleepy) Blobs(ctx context.Context,
-	opts *api.BlobsOpts,
-) (
-	*api.Response[apiv1.Blobs],
-	error,
-) {
-	s.sleep(ctx)
-
-	next, isNext := s.next.(consensusclient.BlobsProvider)
-	if !isNext {
-		return nil, errors.New("next does not support this call")
-	}
-
-	return next.Blobs(ctx, opts)
-}
-
-// BlobSidecars fetches the blobs sidecars given options.
-func (s *Sleepy) BlobSidecars(ctx context.Context,
-	opts *api.BlobSidecarsOpts,
-) (
-	*api.Response[[]*deneb.BlobSidecar],
-	error,
-) {
-	s.sleep(ctx)
-
-	next, isNext := s.next.(consensusclient.BlobSidecarsProvider)
-	if !isNext {
-		return nil, errors.New("next does not support this call")
-	}
-
-	return next.BlobSidecars(ctx, opts)
-}
-
 // AttestationRewards provides rewards to the given validators for attesting.
 func (s *Sleepy) AttestationRewards(ctx context.Context,
 	opts *api.AttestationRewardsOpts,
@@ -766,55 +730,4 @@ func (s *Sleepy) ValidatorLiveness(ctx context.Context,
 	}
 
 	return next.ValidatorLiveness(ctx, opts)
-}
-
-// PendingDeposits provides the pending deposits for a given state.
-func (s *Sleepy) PendingDeposits(ctx context.Context,
-	opts *api.PendingDepositsOpts,
-) (
-	*api.Response[[]*electra.PendingDeposit],
-	error,
-) {
-	s.sleep(ctx)
-
-	next, isNext := s.next.(consensusclient.PendingDepositProvider)
-	if !isNext {
-		return nil, errors.New("next does not support this call")
-	}
-
-	return next.PendingDeposits(ctx, opts)
-}
-
-// PendingConsolidations provides the pending consolidations for a given state.
-func (s *Sleepy) PendingConsolidations(ctx context.Context,
-	opts *api.PendingConsolidationsOpts,
-) (
-	*api.Response[[]*electra.PendingConsolidation],
-	error,
-) {
-	s.sleep(ctx)
-
-	next, isNext := s.next.(consensusclient.PendingConsolidationsProvider)
-	if !isNext {
-		return nil, errors.New("next does not support this call")
-	}
-
-	return next.PendingConsolidations(ctx, opts)
-}
-
-// PendingPartialWithdrawals provides the pending partial withdrawals for a given state.
-func (s *Sleepy) PendingPartialWithdrawals(ctx context.Context,
-	opts *api.PendingPartialWithdrawalsOpts,
-) (
-	*api.Response[[]*electra.PendingPartialWithdrawal],
-	error,
-) {
-	s.sleep(ctx)
-
-	next, isNext := s.next.(consensusclient.PendingPartialWithdrawalsProvider)
-	if !isNext {
-		return nil, errors.New("next does not support this call")
-	}
-
-	return next.PendingPartialWithdrawals(ctx, opts)
 }

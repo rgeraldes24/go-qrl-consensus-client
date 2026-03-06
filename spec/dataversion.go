@@ -24,41 +24,17 @@ type DataVersion uint64
 const (
 	// DataVersionUnknown is an unknown data version.
 	DataVersionUnknown DataVersion = iota
-	// DataVersionPhase0 is data applicable for the initial release of the beacon chain.
-	DataVersionPhase0
-	// DataVersionAltair is data applicable for the Altair release of the beacon chain.
-	DataVersionAltair
-	// DataVersionBellatrix is data applicable for the Bellatrix release of the beacon chain.
-	DataVersionBellatrix
 	// DataVersionCapella is data applicable for the Capella release of the beacon chain.
 	DataVersionCapella
-	// DataVersionDeneb is data applicable for the Deneb release of the beacon chain.
-	DataVersionDeneb
-	// DataVersionElectra is data applicable for the Electra release of the beacon chain.
-	DataVersionElectra
-	// DataVersionFulu is data applicable for the Fulu release of the beacon chain.
-	DataVersionFulu
 )
 
 var dataVersionStrings = [...]string{
 	"unknown",
-	"phase0",
-	"altair",
-	"bellatrix",
 	"capella",
-	"deneb",
-	"electra",
-	"fulu",
 }
 
 var dataVersionMap = map[string]DataVersion{
-	`"phase0"`:    DataVersionPhase0,
-	`"altair"`:    DataVersionAltair,
-	`"bellatrix"`: DataVersionBellatrix,
-	`"capella"`:   DataVersionCapella,
-	`"deneb"`:     DataVersionDeneb,
-	`"electra"`:   DataVersionElectra,
-	`"fulu"`:      DataVersionFulu,
+	`"capella"`: DataVersionCapella,
 }
 
 // MarshalJSON implements json.Marshaler.

@@ -18,8 +18,8 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/pkg/errors"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // ValidatorLiveness represents the observed liveness state of a validator.

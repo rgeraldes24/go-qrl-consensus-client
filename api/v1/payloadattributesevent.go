@@ -20,12 +20,12 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/attestantio/go-eth2-client/spec"
-	"github.com/attestantio/go-eth2-client/spec/bellatrix"
-	"github.com/attestantio/go-eth2-client/spec/capella"
-	"github.com/attestantio/go-eth2-client/spec/electra"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/pkg/errors"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
+	"github.com/theQRL/go-qrl-consensus-client/spec/bellatrix"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-consensus-client/spec/electra"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // PayloadAttributesEvent represents the data of a payload_attributes event.
@@ -496,19 +496,6 @@ func (e *PayloadAttributesEvent) MarshalJSON() ([]byte, error) {
 	)
 
 	switch e.Version {
-	case spec.DataVersionBellatrix:
-		if e.Data.V1 == nil {
-			return nil, errors.New("no payload attributes v1 data")
-		}
-
-		payloadAttributes, err = json.Marshal(&payloadAttributesV1JSON{
-			Timestamp:             strconv.FormatUint(e.Data.V1.Timestamp, 10),
-			PrevRandao:            fmt.Sprintf("%#x", e.Data.V1.PrevRandao),
-			SuggestedFeeRecipient: e.Data.V1.SuggestedFeeRecipient.String(),
-		})
-		if err != nil {
-			return nil, errors.Wrap(err, "failed to marshal payload attributes v1")
-		}
 	case spec.DataVersionCapella:
 		if e.Data.V2 == nil {
 			return nil, errors.New("no payload attributes v2 data")
@@ -522,39 +509,6 @@ func (e *PayloadAttributesEvent) MarshalJSON() ([]byte, error) {
 		})
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to marshal payload attributes v2")
-		}
-	case spec.DataVersionDeneb:
-		if e.Data.V3 == nil {
-			return nil, errors.New("no payload attributes v3 data")
-		}
-
-		payloadAttributes, err = json.Marshal(&payloadAttributesV3JSON{
-			Timestamp:             strconv.FormatUint(e.Data.V3.Timestamp, 10),
-			PrevRandao:            fmt.Sprintf("%#x", e.Data.V3.PrevRandao),
-			SuggestedFeeRecipient: e.Data.V3.SuggestedFeeRecipient.String(),
-			Withdrawals:           e.Data.V3.Withdrawals,
-			ParentBeaconBlockRoot: fmt.Sprintf("%#x", e.Data.V3.ParentBeaconBlockRoot),
-		})
-		if err != nil {
-			return nil, errors.Wrap(err, "failed to marshal payload attributes v3")
-		}
-	case spec.DataVersionElectra, spec.DataVersionFulu:
-		if e.Data.V4 == nil {
-			return nil, errors.New("no payload attributes v4 data")
-		}
-
-		payloadAttributes, err = json.Marshal(&payloadAttributesV4JSON{
-			Timestamp:             strconv.FormatUint(e.Data.V4.Timestamp, 10),
-			PrevRandao:            fmt.Sprintf("%#x", e.Data.V4.PrevRandao),
-			SuggestedFeeRecipient: e.Data.V4.SuggestedFeeRecipient.String(),
-			Withdrawals:           e.Data.V4.Withdrawals,
-			ParentBeaconBlockRoot: fmt.Sprintf("%#x", e.Data.V4.ParentBeaconBlockRoot),
-			DepositRequests:       e.Data.V4.DepositRequests,
-			WithdrawalRequests:    e.Data.V4.WithdrawalRequests,
-			ConsolidationRequests: e.Data.V4.ConsolidationRequests,
-		})
-		if err != nil {
-			return nil, errors.Wrap(err, "failed to marshal payload attributes v4")
 		}
 	default:
 		return nil, fmt.Errorf("unsupported payload attributes version: %s", e.Version)
@@ -672,15 +626,6 @@ func (e *PayloadAttributesEvent) unpack(data *payloadAttributesEventJSON) error 
 	}
 
 	switch data.Version {
-	case spec.DataVersionBellatrix:
-		var payloadAttributes PayloadAttributesV1
-
-		err = json.Unmarshal(data.Data.PayloadAttributes, &payloadAttributes)
-		if err != nil {
-			return err
-		}
-
-		e.Data.V1 = &payloadAttributes
 	case spec.DataVersionCapella:
 		var payloadAttributes PayloadAttributesV2
 
@@ -690,24 +635,6 @@ func (e *PayloadAttributesEvent) unpack(data *payloadAttributesEventJSON) error 
 		}
 
 		e.Data.V2 = &payloadAttributes
-	case spec.DataVersionDeneb:
-		var payloadAttributes PayloadAttributesV3
-
-		err = json.Unmarshal(data.Data.PayloadAttributes, &payloadAttributes)
-		if err != nil {
-			return err
-		}
-
-		e.Data.V3 = &payloadAttributes
-	case spec.DataVersionElectra, spec.DataVersionFulu:
-		var payloadAttributes PayloadAttributesV4
-
-		err = json.Unmarshal(data.Data.PayloadAttributes, &payloadAttributes)
-		if err != nil {
-			return err
-		}
-
-		e.Data.V4 = &payloadAttributes
 	default:
 		return errors.New("unsupported data version")
 	}

@@ -16,8 +16,8 @@ package bellatrix_test
 import (
 	"testing"
 
-	"github.com/attestantio/go-eth2-client/spec/bellatrix"
 	require "github.com/stretchr/testify/require"
+	"github.com/theQRL/go-qrl-consensus-client/spec/bellatrix"
 )
 
 func TestExecutionAddressString(t *testing.T) {

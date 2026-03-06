@@ -16,8 +16,8 @@ package capella
 import (
 	"fmt"
 
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/goccy/go-yaml"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // BlindedBeaconBlock represents a blinded beacon block.

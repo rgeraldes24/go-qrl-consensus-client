@@ -19,10 +19,10 @@ import (
 	"strings"
 	"testing"
 
-	api "github.com/attestantio/go-eth2-client/api/v1"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	api "github.com/theQRL/go-qrl-consensus-client/api/v1"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 func gweiPtr(input phase0.Gwei) *phase0.Gwei {

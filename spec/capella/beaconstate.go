@@ -17,9 +17,9 @@ import (
 	"fmt"
 
 	bitfield "github.com/OffchainLabs/go-bitfield"
-	"github.com/attestantio/go-eth2-client/spec/altair"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/goccy/go-yaml"
+	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // BeaconState represents a beacon state.
@@ -32,8 +32,8 @@ type BeaconState struct {
 	BlockRoots                   []phase0.Root `dynssz-size:"SLOTS_PER_HISTORICAL_ROOT,32" ssz-size:"8192,32"`
 	StateRoots                   []phase0.Root `dynssz-size:"SLOTS_PER_HISTORICAL_ROOT,32" ssz-size:"8192,32"`
 	HistoricalRoots              []phase0.Root `dynssz-max:"HISTORICAL_ROOTS_LIMIT"        ssz-max:"16777216" ssz-size:"?,32"`
-	ETH1Data                     *phase0.ETH1Data
-	ETH1DataVotes                []*phase0.ETH1Data `dynssz-max:"EPOCHS_PER_ETH1_VOTING_PERIOD*SLOTS_PER_EPOCH" ssz-max:"2048"`
+	ExecutionData                *phase0.ExecutionData
+	ExecutionDataVotes           []*phase0.ExecutionData `dynssz-max:"EPOCHS_PER_ETH1_VOTING_PERIOD*SLOTS_PER_EPOCH" ssz-max:"2048"`
 	ETH1DepositIndex             uint64
 	Validators                   []*phase0.Validator         `dynssz-max:"VALIDATOR_REGISTRY_LIMIT"         ssz-max:"1099511627776"`
 	Balances                     []phase0.Gwei               `dynssz-max:"VALIDATOR_REGISTRY_LIMIT"         ssz-max:"1099511627776"`

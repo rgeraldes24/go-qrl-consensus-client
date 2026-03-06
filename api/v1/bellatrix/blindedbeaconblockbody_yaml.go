@@ -17,16 +17,16 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/attestantio/go-eth2-client/spec/altair"
-	"github.com/attestantio/go-eth2-client/spec/bellatrix"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/goccy/go-yaml"
+	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
+	"github.com/theQRL/go-qrl-consensus-client/spec/bellatrix"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // blindedBeaconBlockBodyYAML is the spec representation of the struct.
 type blindedBeaconBlockBodyYAML struct {
 	RANDAOReveal           string                            `yaml:"randao_reveal"`
-	ETH1Data               *phase0.ETH1Data                  `yaml:"eth1_data"`
+	ExecutionData          *phase0.ExecutionData             `yaml:"execution_data"`
 	Graffiti               string                            `yaml:"graffiti"`
 	ProposerSlashings      []*phase0.ProposerSlashing        `yaml:"proposer_slashings"`
 	AttesterSlashings      []*phase0.AttesterSlashing        `yaml:"attester_slashings"`
@@ -41,7 +41,7 @@ type blindedBeaconBlockBodyYAML struct {
 func (b *BlindedBeaconBlockBody) MarshalYAML() ([]byte, error) {
 	yamlBytes, err := yaml.MarshalWithOptions(&blindedBeaconBlockBodyYAML{
 		RANDAOReveal:           fmt.Sprintf("%#x", b.RANDAOReveal),
-		ETH1Data:               b.ETH1Data,
+		ExecutionData:          b.ExecutionData,
 		Graffiti:               fmt.Sprintf("%#x", b.Graffiti),
 		ProposerSlashings:      b.ProposerSlashings,
 		AttesterSlashings:      b.AttesterSlashings,

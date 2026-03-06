@@ -16,64 +16,23 @@ package spec
 import (
 	"errors"
 
-	"github.com/attestantio/go-eth2-client/spec/electra"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // VersionedAttesterSlashing contains a versioned attestation.
 type VersionedAttesterSlashing struct {
-	Version   DataVersion
-	Phase0    *phase0.AttesterSlashing
-	Altair    *phase0.AttesterSlashing
-	Bellatrix *phase0.AttesterSlashing
-	Capella   *phase0.AttesterSlashing
-	Deneb     *phase0.AttesterSlashing
-	Electra   *electra.AttesterSlashing
-	Fulu      *electra.AttesterSlashing
+	Version DataVersion
+	Capella *phase0.AttesterSlashing
 }
 
 // IsEmpty returns true if there is no block.
 func (v *VersionedAttesterSlashing) IsEmpty() bool {
-	return v.Phase0 == nil && v.Altair == nil && v.Bellatrix == nil &&
-		v.Capella == nil && v.Deneb == nil && v.Electra == nil && v.Fulu == nil
+	return v.Capella == nil
 }
 
 // Attestation1 returns the first indexed attestation.
 func (v *VersionedAttesterSlashing) Attestation1() (*VersionedIndexedAttestation, error) {
 	switch v.Version {
-	case DataVersionPhase0:
-		if v.Phase0 == nil {
-			return nil, errors.New("no Phase0 indexed attestation")
-		}
-
-		versionedIndexedAttestation := VersionedIndexedAttestation{
-			Version: DataVersionPhase0,
-			Phase0:  v.Phase0.Attestation1,
-		}
-
-		return &versionedIndexedAttestation, nil
-	case DataVersionAltair:
-		if v.Altair == nil {
-			return nil, errors.New("no Altair indexed attestation")
-		}
-
-		versionedIndexedAttestation := VersionedIndexedAttestation{
-			Version: DataVersionPhase0,
-			Altair:  v.Altair.Attestation1,
-		}
-
-		return &versionedIndexedAttestation, nil
-	case DataVersionBellatrix:
-		if v.Bellatrix == nil {
-			return nil, errors.New("no Bellatrix indexed attestation")
-		}
-
-		versionedIndexedAttestation := VersionedIndexedAttestation{
-			Version:   DataVersionPhase0,
-			Bellatrix: v.Bellatrix.Attestation1,
-		}
-
-		return &versionedIndexedAttestation, nil
 	case DataVersionCapella:
 		if v.Capella == nil {
 			return nil, errors.New("no Capella indexed attestation")
@@ -85,39 +44,6 @@ func (v *VersionedAttesterSlashing) Attestation1() (*VersionedIndexedAttestation
 		}
 
 		return &versionedIndexedAttestation, nil
-	case DataVersionDeneb:
-		if v.Deneb == nil {
-			return nil, errors.New("no Deneb indexed attestation")
-		}
-
-		versionedIndexedAttestation := VersionedIndexedAttestation{
-			Version: DataVersionDeneb,
-			Deneb:   v.Deneb.Attestation1,
-		}
-
-		return &versionedIndexedAttestation, nil
-	case DataVersionElectra:
-		if v.Electra == nil {
-			return nil, errors.New("no Electra indexed attestation")
-		}
-
-		versionedIndexedAttestation := VersionedIndexedAttestation{
-			Version: DataVersionElectra,
-			Electra: v.Electra.Attestation1,
-		}
-
-		return &versionedIndexedAttestation, nil
-	case DataVersionFulu:
-		if v.Fulu == nil {
-			return nil, errors.New("no Fulu indexed attestation")
-		}
-
-		versionedIndexedAttestation := VersionedIndexedAttestation{
-			Version: DataVersionFulu,
-			Fulu:    v.Fulu.Attestation1,
-		}
-
-		return &versionedIndexedAttestation, nil
 	default:
 		return nil, errors.New("unknown version")
 	}
@@ -126,39 +52,6 @@ func (v *VersionedAttesterSlashing) Attestation1() (*VersionedIndexedAttestation
 // Attestation2 returns the second indexed attestation.
 func (v *VersionedAttesterSlashing) Attestation2() (*VersionedIndexedAttestation, error) {
 	switch v.Version {
-	case DataVersionPhase0:
-		if v.Phase0 == nil {
-			return nil, errors.New("no Phase0 indexed attestation")
-		}
-
-		versionedIndexedAttestation := VersionedIndexedAttestation{
-			Version: DataVersionPhase0,
-			Phase0:  v.Phase0.Attestation2,
-		}
-
-		return &versionedIndexedAttestation, nil
-	case DataVersionAltair:
-		if v.Altair == nil {
-			return nil, errors.New("no Altair indexed attestation")
-		}
-
-		versionedIndexedAttestation := VersionedIndexedAttestation{
-			Version: DataVersionPhase0,
-			Altair:  v.Altair.Attestation2,
-		}
-
-		return &versionedIndexedAttestation, nil
-	case DataVersionBellatrix:
-		if v.Bellatrix == nil {
-			return nil, errors.New("no Bellatrix indexed attestation")
-		}
-
-		versionedIndexedAttestation := VersionedIndexedAttestation{
-			Version:   DataVersionPhase0,
-			Bellatrix: v.Bellatrix.Attestation2,
-		}
-
-		return &versionedIndexedAttestation, nil
 	case DataVersionCapella:
 		if v.Capella == nil {
 			return nil, errors.New("no Capella indexed attestation")
@@ -170,39 +63,6 @@ func (v *VersionedAttesterSlashing) Attestation2() (*VersionedIndexedAttestation
 		}
 
 		return &versionedIndexedAttestation, nil
-	case DataVersionDeneb:
-		if v.Deneb == nil {
-			return nil, errors.New("no Deneb indexed attestation")
-		}
-
-		versionedIndexedAttestation := VersionedIndexedAttestation{
-			Version: DataVersionDeneb,
-			Deneb:   v.Deneb.Attestation2,
-		}
-
-		return &versionedIndexedAttestation, nil
-	case DataVersionElectra:
-		if v.Electra == nil {
-			return nil, errors.New("no Electra indexed attestation")
-		}
-
-		versionedIndexedAttestation := VersionedIndexedAttestation{
-			Version: DataVersionElectra,
-			Electra: v.Electra.Attestation2,
-		}
-
-		return &versionedIndexedAttestation, nil
-	case DataVersionFulu:
-		if v.Fulu == nil {
-			return nil, errors.New("no Fulu indexed attestation")
-		}
-
-		versionedIndexedAttestation := VersionedIndexedAttestation{
-			Version: DataVersionFulu,
-			Fulu:    v.Fulu.Attestation2,
-		}
-
-		return &versionedIndexedAttestation, nil
 	default:
 		return nil, errors.New("unknown version")
 	}
@@ -211,48 +71,12 @@ func (v *VersionedAttesterSlashing) Attestation2() (*VersionedIndexedAttestation
 // String returns a string version of the structure.
 func (v *VersionedAttesterSlashing) String() string {
 	switch v.Version {
-	case DataVersionPhase0:
-		if v.Phase0 == nil {
-			return ""
-		}
-
-		return v.Phase0.String()
-	case DataVersionAltair:
-		if v.Altair == nil {
-			return ""
-		}
-
-		return v.Altair.String()
-	case DataVersionBellatrix:
-		if v.Bellatrix == nil {
-			return ""
-		}
-
-		return v.Bellatrix.String()
 	case DataVersionCapella:
 		if v.Capella == nil {
 			return ""
 		}
 
 		return v.Capella.String()
-	case DataVersionDeneb:
-		if v.Deneb == nil {
-			return ""
-		}
-
-		return v.Deneb.String()
-	case DataVersionElectra:
-		if v.Electra == nil {
-			return ""
-		}
-
-		return v.Electra.String()
-	case DataVersionFulu:
-		if v.Fulu == nil {
-			return ""
-		}
-
-		return v.Fulu.String()
 	default:
 		return "unknown version"
 	}

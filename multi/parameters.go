@@ -16,10 +16,10 @@ package multi
 import (
 	"time"
 
-	consensusclient "github.com/attestantio/go-eth2-client"
-	"github.com/attestantio/go-eth2-client/metrics"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
+	consensusclient "github.com/theQRL/go-qrl-consensus-client"
+	"github.com/theQRL/go-qrl-consensus-client/metrics"
 )
 
 type parameters struct {

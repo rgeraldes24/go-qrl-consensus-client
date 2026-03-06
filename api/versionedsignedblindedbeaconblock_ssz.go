@@ -4,12 +4,10 @@
 package api
 
 import (
-	apiv1bellatrix "github.com/attestantio/go-eth2-client/api/v1/bellatrix"
-	apiv1capella "github.com/attestantio/go-eth2-client/api/v1/capella"
-	apiv1deneb "github.com/attestantio/go-eth2-client/api/v1/deneb"
-	apiv1electra "github.com/attestantio/go-eth2-client/api/v1/electra"
-	"github.com/attestantio/go-eth2-client/spec"
 	ssz "github.com/ferranbt/fastssz"
+	apiv1bellatrix "github.com/theQRL/go-qrl-consensus-client/api/v1/bellatrix"
+	apiv1capella "github.com/theQRL/go-qrl-consensus-client/api/v1/capella"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
 )
 
 // MarshalSSZ ssz marshals the VersionedSignedBlindedBeaconBlock object
@@ -39,45 +37,8 @@ func (v *VersionedSignedBlindedBeaconBlock) MarshalSSZTo(buf []byte) (dst []byte
 	}
 	offset += v.Capella.SizeSSZ()
 
-	// Offset (3) 'Deneb'
-	dst = ssz.WriteOffset(dst, offset)
-	if v.Deneb == nil {
-		v.Deneb = new(apiv1deneb.SignedBlindedBeaconBlock)
-	}
-	offset += v.Deneb.SizeSSZ()
-
-	// Offset (4) 'Electra'
-	dst = ssz.WriteOffset(dst, offset)
-	if v.Electra == nil {
-		v.Electra = new(apiv1electra.SignedBlindedBeaconBlock)
-	}
-	offset += v.Electra.SizeSSZ()
-
-	// Offset (5) 'Fulu'
-	dst = ssz.WriteOffset(dst, offset)
-
-	// Field (1) 'Bellatrix'
-	if dst, err = v.Bellatrix.MarshalSSZTo(dst); err != nil {
-		return
-	}
-
 	// Field (2) 'Capella'
 	if dst, err = v.Capella.MarshalSSZTo(dst); err != nil {
-		return
-	}
-
-	// Field (3) 'Deneb'
-	if dst, err = v.Deneb.MarshalSSZTo(dst); err != nil {
-		return
-	}
-
-	// Field (4) 'Electra'
-	if dst, err = v.Electra.MarshalSSZTo(dst); err != nil {
-		return
-	}
-
-	// Field (5) 'Fulu'
-	if dst, err = v.Fulu.MarshalSSZTo(dst); err != nil {
 		return
 	}
 
@@ -112,32 +73,6 @@ func (v *VersionedSignedBlindedBeaconBlock) UnmarshalSSZ(buf []byte) error {
 		return ssz.ErrOffset
 	}
 
-	// Offset (3) 'Deneb'
-	if o3 = ssz.ReadOffset(buf[16:20]); o3 > size || o2 > o3 {
-		return ssz.ErrOffset
-	}
-
-	// Offset (4) 'Electra'
-	if o4 = ssz.ReadOffset(buf[20:24]); o4 > size || o3 > o4 {
-		return ssz.ErrOffset
-	}
-
-	// Offset (5) 'Fulu'
-	if o5 = ssz.ReadOffset(buf[24:28]); o5 > size || o4 > o5 {
-		return ssz.ErrOffset
-	}
-
-	// Field (1) 'Bellatrix'
-	{
-		buf = tail[o1:o2]
-		if v.Bellatrix == nil {
-			v.Bellatrix = new(apiv1bellatrix.SignedBlindedBeaconBlock)
-		}
-		if err = v.Bellatrix.UnmarshalSSZ(buf); err != nil {
-			return err
-		}
-	}
-
 	// Field (2) 'Capella'
 	{
 		buf = tail[o2:o3]
@@ -149,38 +84,6 @@ func (v *VersionedSignedBlindedBeaconBlock) UnmarshalSSZ(buf []byte) error {
 		}
 	}
 
-	// Field (3) 'Deneb'
-	{
-		buf = tail[o3:o4]
-		if v.Deneb == nil {
-			v.Deneb = new(apiv1deneb.SignedBlindedBeaconBlock)
-		}
-		if err = v.Deneb.UnmarshalSSZ(buf); err != nil {
-			return err
-		}
-	}
-
-	// Field (4) 'Electra'
-	{
-		buf = tail[o4:o5]
-		if v.Electra == nil {
-			v.Electra = new(apiv1electra.SignedBlindedBeaconBlock)
-		}
-		if err = v.Electra.UnmarshalSSZ(buf); err != nil {
-			return err
-		}
-	}
-
-	// Field (5) 'Fulu'
-	{
-		buf = tail[o5:]
-		if v.Fulu == nil {
-			v.Fulu = new(apiv1electra.SignedBlindedBeaconBlock)
-		}
-		if err = v.Fulu.UnmarshalSSZ(buf); err != nil {
-			return err
-		}
-	}
 	return err
 }
 
@@ -188,35 +91,11 @@ func (v *VersionedSignedBlindedBeaconBlock) UnmarshalSSZ(buf []byte) error {
 func (v *VersionedSignedBlindedBeaconBlock) SizeSSZ() (size int) {
 	size = 28
 
-	// Field (1) 'Bellatrix'
-	if v.Bellatrix == nil {
-		v.Bellatrix = new(apiv1bellatrix.SignedBlindedBeaconBlock)
-	}
-	size += v.Bellatrix.SizeSSZ()
-
 	// Field (2) 'Capella'
 	if v.Capella == nil {
 		v.Capella = new(apiv1capella.SignedBlindedBeaconBlock)
 	}
 	size += v.Capella.SizeSSZ()
-
-	// Field (3) 'Deneb'
-	if v.Deneb == nil {
-		v.Deneb = new(apiv1deneb.SignedBlindedBeaconBlock)
-	}
-	size += v.Deneb.SizeSSZ()
-
-	// Field (4) 'Electra'
-	if v.Electra == nil {
-		v.Electra = new(apiv1electra.SignedBlindedBeaconBlock)
-	}
-	size += v.Electra.SizeSSZ()
-
-	// Field (5) 'Fulu'
-	if v.Fulu == nil {
-		v.Fulu = new(apiv1electra.SignedBlindedBeaconBlock)
-	}
-	size += v.Fulu.SizeSSZ()
 
 	return
 }
@@ -233,28 +112,8 @@ func (v *VersionedSignedBlindedBeaconBlock) HashTreeRootWith(hh ssz.HashWalker) 
 	// Field (0) 'Version'
 	hh.PutUint64(uint64(v.Version))
 
-	// Field (1) 'Bellatrix'
-	if err = v.Bellatrix.HashTreeRootWith(hh); err != nil {
-		return
-	}
-
 	// Field (2) 'Capella'
 	if err = v.Capella.HashTreeRootWith(hh); err != nil {
-		return
-	}
-
-	// Field (3) 'Deneb'
-	if err = v.Deneb.HashTreeRootWith(hh); err != nil {
-		return
-	}
-
-	// Field (4) 'Electra'
-	if err = v.Electra.HashTreeRootWith(hh); err != nil {
-		return
-	}
-
-	// Field (5) 'Fulu'
-	if err = v.Fulu.HashTreeRootWith(hh); err != nil {
 		return
 	}
 

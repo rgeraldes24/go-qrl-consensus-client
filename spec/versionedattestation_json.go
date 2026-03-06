@@ -16,9 +16,9 @@ package spec
 import (
 	"encoding/json"
 
-	"github.com/attestantio/go-eth2-client/spec/electra"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/pkg/errors"
+	"github.com/theQRL/go-qrl-consensus-client/spec/electra"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // attestationIdentificationJSON contains fields that allow us to identify the attestation variant.

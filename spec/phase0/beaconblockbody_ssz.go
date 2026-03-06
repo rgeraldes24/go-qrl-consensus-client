@@ -20,11 +20,11 @@ func (b *BeaconBlockBody) MarshalSSZTo(buf []byte) (dst []byte, err error) {
 	// Field (0) 'RANDAOReveal'
 	dst = append(dst, b.RANDAOReveal[:]...)
 
-	// Field (1) 'ETH1Data'
-	if b.ETH1Data == nil {
-		b.ETH1Data = new(ETH1Data)
+	// Field (1) 'ExecutionData'
+	if b.ExecutionData == nil {
+		b.ExecutionData = new(ExecutionData)
 	}
-	if dst, err = b.ETH1Data.MarshalSSZTo(dst); err != nil {
+	if dst, err = b.ExecutionData.MarshalSSZTo(dst); err != nil {
 		return
 	}
 
@@ -143,11 +143,11 @@ func (b *BeaconBlockBody) UnmarshalSSZ(buf []byte) error {
 	// Field (0) 'RANDAOReveal'
 	copy(b.RANDAOReveal[:], buf[0:96])
 
-	// Field (1) 'ETH1Data'
-	if b.ETH1Data == nil {
-		b.ETH1Data = new(ETH1Data)
+	// Field (1) 'ExecutionData'
+	if b.ExecutionData == nil {
+		b.ExecutionData = new(ExecutionData)
 	}
-	if err = b.ETH1Data.UnmarshalSSZ(buf[96:168]); err != nil {
+	if err = b.ExecutionData.UnmarshalSSZ(buf[96:168]); err != nil {
 		return err
 	}
 
@@ -323,11 +323,11 @@ func (b *BeaconBlockBody) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 	// Field (0) 'RANDAOReveal'
 	hh.PutBytes(b.RANDAOReveal[:])
 
-	// Field (1) 'ETH1Data'
-	if b.ETH1Data == nil {
-		b.ETH1Data = new(ETH1Data)
+	// Field (1) 'ExecutionData'
+	if b.ExecutionData == nil {
+		b.ExecutionData = new(ExecutionData)
 	}
-	if err = b.ETH1Data.HashTreeRootWith(hh); err != nil {
+	if err = b.ExecutionData.HashTreeRootWith(hh); err != nil {
 		return
 	}
 

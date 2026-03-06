@@ -4,10 +4,10 @@
 package capella
 
 import (
-	"github.com/attestantio/go-eth2-client/spec/altair"
-	"github.com/attestantio/go-eth2-client/spec/capella"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	ssz "github.com/ferranbt/fastssz"
+	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // MarshalSSZ ssz marshals the BlindedBeaconBlockBody object
@@ -23,11 +23,11 @@ func (b *BlindedBeaconBlockBody) MarshalSSZTo(buf []byte) (dst []byte, err error
 	// Field (0) 'RANDAOReveal'
 	dst = append(dst, b.RANDAOReveal[:]...)
 
-	// Field (1) 'ETH1Data'
-	if b.ETH1Data == nil {
-		b.ETH1Data = new(phase0.ETH1Data)
+	// Field (1) 'ExecutionData'
+	if b.ExecutionData == nil {
+		b.ExecutionData = new(phase0.ExecutionData)
 	}
-	if dst, err = b.ETH1Data.MarshalSSZTo(dst); err != nil {
+	if dst, err = b.ExecutionData.MarshalSSZTo(dst); err != nil {
 		return
 	}
 
@@ -74,10 +74,6 @@ func (b *BlindedBeaconBlockBody) MarshalSSZTo(buf []byte) (dst []byte, err error
 		b.ExecutionPayloadHeader = new(capella.ExecutionPayloadHeader)
 	}
 	offset += b.ExecutionPayloadHeader.SizeSSZ()
-
-	// Offset (10) 'BLSToExecutionChanges'
-	dst = ssz.WriteOffset(dst, offset)
-	offset += len(b.BLSToExecutionChanges) * 172
 
 	// Field (3) 'ProposerSlashings'
 	if size := len(b.ProposerSlashings); size > 16 {
@@ -153,17 +149,6 @@ func (b *BlindedBeaconBlockBody) MarshalSSZTo(buf []byte) (dst []byte, err error
 		return
 	}
 
-	// Field (10) 'BLSToExecutionChanges'
-	if size := len(b.BLSToExecutionChanges); size > 16 {
-		err = ssz.ErrListTooBigFn("BlindedBeaconBlockBody.BLSToExecutionChanges", size, 16)
-		return
-	}
-	for ii := 0; ii < len(b.BLSToExecutionChanges); ii++ {
-		if dst, err = b.BLSToExecutionChanges[ii].MarshalSSZTo(dst); err != nil {
-			return
-		}
-	}
-
 	return
 }
 
@@ -181,11 +166,11 @@ func (b *BlindedBeaconBlockBody) UnmarshalSSZ(buf []byte) error {
 	// Field (0) 'RANDAOReveal'
 	copy(b.RANDAOReveal[:], buf[0:96])
 
-	// Field (1) 'ETH1Data'
-	if b.ETH1Data == nil {
-		b.ETH1Data = new(phase0.ETH1Data)
+	// Field (1) 'ExecutionData'
+	if b.ExecutionData == nil {
+		b.ExecutionData = new(phase0.ExecutionData)
 	}
-	if err = b.ETH1Data.UnmarshalSSZ(buf[96:168]); err != nil {
+	if err = b.ExecutionData.UnmarshalSSZ(buf[96:168]); err != nil {
 		return err
 	}
 
@@ -231,11 +216,6 @@ func (b *BlindedBeaconBlockBody) UnmarshalSSZ(buf []byte) error {
 
 	// Offset (9) 'ExecutionPayloadHeader'
 	if o9 = ssz.ReadOffset(buf[380:384]); o9 > size || o7 > o9 {
-		return ssz.ErrOffset
-	}
-
-	// Offset (10) 'BLSToExecutionChanges'
-	if o10 = ssz.ReadOffset(buf[384:388]); o10 > size || o9 > o10 {
 		return ssz.ErrOffset
 	}
 
@@ -348,23 +328,6 @@ func (b *BlindedBeaconBlockBody) UnmarshalSSZ(buf []byte) error {
 		}
 	}
 
-	// Field (10) 'BLSToExecutionChanges'
-	{
-		buf = tail[o10:]
-		num, err := ssz.DivideInt2(len(buf), 172, 16)
-		if err != nil {
-			return err
-		}
-		b.BLSToExecutionChanges = make([]*capella.SignedBLSToExecutionChange, num)
-		for ii := 0; ii < num; ii++ {
-			if b.BLSToExecutionChanges[ii] == nil {
-				b.BLSToExecutionChanges[ii] = new(capella.SignedBLSToExecutionChange)
-			}
-			if err = b.BLSToExecutionChanges[ii].UnmarshalSSZ(buf[ii*172 : (ii+1)*172]); err != nil {
-				return err
-			}
-		}
-	}
 	return err
 }
 
@@ -399,9 +362,6 @@ func (b *BlindedBeaconBlockBody) SizeSSZ() (size int) {
 	}
 	size += b.ExecutionPayloadHeader.SizeSSZ()
 
-	// Field (10) 'BLSToExecutionChanges'
-	size += len(b.BLSToExecutionChanges) * 172
-
 	return
 }
 
@@ -417,11 +377,11 @@ func (b *BlindedBeaconBlockBody) HashTreeRootWith(hh ssz.HashWalker) (err error)
 	// Field (0) 'RANDAOReveal'
 	hh.PutBytes(b.RANDAOReveal[:])
 
-	// Field (1) 'ETH1Data'
-	if b.ETH1Data == nil {
-		b.ETH1Data = new(phase0.ETH1Data)
+	// Field (1) 'ExecutionData'
+	if b.ExecutionData == nil {
+		b.ExecutionData = new(phase0.ExecutionData)
 	}
-	if err = b.ETH1Data.HashTreeRootWith(hh); err != nil {
+	if err = b.ExecutionData.HashTreeRootWith(hh); err != nil {
 		return
 	}
 
@@ -519,22 +479,6 @@ func (b *BlindedBeaconBlockBody) HashTreeRootWith(hh ssz.HashWalker) (err error)
 	// Field (9) 'ExecutionPayloadHeader'
 	if err = b.ExecutionPayloadHeader.HashTreeRootWith(hh); err != nil {
 		return
-	}
-
-	// Field (10) 'BLSToExecutionChanges'
-	{
-		subIndx := hh.Index()
-		num := uint64(len(b.BLSToExecutionChanges))
-		if num > 16 {
-			err = ssz.ErrIncorrectListSize
-			return
-		}
-		for _, elem := range b.BLSToExecutionChanges {
-			if err = elem.HashTreeRootWith(hh); err != nil {
-				return
-			}
-		}
-		hh.MerkleizeWithMixin(subIndx, num, 16)
 	}
 
 	hh.Merkleize(indx)

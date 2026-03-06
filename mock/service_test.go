@@ -17,9 +17,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/attestantio/go-eth2-client/api"
-	"github.com/attestantio/go-eth2-client/mock"
 	"github.com/stretchr/testify/require"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-consensus-client/mock"
 )
 
 func TestMockFunc(t *testing.T) {

@@ -16,8 +16,8 @@ package multi
 import (
 	"context"
 
-	consensusclient "github.com/attestantio/go-eth2-client"
 	"github.com/pkg/errors"
+	consensusclient "github.com/theQRL/go-qrl-consensus-client"
 )
 
 // TargetAggregatorsPerCommittee provides the target number of aggregators for each attestation committee.

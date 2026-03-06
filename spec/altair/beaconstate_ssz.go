@@ -4,8 +4,8 @@
 package altair
 
 import (
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	ssz "github.com/ferranbt/fastssz"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // MarshalSSZ ssz marshals the BeaconState object
@@ -73,17 +73,17 @@ func (b *BeaconState) MarshalSSZTo(buf []byte) (dst []byte, err error) {
 	dst = ssz.WriteOffset(dst, offset)
 	offset += len(b.HistoricalRoots) * 32
 
-	// Field (8) 'ETH1Data'
-	if b.ETH1Data == nil {
-		b.ETH1Data = new(phase0.ETH1Data)
+	// Field (8) 'ExecutionData'
+	if b.ExecutionData == nil {
+		b.ExecutionData = new(phase0.ExecutionData)
 	}
-	if dst, err = b.ETH1Data.MarshalSSZTo(dst); err != nil {
+	if dst, err = b.ExecutionData.MarshalSSZTo(dst); err != nil {
 		return
 	}
 
-	// Offset (9) 'ETH1DataVotes'
+	// Offset (9) 'ExecutionDataVotes'
 	dst = ssz.WriteOffset(dst, offset)
-	offset += len(b.ETH1DataVotes) * 72
+	offset += len(b.ExecutionDataVotes) * 72
 
 	// Field (10) 'ETH1DepositIndex'
 	dst = ssz.MarshalUint64(dst, b.ETH1DepositIndex)
@@ -190,13 +190,13 @@ func (b *BeaconState) MarshalSSZTo(buf []byte) (dst []byte, err error) {
 		dst = append(dst, b.HistoricalRoots[ii][:]...)
 	}
 
-	// Field (9) 'ETH1DataVotes'
-	if size := len(b.ETH1DataVotes); size > 2048 {
-		err = ssz.ErrListTooBigFn("BeaconState.ETH1DataVotes", size, 2048)
+	// Field (9) 'ExecutionDataVotes'
+	if size := len(b.ExecutionDataVotes); size > 2048 {
+		err = ssz.ErrListTooBigFn("BeaconState.ExecutionDataVotes", size, 2048)
 		return
 	}
-	for ii := 0; ii < len(b.ETH1DataVotes); ii++ {
-		if dst, err = b.ETH1DataVotes[ii].MarshalSSZTo(dst); err != nil {
+	for ii := 0; ii < len(b.ExecutionDataVotes); ii++ {
+		if dst, err = b.ExecutionDataVotes[ii].MarshalSSZTo(dst); err != nil {
 			return
 		}
 	}
@@ -308,15 +308,15 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 		return ssz.ErrInvalidVariableOffset
 	}
 
-	// Field (8) 'ETH1Data'
-	if b.ETH1Data == nil {
-		b.ETH1Data = new(phase0.ETH1Data)
+	// Field (8) 'ExecutionData'
+	if b.ExecutionData == nil {
+		b.ExecutionData = new(phase0.ExecutionData)
 	}
-	if err = b.ETH1Data.UnmarshalSSZ(buf[524468:524540]); err != nil {
+	if err = b.ExecutionData.UnmarshalSSZ(buf[524468:524540]); err != nil {
 		return err
 	}
 
-	// Offset (9) 'ETH1DataVotes'
+	// Offset (9) 'ExecutionDataVotes'
 	if o9 = ssz.ReadOffset(buf[524540:524544]); o9 > size || o7 > o9 {
 		return ssz.ErrOffset
 	}
@@ -420,19 +420,19 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 		}
 	}
 
-	// Field (9) 'ETH1DataVotes'
+	// Field (9) 'ExecutionDataVotes'
 	{
 		buf = tail[o9:o11]
 		num, err := ssz.DivideInt2(len(buf), 72, 2048)
 		if err != nil {
 			return err
 		}
-		b.ETH1DataVotes = make([]*phase0.ETH1Data, num)
+		b.ExecutionDataVotes = make([]*phase0.ExecutionData, num)
 		for ii := 0; ii < num; ii++ {
-			if b.ETH1DataVotes[ii] == nil {
-				b.ETH1DataVotes[ii] = new(phase0.ETH1Data)
+			if b.ExecutionDataVotes[ii] == nil {
+				b.ExecutionDataVotes[ii] = new(phase0.ExecutionData)
 			}
-			if err = b.ETH1DataVotes[ii].UnmarshalSSZ(buf[ii*72 : (ii+1)*72]); err != nil {
+			if err = b.ExecutionDataVotes[ii].UnmarshalSSZ(buf[ii*72 : (ii+1)*72]); err != nil {
 				return err
 			}
 		}
@@ -517,8 +517,8 @@ func (b *BeaconState) SizeSSZ() (size int) {
 	// Field (7) 'HistoricalRoots'
 	size += len(b.HistoricalRoots) * 32
 
-	// Field (9) 'ETH1DataVotes'
-	size += len(b.ETH1DataVotes) * 72
+	// Field (9) 'ExecutionDataVotes'
+	size += len(b.ExecutionDataVotes) * 72
 
 	// Field (11) 'Validators'
 	size += len(b.Validators) * 121
@@ -612,23 +612,23 @@ func (b *BeaconState) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 		hh.MerkleizeWithMixin(subIndx, numItems, 16777216)
 	}
 
-	// Field (8) 'ETH1Data'
-	if b.ETH1Data == nil {
-		b.ETH1Data = new(phase0.ETH1Data)
+	// Field (8) 'ExecutionData'
+	if b.ExecutionData == nil {
+		b.ExecutionData = new(phase0.ExecutionData)
 	}
-	if err = b.ETH1Data.HashTreeRootWith(hh); err != nil {
+	if err = b.ExecutionData.HashTreeRootWith(hh); err != nil {
 		return
 	}
 
-	// Field (9) 'ETH1DataVotes'
+	// Field (9) 'ExecutionDataVotes'
 	{
 		subIndx := hh.Index()
-		num := uint64(len(b.ETH1DataVotes))
+		num := uint64(len(b.ExecutionDataVotes))
 		if num > 2048 {
 			err = ssz.ErrIncorrectListSize
 			return
 		}
-		for _, elem := range b.ETH1DataVotes {
+		for _, elem := range b.ExecutionDataVotes {
 			if err = elem.HashTreeRootWith(hh); err != nil {
 				return
 			}

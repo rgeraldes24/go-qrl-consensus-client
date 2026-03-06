@@ -13,7 +13,7 @@
 
 package api
 
-import "github.com/attestantio/go-eth2-client/spec"
+import "github.com/theQRL/go-qrl-consensus-client/spec"
 
 // SubmitAggregateAttestationsOpts are the options for submitting attestations.
 type SubmitAggregateAttestationsOpts struct {

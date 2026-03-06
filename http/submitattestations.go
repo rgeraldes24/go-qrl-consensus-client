@@ -20,9 +20,9 @@ import (
 	"errors"
 	"strings"
 
-	client "github.com/attestantio/go-eth2-client"
-	"github.com/attestantio/go-eth2-client/api"
-	"github.com/attestantio/go-eth2-client/spec"
+	client "github.com/theQRL/go-qrl-consensus-client"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
 )
 
 // SubmitAttestations submits versioned attestations.
@@ -91,34 +91,8 @@ func (s *Service) createUnversionedAttestations(attestations []*spec.VersionedAt
 
 		// Append to unversionedAttestations.
 		switch attestations[i].Version {
-		case spec.DataVersionPhase0:
-			unversionedAttestations = append(unversionedAttestations, attestations[i].Phase0)
-		case spec.DataVersionAltair:
-			unversionedAttestations = append(unversionedAttestations, attestations[i].Altair)
-		case spec.DataVersionBellatrix:
-			unversionedAttestations = append(unversionedAttestations, attestations[i].Bellatrix)
 		case spec.DataVersionCapella:
 			unversionedAttestations = append(unversionedAttestations, attestations[i].Capella)
-		case spec.DataVersionDeneb:
-			unversionedAttestations = append(unversionedAttestations, attestations[i].Deneb)
-		case spec.DataVersionElectra:
-			singleAttestation, err := attestations[i].Electra.ToSingleAttestation(attestations[i].ValidatorIndex)
-			if err != nil {
-				s.log.Warn().Err(err).Msg("Failed to convert attestation to single attestation")
-
-				continue
-			}
-
-			unversionedAttestations = append(unversionedAttestations, singleAttestation)
-		case spec.DataVersionFulu:
-			singleAttestation, err := attestations[i].Fulu.ToSingleAttestation(attestations[i].ValidatorIndex)
-			if err != nil {
-				s.log.Warn().Err(err).Msg("Failed to convert attestation to single attestation")
-
-				continue
-			}
-
-			unversionedAttestations = append(unversionedAttestations, singleAttestation)
 		default:
 			return nil, errors.Join(errors.New("unknown attestation version"), client.ErrInvalidOptions)
 		}

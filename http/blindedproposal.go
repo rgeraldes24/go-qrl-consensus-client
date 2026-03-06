@@ -19,13 +19,10 @@ import (
 	"errors"
 	"fmt"
 
-	client "github.com/attestantio/go-eth2-client"
-	"github.com/attestantio/go-eth2-client/api"
-	apiv1bellatrix "github.com/attestantio/go-eth2-client/api/v1/bellatrix"
-	apiv1capella "github.com/attestantio/go-eth2-client/api/v1/capella"
-	apiv1deneb "github.com/attestantio/go-eth2-client/api/v1/deneb"
-	apiv1electra "github.com/attestantio/go-eth2-client/api/v1/electra"
-	"github.com/attestantio/go-eth2-client/spec"
+	client "github.com/theQRL/go-qrl-consensus-client"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	apiv1capella "github.com/theQRL/go-qrl-consensus-client/api/v1/capella"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
 	"go.opentelemetry.io/otel"
 )
 
@@ -132,30 +129,10 @@ func (*Service) blindedProposalFromSSZ(res *httpResponse) (*api.Response[*api.Ve
 	}
 
 	switch res.consensusVersion {
-	case spec.DataVersionBellatrix:
-		response.Data.Bellatrix = &apiv1bellatrix.BlindedBeaconBlock{}
-		if err := response.Data.Bellatrix.UnmarshalSSZ(res.body); err != nil {
-			return nil, errors.Join(errors.New("failed to decode bellatrix blinded beacon block proposal"), err)
-		}
 	case spec.DataVersionCapella:
 		response.Data.Capella = &apiv1capella.BlindedBeaconBlock{}
 		if err := response.Data.Capella.UnmarshalSSZ(res.body); err != nil {
 			return nil, errors.Join(errors.New("failed to decode capella blinded beacon block proposal"), err)
-		}
-	case spec.DataVersionDeneb:
-		response.Data.Deneb = &apiv1deneb.BlindedBeaconBlock{}
-		if err := response.Data.Deneb.UnmarshalSSZ(res.body); err != nil {
-			return nil, errors.Join(errors.New("failed to decode deneb blinded beacon block proposal"), err)
-		}
-	case spec.DataVersionElectra:
-		response.Data.Electra = &apiv1electra.BlindedBeaconBlock{}
-		if err := response.Data.Electra.UnmarshalSSZ(res.body); err != nil {
-			return nil, errors.Join(errors.New("failed to decode electra blinded beacon block proposal"), err)
-		}
-	case spec.DataVersionFulu:
-		response.Data.Fulu = &apiv1electra.BlindedBeaconBlock{}
-		if err := response.Data.Fulu.UnmarshalSSZ(res.body); err != nil {
-			return nil, errors.Join(errors.New("failed to decode fulu blinded beacon block proposal"), err)
 		}
 	default:
 		return nil, fmt.Errorf("unhandled block proposal version %s", res.consensusVersion)
@@ -174,30 +151,10 @@ func (*Service) blindedProposalFromJSON(res *httpResponse) (*api.Response[*api.V
 	var err error
 
 	switch res.consensusVersion {
-	case spec.DataVersionBellatrix:
-		response.Data.Bellatrix, response.Metadata, err = decodeJSONResponse(
-			bytes.NewReader(res.body),
-			&apiv1bellatrix.BlindedBeaconBlock{},
-		)
 	case spec.DataVersionCapella:
 		response.Data.Capella, response.Metadata, err = decodeJSONResponse(
 			bytes.NewReader(res.body),
 			&apiv1capella.BlindedBeaconBlock{},
-		)
-	case spec.DataVersionDeneb:
-		response.Data.Deneb, response.Metadata, err = decodeJSONResponse(
-			bytes.NewReader(res.body),
-			&apiv1deneb.BlindedBeaconBlock{},
-		)
-	case spec.DataVersionElectra:
-		response.Data.Electra, response.Metadata, err = decodeJSONResponse(
-			bytes.NewReader(res.body),
-			&apiv1electra.BlindedBeaconBlock{},
-		)
-	case spec.DataVersionFulu:
-		response.Data.Fulu, response.Metadata, err = decodeJSONResponse(
-			bytes.NewReader(res.body),
-			&apiv1electra.BlindedBeaconBlock{},
 		)
 	default:
 		return nil, fmt.Errorf("unsupported version %s", res.consensusVersion)

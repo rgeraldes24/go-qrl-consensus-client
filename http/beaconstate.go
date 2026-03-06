@@ -19,17 +19,11 @@ import (
 	"errors"
 	"fmt"
 
-	client "github.com/attestantio/go-eth2-client"
-	"github.com/attestantio/go-eth2-client/api"
-	"github.com/attestantio/go-eth2-client/spec"
-	"github.com/attestantio/go-eth2-client/spec/altair"
-	"github.com/attestantio/go-eth2-client/spec/bellatrix"
-	"github.com/attestantio/go-eth2-client/spec/capella"
-	"github.com/attestantio/go-eth2-client/spec/deneb"
-	"github.com/attestantio/go-eth2-client/spec/electra"
-	"github.com/attestantio/go-eth2-client/spec/fulu"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	dynssz "github.com/pk910/dynamic-ssz"
+	client "github.com/theQRL/go-qrl-consensus-client"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // BeaconState fetches a beacon state.
@@ -90,39 +84,6 @@ func (s *Service) beaconStateFromSSZ(ctx context.Context, res *httpResponse) (*a
 	var err error
 
 	switch res.consensusVersion {
-	case spec.DataVersionPhase0:
-		response.Data.Phase0 = &phase0.BeaconState{}
-		if s.customSpecSupport {
-			err = dynSSZ.UnmarshalSSZ(response.Data.Phase0, res.body)
-		} else {
-			err = response.Data.Phase0.UnmarshalSSZ(res.body)
-		}
-
-		if err != nil {
-			return nil, errors.Join(errors.New("failed to decode phase0 beacon state"), err)
-		}
-	case spec.DataVersionAltair:
-		response.Data.Altair = &altair.BeaconState{}
-		if s.customSpecSupport {
-			err = dynSSZ.UnmarshalSSZ(response.Data.Altair, res.body)
-		} else {
-			err = response.Data.Altair.UnmarshalSSZ(res.body)
-		}
-
-		if err != nil {
-			return nil, errors.Join(errors.New("failed to decode altair beacon state"), err)
-		}
-	case spec.DataVersionBellatrix:
-		response.Data.Bellatrix = &bellatrix.BeaconState{}
-		if s.customSpecSupport {
-			err = dynSSZ.UnmarshalSSZ(response.Data.Bellatrix, res.body)
-		} else {
-			err = response.Data.Bellatrix.UnmarshalSSZ(res.body)
-		}
-
-		if err != nil {
-			return nil, errors.Join(errors.New("failed to decode bellatrix beacon state"), err)
-		}
 	case spec.DataVersionCapella:
 		response.Data.Capella = &capella.BeaconState{}
 		if s.customSpecSupport {
@@ -133,39 +94,6 @@ func (s *Service) beaconStateFromSSZ(ctx context.Context, res *httpResponse) (*a
 
 		if err != nil {
 			return nil, errors.Join(errors.New("failed to decode capella beacon state"), err)
-		}
-	case spec.DataVersionDeneb:
-		response.Data.Deneb = &deneb.BeaconState{}
-		if s.customSpecSupport {
-			err = dynSSZ.UnmarshalSSZ(response.Data.Deneb, res.body)
-		} else {
-			err = response.Data.Deneb.UnmarshalSSZ(res.body)
-		}
-
-		if err != nil {
-			return nil, errors.Join(errors.New("failed to decode deneb beacon state"), err)
-		}
-	case spec.DataVersionElectra:
-		response.Data.Electra = &electra.BeaconState{}
-		if s.customSpecSupport {
-			err = dynSSZ.UnmarshalSSZ(response.Data.Electra, res.body)
-		} else {
-			err = response.Data.Electra.UnmarshalSSZ(res.body)
-		}
-
-		if err != nil {
-			return nil, errors.Join(errors.New("failed to decode electra beacon state"), err)
-		}
-	case spec.DataVersionFulu:
-		response.Data.Fulu = &fulu.BeaconState{}
-		if s.customSpecSupport {
-			err = dynSSZ.UnmarshalSSZ(response.Data.Fulu, res.body)
-		} else {
-			err = response.Data.Fulu.UnmarshalSSZ(res.body)
-		}
-
-		if err != nil {
-			return nil, errors.Join(errors.New("failed to decode fulu beacon state"), err)
 		}
 	default:
 		return nil, fmt.Errorf("unhandled state version %s", res.consensusVersion)
@@ -184,20 +112,8 @@ func (*Service) beaconStateFromJSON(res *httpResponse) (*api.Response[*spec.Vers
 	var err error
 
 	switch res.consensusVersion {
-	case spec.DataVersionPhase0:
-		response.Data.Phase0, response.Metadata, err = decodeJSONResponse(bytes.NewReader(res.body), &phase0.BeaconState{})
-	case spec.DataVersionAltair:
-		response.Data.Altair, response.Metadata, err = decodeJSONResponse(bytes.NewReader(res.body), &altair.BeaconState{})
-	case spec.DataVersionBellatrix:
-		response.Data.Bellatrix, response.Metadata, err = decodeJSONResponse(bytes.NewReader(res.body), &bellatrix.BeaconState{})
 	case spec.DataVersionCapella:
 		response.Data.Capella, response.Metadata, err = decodeJSONResponse(bytes.NewReader(res.body), &capella.BeaconState{})
-	case spec.DataVersionDeneb:
-		response.Data.Deneb, response.Metadata, err = decodeJSONResponse(bytes.NewReader(res.body), &deneb.BeaconState{})
-	case spec.DataVersionElectra:
-		response.Data.Electra, response.Metadata, err = decodeJSONResponse(bytes.NewReader(res.body), &electra.BeaconState{})
-	case spec.DataVersionFulu:
-		response.Data.Fulu, response.Metadata, err = decodeJSONResponse(bytes.NewReader(res.body), &fulu.BeaconState{})
 	default:
 		err = fmt.Errorf("unsupported version %s", res.consensusVersion)
 	}

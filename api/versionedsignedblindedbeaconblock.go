@@ -14,35 +14,20 @@
 package api
 
 import (
-	apiv1bellatrix "github.com/attestantio/go-eth2-client/api/v1/bellatrix"
-	apiv1capella "github.com/attestantio/go-eth2-client/api/v1/capella"
-	apiv1deneb "github.com/attestantio/go-eth2-client/api/v1/deneb"
-	apiv1electra "github.com/attestantio/go-eth2-client/api/v1/electra"
-	"github.com/attestantio/go-eth2-client/spec"
-	"github.com/attestantio/go-eth2-client/spec/deneb"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
+	apiv1capella "github.com/theQRL/go-qrl-consensus-client/api/v1/capella"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // VersionedSignedBlindedBeaconBlock contains a versioned signed blinded beacon block.
 type VersionedSignedBlindedBeaconBlock struct {
-	Version   spec.DataVersion
-	Bellatrix *apiv1bellatrix.SignedBlindedBeaconBlock
-	Capella   *apiv1capella.SignedBlindedBeaconBlock
-	Deneb     *apiv1deneb.SignedBlindedBeaconBlock
-	Electra   *apiv1electra.SignedBlindedBeaconBlock
-	Fulu      *apiv1electra.SignedBlindedBeaconBlock
+	Version spec.DataVersion
+	Capella *apiv1capella.SignedBlindedBeaconBlock
 }
 
 // Slot returns the slot of the signed beacon block.
 func (v *VersionedSignedBlindedBeaconBlock) Slot() (phase0.Slot, error) {
 	switch v.Version {
-	case spec.DataVersionBellatrix:
-		if v.Bellatrix == nil ||
-			v.Bellatrix.Message == nil {
-			return 0, ErrDataMissing
-		}
-
-		return v.Bellatrix.Message.Slot, nil
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil {
@@ -50,27 +35,6 @@ func (v *VersionedSignedBlindedBeaconBlock) Slot() (phase0.Slot, error) {
 		}
 
 		return v.Capella.Message.Slot, nil
-	case spec.DataVersionDeneb:
-		if v.Deneb == nil ||
-			v.Deneb.Message == nil {
-			return 0, ErrDataMissing
-		}
-
-		return v.Deneb.Message.Slot, nil
-	case spec.DataVersionElectra:
-		if v.Electra == nil ||
-			v.Electra.Message == nil {
-			return 0, ErrDataMissing
-		}
-
-		return v.Electra.Message.Slot, nil
-	case spec.DataVersionFulu:
-		if v.Fulu == nil ||
-			v.Fulu.Message == nil {
-			return 0, ErrDataMissing
-		}
-
-		return v.Fulu.Message.Slot, nil
 	default:
 		return 0, ErrUnsupportedVersion
 	}
@@ -79,22 +43,6 @@ func (v *VersionedSignedBlindedBeaconBlock) Slot() (phase0.Slot, error) {
 // Attestations returns the attestations of the signed blinded beacon block.
 func (v *VersionedSignedBlindedBeaconBlock) Attestations() ([]spec.VersionedAttestation, error) {
 	switch v.Version {
-	case spec.DataVersionBellatrix:
-		if v.Bellatrix == nil ||
-			v.Bellatrix.Message == nil ||
-			v.Bellatrix.Message.Body == nil {
-			return nil, ErrDataMissing
-		}
-
-		versionedAttestations := make([]spec.VersionedAttestation, len(v.Bellatrix.Message.Body.Attestations))
-		for i, attestation := range v.Bellatrix.Message.Body.Attestations {
-			versionedAttestations[i] = spec.VersionedAttestation{
-				Version:   spec.DataVersionBellatrix,
-				Bellatrix: attestation,
-			}
-		}
-
-		return versionedAttestations, nil
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil ||
@@ -111,54 +59,6 @@ func (v *VersionedSignedBlindedBeaconBlock) Attestations() ([]spec.VersionedAtte
 		}
 
 		return versionedAttestations, nil
-	case spec.DataVersionDeneb:
-		if v.Deneb == nil ||
-			v.Deneb.Message == nil ||
-			v.Deneb.Message.Body == nil {
-			return nil, ErrDataMissing
-		}
-
-		versionedAttestations := make([]spec.VersionedAttestation, len(v.Deneb.Message.Body.Attestations))
-		for i, attestation := range v.Deneb.Message.Body.Attestations {
-			versionedAttestations[i] = spec.VersionedAttestation{
-				Version: spec.DataVersionDeneb,
-				Deneb:   attestation,
-			}
-		}
-
-		return versionedAttestations, nil
-	case spec.DataVersionElectra:
-		if v.Electra == nil ||
-			v.Electra.Message == nil ||
-			v.Electra.Message.Body == nil {
-			return nil, ErrDataMissing
-		}
-
-		versionedAttestations := make([]spec.VersionedAttestation, len(v.Electra.Message.Body.Attestations))
-		for i, attestation := range v.Electra.Message.Body.Attestations {
-			versionedAttestations[i] = spec.VersionedAttestation{
-				Version: spec.DataVersionElectra,
-				Electra: attestation,
-			}
-		}
-
-		return versionedAttestations, nil
-	case spec.DataVersionFulu:
-		if v.Fulu == nil ||
-			v.Fulu.Message == nil ||
-			v.Fulu.Message.Body == nil {
-			return nil, ErrDataMissing
-		}
-
-		versionedAttestations := make([]spec.VersionedAttestation, len(v.Fulu.Message.Body.Attestations))
-		for i, attestation := range v.Fulu.Message.Body.Attestations {
-			versionedAttestations[i] = spec.VersionedAttestation{
-				Version: spec.DataVersionFulu,
-				Fulu:    attestation,
-			}
-		}
-
-		return versionedAttestations, nil
 	default:
 		return nil, ErrUnsupportedVersion
 	}
@@ -167,13 +67,6 @@ func (v *VersionedSignedBlindedBeaconBlock) Attestations() ([]spec.VersionedAtte
 // Root returns the root of the beacon block.
 func (v *VersionedSignedBlindedBeaconBlock) Root() (phase0.Root, error) {
 	switch v.Version {
-	case spec.DataVersionBellatrix:
-		if v.Bellatrix == nil ||
-			v.Bellatrix.Message == nil {
-			return phase0.Root{}, ErrDataMissing
-		}
-
-		return v.Bellatrix.Message.HashTreeRoot()
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil {
@@ -181,25 +74,6 @@ func (v *VersionedSignedBlindedBeaconBlock) Root() (phase0.Root, error) {
 		}
 
 		return v.Capella.Message.HashTreeRoot()
-	case spec.DataVersionDeneb:
-		if v.Deneb == nil ||
-			v.Deneb.Message == nil {
-			return phase0.Root{}, ErrDataMissing
-		}
-
-		return v.Deneb.Message.HashTreeRoot()
-	case spec.DataVersionElectra:
-		if v.Electra == nil {
-			return phase0.Root{}, ErrDataMissing
-		}
-
-		return v.Electra.Message.HashTreeRoot()
-	case spec.DataVersionFulu:
-		if v.Fulu == nil {
-			return phase0.Root{}, ErrDataMissing
-		}
-
-		return v.Fulu.Message.HashTreeRoot()
 	default:
 		return phase0.Root{}, ErrUnsupportedVersion
 	}
@@ -208,14 +82,6 @@ func (v *VersionedSignedBlindedBeaconBlock) Root() (phase0.Root, error) {
 // BodyRoot returns the body root of the beacon block.
 func (v *VersionedSignedBlindedBeaconBlock) BodyRoot() (phase0.Root, error) {
 	switch v.Version {
-	case spec.DataVersionBellatrix:
-		if v.Bellatrix == nil ||
-			v.Bellatrix.Message == nil ||
-			v.Bellatrix.Message.Body == nil {
-			return phase0.Root{}, ErrDataMissing
-		}
-
-		return v.Bellatrix.Message.Body.HashTreeRoot()
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil ||
@@ -224,26 +90,6 @@ func (v *VersionedSignedBlindedBeaconBlock) BodyRoot() (phase0.Root, error) {
 		}
 
 		return v.Capella.Message.Body.HashTreeRoot()
-	case spec.DataVersionDeneb:
-		if v.Deneb == nil ||
-			v.Deneb.Message == nil ||
-			v.Deneb.Message.Body == nil {
-			return phase0.Root{}, ErrDataMissing
-		}
-
-		return v.Deneb.Message.Body.HashTreeRoot()
-	case spec.DataVersionElectra:
-		if v.Electra == nil {
-			return phase0.Root{}, ErrDataMissing
-		}
-
-		return v.Electra.Message.Body.HashTreeRoot()
-	case spec.DataVersionFulu:
-		if v.Fulu == nil {
-			return phase0.Root{}, ErrDataMissing
-		}
-
-		return v.Fulu.Message.Body.HashTreeRoot()
 	default:
 		return phase0.Root{}, ErrUnsupportedVersion
 	}
@@ -252,13 +98,6 @@ func (v *VersionedSignedBlindedBeaconBlock) BodyRoot() (phase0.Root, error) {
 // ParentRoot returns the parent root of the beacon block.
 func (v *VersionedSignedBlindedBeaconBlock) ParentRoot() (phase0.Root, error) {
 	switch v.Version {
-	case spec.DataVersionBellatrix:
-		if v.Bellatrix == nil ||
-			v.Bellatrix.Message == nil {
-			return phase0.Root{}, ErrDataMissing
-		}
-
-		return v.Bellatrix.Message.ParentRoot, nil
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil {
@@ -266,25 +105,6 @@ func (v *VersionedSignedBlindedBeaconBlock) ParentRoot() (phase0.Root, error) {
 		}
 
 		return v.Capella.Message.ParentRoot, nil
-	case spec.DataVersionDeneb:
-		if v.Deneb == nil ||
-			v.Deneb.Message == nil {
-			return phase0.Root{}, ErrDataMissing
-		}
-
-		return v.Deneb.Message.ParentRoot, nil
-	case spec.DataVersionElectra:
-		if v.Electra == nil {
-			return phase0.Root{}, ErrDataMissing
-		}
-
-		return v.Electra.Message.ParentRoot, nil
-	case spec.DataVersionFulu:
-		if v.Fulu == nil {
-			return phase0.Root{}, ErrDataMissing
-		}
-
-		return v.Fulu.Message.ParentRoot, nil
 	default:
 		return phase0.Root{}, ErrUnsupportedVersion
 	}
@@ -293,13 +113,6 @@ func (v *VersionedSignedBlindedBeaconBlock) ParentRoot() (phase0.Root, error) {
 // StateRoot returns the state root of the beacon block.
 func (v *VersionedSignedBlindedBeaconBlock) StateRoot() (phase0.Root, error) {
 	switch v.Version {
-	case spec.DataVersionBellatrix:
-		if v.Bellatrix == nil ||
-			v.Bellatrix.Message == nil {
-			return phase0.Root{}, ErrDataMissing
-		}
-
-		return v.Bellatrix.Message.StateRoot, nil
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil {
@@ -307,25 +120,6 @@ func (v *VersionedSignedBlindedBeaconBlock) StateRoot() (phase0.Root, error) {
 		}
 
 		return v.Capella.Message.StateRoot, nil
-	case spec.DataVersionDeneb:
-		if v.Deneb == nil ||
-			v.Deneb.Message == nil {
-			return phase0.Root{}, ErrDataMissing
-		}
-
-		return v.Deneb.Message.StateRoot, nil
-	case spec.DataVersionElectra:
-		if v.Electra == nil {
-			return phase0.Root{}, ErrDataMissing
-		}
-
-		return v.Electra.Message.StateRoot, nil
-	case spec.DataVersionFulu:
-		if v.Fulu == nil {
-			return phase0.Root{}, ErrDataMissing
-		}
-
-		return v.Fulu.Message.StateRoot, nil
 	default:
 		return phase0.Root{}, ErrUnsupportedVersion
 	}
@@ -334,22 +128,6 @@ func (v *VersionedSignedBlindedBeaconBlock) StateRoot() (phase0.Root, error) {
 // AttesterSlashings returns the attester slashings of the beacon block.
 func (v *VersionedSignedBlindedBeaconBlock) AttesterSlashings() ([]spec.VersionedAttesterSlashing, error) {
 	switch v.Version {
-	case spec.DataVersionBellatrix:
-		if v.Bellatrix == nil ||
-			v.Bellatrix.Message == nil ||
-			v.Bellatrix.Message.Body == nil {
-			return nil, ErrDataMissing
-		}
-
-		versionedAttesterSlashings := make([]spec.VersionedAttesterSlashing, len(v.Bellatrix.Message.Body.AttesterSlashings))
-		for i, attesterSlashing := range v.Bellatrix.Message.Body.AttesterSlashings {
-			versionedAttesterSlashings[i] = spec.VersionedAttesterSlashing{
-				Version:   spec.DataVersionBellatrix,
-				Bellatrix: attesterSlashing,
-			}
-		}
-
-		return versionedAttesterSlashings, nil
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil ||
@@ -366,50 +144,6 @@ func (v *VersionedSignedBlindedBeaconBlock) AttesterSlashings() ([]spec.Versione
 		}
 
 		return versionedAttesterSlashings, nil
-	case spec.DataVersionDeneb:
-		if v.Deneb == nil ||
-			v.Deneb.Message == nil ||
-			v.Deneb.Message.Body == nil {
-			return nil, ErrDataMissing
-		}
-
-		versionedAttesterSlashings := make([]spec.VersionedAttesterSlashing, len(v.Deneb.Message.Body.AttesterSlashings))
-		for i, attesterSlashing := range v.Deneb.Message.Body.AttesterSlashings {
-			versionedAttesterSlashings[i] = spec.VersionedAttesterSlashing{
-				Version: spec.DataVersionDeneb,
-				Deneb:   attesterSlashing,
-			}
-		}
-
-		return versionedAttesterSlashings, nil
-	case spec.DataVersionElectra:
-		if v.Electra == nil {
-			return nil, ErrDataMissing
-		}
-
-		versionedAttesterSlashings := make([]spec.VersionedAttesterSlashing, len(v.Electra.Message.Body.AttesterSlashings))
-		for i, attesterSlashing := range v.Electra.Message.Body.AttesterSlashings {
-			versionedAttesterSlashings[i] = spec.VersionedAttesterSlashing{
-				Version: spec.DataVersionElectra,
-				Electra: attesterSlashing,
-			}
-		}
-
-		return versionedAttesterSlashings, nil
-	case spec.DataVersionFulu:
-		if v.Fulu == nil {
-			return nil, ErrDataMissing
-		}
-
-		versionedAttesterSlashings := make([]spec.VersionedAttesterSlashing, len(v.Fulu.Message.Body.AttesterSlashings))
-		for i, attesterSlashing := range v.Fulu.Message.Body.AttesterSlashings {
-			versionedAttesterSlashings[i] = spec.VersionedAttesterSlashing{
-				Version: spec.DataVersionFulu,
-				Fulu:    attesterSlashing,
-			}
-		}
-
-		return versionedAttesterSlashings, nil
 	default:
 		return nil, ErrUnsupportedVersion
 	}
@@ -418,14 +152,6 @@ func (v *VersionedSignedBlindedBeaconBlock) AttesterSlashings() ([]spec.Versione
 // ProposerSlashings returns the proposer slashings of the beacon block.
 func (v *VersionedSignedBlindedBeaconBlock) ProposerSlashings() ([]*phase0.ProposerSlashing, error) {
 	switch v.Version {
-	case spec.DataVersionBellatrix:
-		if v.Bellatrix == nil ||
-			v.Bellatrix.Message == nil ||
-			v.Bellatrix.Message.Body == nil {
-			return nil, ErrDataMissing
-		}
-
-		return v.Bellatrix.Message.Body.ProposerSlashings, nil
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil ||
@@ -434,26 +160,6 @@ func (v *VersionedSignedBlindedBeaconBlock) ProposerSlashings() ([]*phase0.Propo
 		}
 
 		return v.Capella.Message.Body.ProposerSlashings, nil
-	case spec.DataVersionDeneb:
-		if v.Deneb == nil ||
-			v.Deneb.Message == nil ||
-			v.Deneb.Message.Body == nil {
-			return nil, ErrDataMissing
-		}
-
-		return v.Deneb.Message.Body.ProposerSlashings, nil
-	case spec.DataVersionElectra:
-		if v.Electra == nil {
-			return nil, ErrDataMissing
-		}
-
-		return v.Electra.Message.Body.ProposerSlashings, nil
-	case spec.DataVersionFulu:
-		if v.Fulu == nil {
-			return nil, ErrDataMissing
-		}
-
-		return v.Fulu.Message.Body.ProposerSlashings, nil
 	default:
 		return nil, ErrUnsupportedVersion
 	}
@@ -462,13 +168,6 @@ func (v *VersionedSignedBlindedBeaconBlock) ProposerSlashings() ([]*phase0.Propo
 // ProposerIndex returns the proposer index of the beacon block.
 func (v *VersionedSignedBlindedBeaconBlock) ProposerIndex() (phase0.ValidatorIndex, error) {
 	switch v.Version {
-	case spec.DataVersionBellatrix:
-		if v.Bellatrix == nil ||
-			v.Bellatrix.Message == nil {
-			return 0, ErrDataMissing
-		}
-
-		return v.Bellatrix.Message.ProposerIndex, nil
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil {
@@ -476,26 +175,6 @@ func (v *VersionedSignedBlindedBeaconBlock) ProposerIndex() (phase0.ValidatorInd
 		}
 
 		return v.Capella.Message.ProposerIndex, nil
-	case spec.DataVersionDeneb:
-		if v.Deneb == nil ||
-			v.Deneb.Message == nil {
-			return 0, ErrDataMissing
-		}
-
-		return v.Deneb.Message.ProposerIndex, nil
-	case spec.DataVersionElectra:
-		if v.Electra == nil ||
-			v.Electra.Message == nil {
-			return 0, ErrDataMissing
-		}
-
-		return v.Electra.Message.ProposerIndex, nil
-	case spec.DataVersionFulu:
-		if v.Fulu == nil {
-			return 0, ErrDataMissing
-		}
-
-		return v.Fulu.Message.ProposerIndex, nil
 	default:
 		return 0, ErrUnsupportedVersion
 	}
@@ -504,15 +183,6 @@ func (v *VersionedSignedBlindedBeaconBlock) ProposerIndex() (phase0.ValidatorInd
 // ExecutionParentHash returns the parent hash of the beacon block.
 func (v *VersionedSignedBlindedBeaconBlock) ExecutionParentHash() (phase0.Hash32, error) {
 	switch v.Version {
-	case spec.DataVersionBellatrix:
-		if v.Bellatrix == nil ||
-			v.Bellatrix.Message == nil ||
-			v.Bellatrix.Message.Body == nil ||
-			v.Bellatrix.Message.Body.ExecutionPayloadHeader == nil {
-			return phase0.Hash32{}, ErrDataMissing
-		}
-
-		return v.Bellatrix.Message.Body.ExecutionPayloadHeader.ParentHash, nil
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil ||
@@ -522,33 +192,6 @@ func (v *VersionedSignedBlindedBeaconBlock) ExecutionParentHash() (phase0.Hash32
 		}
 
 		return v.Capella.Message.Body.ExecutionPayloadHeader.ParentHash, nil
-	case spec.DataVersionDeneb:
-		if v.Deneb == nil ||
-			v.Deneb.Message == nil ||
-			v.Deneb.Message.Body == nil ||
-			v.Deneb.Message.Body.ExecutionPayloadHeader == nil {
-			return phase0.Hash32{}, ErrDataMissing
-		}
-
-		return v.Deneb.Message.Body.ExecutionPayloadHeader.ParentHash, nil
-	case spec.DataVersionElectra:
-		if v.Electra == nil ||
-			v.Electra.Message == nil ||
-			v.Electra.Message.Body == nil ||
-			v.Electra.Message.Body.ExecutionPayloadHeader == nil {
-			return phase0.Hash32{}, ErrDataMissing
-		}
-
-		return v.Electra.Message.Body.ExecutionPayloadHeader.ParentHash, nil
-	case spec.DataVersionFulu:
-		if v.Fulu == nil ||
-			v.Fulu.Message == nil ||
-			v.Fulu.Message.Body == nil ||
-			v.Fulu.Message.Body.ExecutionPayloadHeader == nil {
-			return phase0.Hash32{}, ErrDataMissing
-		}
-
-		return v.Fulu.Message.Body.ExecutionPayloadHeader.ParentHash, nil
 	default:
 		return phase0.Hash32{}, ErrUnsupportedVersion
 	}
@@ -557,15 +200,6 @@ func (v *VersionedSignedBlindedBeaconBlock) ExecutionParentHash() (phase0.Hash32
 // ExecutionBlockHash returns the hash of the beacon block.
 func (v *VersionedSignedBlindedBeaconBlock) ExecutionBlockHash() (phase0.Hash32, error) {
 	switch v.Version {
-	case spec.DataVersionBellatrix:
-		if v.Bellatrix == nil ||
-			v.Bellatrix.Message == nil ||
-			v.Bellatrix.Message.Body == nil ||
-			v.Bellatrix.Message.Body.ExecutionPayloadHeader == nil {
-			return phase0.Hash32{}, ErrDataMissing
-		}
-
-		return v.Bellatrix.Message.Body.ExecutionPayloadHeader.BlockHash, nil
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil ||
@@ -575,33 +209,6 @@ func (v *VersionedSignedBlindedBeaconBlock) ExecutionBlockHash() (phase0.Hash32,
 		}
 
 		return v.Capella.Message.Body.ExecutionPayloadHeader.BlockHash, nil
-	case spec.DataVersionDeneb:
-		if v.Deneb == nil ||
-			v.Deneb.Message == nil ||
-			v.Deneb.Message.Body == nil ||
-			v.Deneb.Message.Body.ExecutionPayloadHeader == nil {
-			return phase0.Hash32{}, ErrDataMissing
-		}
-
-		return v.Deneb.Message.Body.ExecutionPayloadHeader.BlockHash, nil
-	case spec.DataVersionElectra:
-		if v.Electra == nil ||
-			v.Electra.Message == nil ||
-			v.Electra.Message.Body == nil ||
-			v.Electra.Message.Body.ExecutionPayloadHeader == nil {
-			return phase0.Hash32{}, ErrDataMissing
-		}
-
-		return v.Electra.Message.Body.ExecutionPayloadHeader.BlockHash, nil
-	case spec.DataVersionFulu:
-		if v.Fulu == nil ||
-			v.Fulu.Message == nil ||
-			v.Fulu.Message.Body == nil ||
-			v.Fulu.Message.Body.ExecutionPayloadHeader == nil {
-			return phase0.Hash32{}, ErrDataMissing
-		}
-
-		return v.Fulu.Message.Body.ExecutionPayloadHeader.BlockHash, nil
 	default:
 		return phase0.Hash32{}, ErrUnsupportedVersion
 	}
@@ -610,15 +217,6 @@ func (v *VersionedSignedBlindedBeaconBlock) ExecutionBlockHash() (phase0.Hash32,
 // ExecutionBlockNumber returns the block number of the beacon block.
 func (v *VersionedSignedBlindedBeaconBlock) ExecutionBlockNumber() (uint64, error) {
 	switch v.Version {
-	case spec.DataVersionBellatrix:
-		if v.Bellatrix == nil ||
-			v.Bellatrix.Message == nil ||
-			v.Bellatrix.Message.Body == nil ||
-			v.Bellatrix.Message.Body.ExecutionPayloadHeader == nil {
-			return 0, ErrDataMissing
-		}
-
-		return v.Bellatrix.Message.Body.ExecutionPayloadHeader.BlockNumber, nil
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil ||
@@ -628,99 +226,20 @@ func (v *VersionedSignedBlindedBeaconBlock) ExecutionBlockNumber() (uint64, erro
 		}
 
 		return v.Capella.Message.Body.ExecutionPayloadHeader.BlockNumber, nil
-	case spec.DataVersionDeneb:
-		if v.Deneb == nil ||
-			v.Deneb.Message == nil ||
-			v.Deneb.Message.Body == nil ||
-			v.Deneb.Message.Body.ExecutionPayloadHeader == nil {
-			return 0, ErrDataMissing
-		}
-
-		return v.Deneb.Message.Body.ExecutionPayloadHeader.BlockNumber, nil
-	case spec.DataVersionElectra:
-		if v.Electra == nil ||
-			v.Electra.Message == nil ||
-			v.Electra.Message.Body == nil ||
-			v.Electra.Message.Body.ExecutionPayloadHeader == nil {
-			return 0, ErrDataMissing
-		}
-
-		return v.Electra.Message.Body.ExecutionPayloadHeader.BlockNumber, nil
-	case spec.DataVersionFulu:
-		if v.Fulu == nil ||
-			v.Fulu.Message == nil ||
-			v.Fulu.Message.Body == nil ||
-			v.Fulu.Message.Body.ExecutionPayloadHeader == nil {
-			return 0, ErrDataMissing
-		}
-
-		return v.Fulu.Message.Body.ExecutionPayloadHeader.BlockNumber, nil
 	default:
 		return 0, ErrUnsupportedVersion
-	}
-}
-
-// BlobKZGCommitments returns the blob KZG commitments of the beacon block.
-func (v *VersionedSignedBlindedBeaconBlock) BlobKZGCommitments() ([]deneb.KZGCommitment, error) {
-	switch v.Version {
-	case spec.DataVersionPhase0, spec.DataVersionAltair, spec.DataVersionBellatrix, spec.DataVersionCapella:
-		return nil, ErrDataMissing
-	case spec.DataVersionDeneb:
-		if v.Deneb == nil || v.Deneb.Message == nil || v.Deneb.Message.Body == nil {
-			return nil, ErrDataMissing
-		}
-
-		return v.Deneb.Message.Body.BlobKZGCommitments, nil
-	case spec.DataVersionElectra:
-		if v.Electra == nil || v.Electra.Message == nil || v.Electra.Message.Body == nil {
-			return nil, ErrDataMissing
-		}
-
-		return v.Electra.Message.Body.BlobKZGCommitments, nil
-	case spec.DataVersionFulu:
-		if v.Fulu == nil || v.Fulu.Message == nil || v.Fulu.Message.Body == nil {
-			return nil, ErrDataMissing
-		}
-
-		return v.Fulu.Message.Body.BlobKZGCommitments, nil
-	default:
-		return nil, ErrUnsupportedVersion
 	}
 }
 
 // Signature returns the signature of the beacon block.
 func (v *VersionedSignedBlindedBeaconBlock) Signature() (phase0.BLSSignature, error) {
 	switch v.Version {
-	case spec.DataVersionBellatrix:
-		if v.Bellatrix == nil {
-			return phase0.BLSSignature{}, ErrDataMissing
-		}
-
-		return v.Bellatrix.Signature, nil
 	case spec.DataVersionCapella:
 		if v.Capella == nil {
 			return phase0.BLSSignature{}, ErrDataMissing
 		}
 
 		return v.Capella.Signature, nil
-	case spec.DataVersionDeneb:
-		if v.Deneb == nil {
-			return phase0.BLSSignature{}, ErrDataMissing
-		}
-
-		return v.Deneb.Signature, nil
-	case spec.DataVersionElectra:
-		if v.Electra == nil {
-			return phase0.BLSSignature{}, ErrDataMissing
-		}
-
-		return v.Electra.Signature, nil
-	case spec.DataVersionFulu:
-		if v.Fulu == nil || v.Fulu.Message == nil || v.Fulu.Message.Body == nil {
-			return phase0.BLSSignature{}, ErrDataMissing
-		}
-
-		return v.Fulu.Signature, nil
 	default:
 		return phase0.BLSSignature{}, ErrUnsupportedVersion
 	}

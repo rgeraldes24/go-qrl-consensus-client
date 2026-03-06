@@ -17,7 +17,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/attestantio/go-eth2-client/api"
+	"github.com/theQRL/go-qrl-consensus-client/api"
 )
 
 // GenesisTime provides the genesis time of the chain.

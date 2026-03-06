@@ -19,12 +19,10 @@ import (
 	"os"
 	"testing"
 
-	"github.com/attestantio/go-eth2-client/spec"
-	"github.com/attestantio/go-eth2-client/spec/deneb"
-	"github.com/attestantio/go-eth2-client/spec/electra"
-	"github.com/attestantio/go-eth2-client/spec/fulu"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/stretchr/testify/require"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
+	"github.com/theQRL/go-qrl-consensus-client/spec/deneb"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 func readFile(fileName string) ([]byte, error) {
@@ -54,24 +52,6 @@ func readVersionedBeaconState(t *testing.T, fileName string, version spec.DataVe
 		state := &spec.VersionedBeaconState{
 			Version: spec.DataVersionDeneb,
 			Deneb:   denebState,
-		}
-		return state, nil
-	case spec.DataVersionElectra:
-		electraState := &electra.BeaconState{}
-		require.NoError(t, electraState.UnmarshalSSZ(stateBytes))
-
-		state := &spec.VersionedBeaconState{
-			Version: spec.DataVersionElectra,
-			Electra: electraState,
-		}
-		return state, nil
-	case spec.DataVersionFulu:
-		fuluState := &fulu.BeaconState{}
-		require.NoError(t, fuluState.UnmarshalSSZ(stateBytes))
-
-		state := &spec.VersionedBeaconState{
-			Version: spec.DataVersionFulu,
-			Fulu:    fuluState,
 		}
 		return state, nil
 	default:

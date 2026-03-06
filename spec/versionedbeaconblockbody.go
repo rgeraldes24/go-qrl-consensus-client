@@ -14,71 +14,24 @@
 package spec
 
 import (
-	"github.com/attestantio/go-eth2-client/spec/altair"
-	"github.com/attestantio/go-eth2-client/spec/bellatrix"
-	"github.com/attestantio/go-eth2-client/spec/capella"
-	"github.com/attestantio/go-eth2-client/spec/deneb"
-	"github.com/attestantio/go-eth2-client/spec/electra"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // VersionedBeaconBlockBody contains a versioned beacon block body.
 type VersionedBeaconBlockBody struct {
-	Version   DataVersion
-	Phase0    *phase0.BeaconBlockBody
-	Altair    *altair.BeaconBlockBody
-	Bellatrix *bellatrix.BeaconBlockBody
-	Capella   *capella.BeaconBlockBody
-	Deneb     *deneb.BeaconBlockBody
-	Electra   *electra.BeaconBlockBody
-	Fulu      *electra.BeaconBlockBody
+	Version DataVersion
+	Capella *capella.BeaconBlockBody
 }
 
 // String returns a string version of the structure.
 func (v *VersionedBeaconBlockBody) String() string {
 	switch v.Version {
-	case DataVersionPhase0:
-		if v.Phase0 == nil {
-			return ""
-		}
-
-		return v.Phase0.String()
-	case DataVersionAltair:
-		if v.Altair == nil {
-			return ""
-		}
-
-		return v.Altair.String()
-	case DataVersionBellatrix:
-		if v.Bellatrix == nil {
-			return ""
-		}
-
-		return v.Bellatrix.String()
 	case DataVersionCapella:
 		if v.Capella == nil {
 			return ""
 		}
 
 		return v.Capella.String()
-	case DataVersionDeneb:
-		if v.Deneb == nil {
-			return ""
-		}
-
-		return v.Deneb.String()
-	case DataVersionElectra:
-		if v.Electra == nil {
-			return ""
-		}
-
-		return v.Electra.String()
-	case DataVersionFulu:
-		if v.Fulu == nil {
-			return ""
-		}
-
-		return v.Fulu.String()
 	default:
 		return "unknown version"
 	}

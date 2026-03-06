@@ -16,9 +16,9 @@ package mock
 import (
 	"context"
 
-	"github.com/attestantio/go-eth2-client/api"
-	"github.com/attestantio/go-eth2-client/spec"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // SignedBeaconBlock fetches a signed beacon block given a block ID.
@@ -38,7 +38,7 @@ func (s *Service) SignedBeaconBlock(ctx context.Context,
 			Phase0: &phase0.SignedBeaconBlock{
 				Message: &phase0.BeaconBlock{
 					Body: &phase0.BeaconBlockBody{
-						ETH1Data: &phase0.ETH1Data{},
+						ExecutionData: &phase0.ExecutionData{},
 					},
 				},
 			},

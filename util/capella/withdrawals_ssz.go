@@ -3,8 +3,8 @@
 package capella
 
 import (
-	"github.com/attestantio/go-eth2-client/spec/capella"
 	ssz "github.com/ferranbt/fastssz"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // MarshalSSZ ssz marshals the Withdrawals object

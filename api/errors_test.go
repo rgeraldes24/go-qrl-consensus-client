@@ -16,9 +16,9 @@ package api_test
 import (
 	"testing"
 
-	"github.com/attestantio/go-eth2-client/api"
-	"github.com/attestantio/go-eth2-client/spec"
 	"github.com/stretchr/testify/require"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
 )
 
 func TestError(t *testing.T) {

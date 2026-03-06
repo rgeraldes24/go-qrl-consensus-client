@@ -19,15 +19,13 @@ import (
 	"math/rand"
 	"time"
 
-	consensusclient "github.com/attestantio/go-eth2-client"
-	"github.com/attestantio/go-eth2-client/api"
-	apiv1 "github.com/attestantio/go-eth2-client/api/v1"
-	"github.com/attestantio/go-eth2-client/spec"
-	"github.com/attestantio/go-eth2-client/spec/altair"
-	"github.com/attestantio/go-eth2-client/spec/capella"
-	"github.com/attestantio/go-eth2-client/spec/electra"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/rs/zerolog"
+	consensusclient "github.com/theQRL/go-qrl-consensus-client"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
+	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // Events feeds requested events with the given topics to the supplied handler.
@@ -62,16 +60,12 @@ func (s *Service) Events(ctx context.Context,
 		}
 		ah.opts.Handler = ah.genericHandler
 		ah.opts.AttestationHandler = ah.attestationHandler
-		ah.opts.AttesterSlashingHandler = ah.attesterSlashingHandler
-		ah.opts.BlobSidecarHandler = ah.blobSidecarHandler
-		ah.opts.BLSToExecutionChangeHandler = ah.blsToExecutionChangeHandler
 		ah.opts.ChainReorgHandler = ah.chainReorgHandler
 		ah.opts.ContributionAndProofHandler = ah.contributionAndProofHandler
 		ah.opts.FinalizedCheckpointHandler = ah.finalizedCheckpointHandler
 		ah.opts.HeadHandler = ah.headHandler
 		ah.opts.PayloadAttributesHandler = ah.payloadAttributesHandler
 		ah.opts.ProposerSlashingHandler = ah.proposerSlashingHandler
-		ah.opts.SingleAttestationHandler = ah.singleAttestationHandler
 		ah.opts.VoluntaryExitHandler = ah.voluntaryExitHandler
 
 		if err := client.(consensusclient.EventsProvider).Events(ctx, ah.opts); err != nil {
@@ -157,54 +151,6 @@ func (h *activeHandler) attestationHandler(ctx context.Context, data *spec.Versi
 	log.Trace().Msg("Forwarding due to primary active address")
 
 	h.opts.AttestationHandler(ctx, data)
-}
-
-func (h *activeHandler) attesterSlashingHandler(ctx context.Context, data *electra.AttesterSlashing) {
-	log := h.log.With().Str("address", h.address).Logger()
-	log.Trace().Msg("Attester slashing event received")
-
-	// We only forward events from the currently active provider.  If we did not do this then we could end up with
-	// inconsistent results, for example a client may receive a `head` event and a subsequent call to fetch the head
-	// block end up with an earlier block.
-	if h.s.Address() != h.address {
-		return
-	}
-
-	log.Trace().Msg("Forwarding due to primary active address")
-
-	h.opts.AttesterSlashingHandler(ctx, data)
-}
-
-func (h *activeHandler) blobSidecarHandler(ctx context.Context, data *apiv1.BlobSidecarEvent) {
-	log := h.log.With().Str("address", h.address).Logger()
-	log.Trace().Msg("Blob sidecar event received")
-
-	// We only forward events from the currently active provider.  If we did not do this then we could end up with
-	// inconsistent results, for example a client may receive a `head` event and a subsequent call to fetch the head
-	// block end up with an earlier block.
-	if h.s.Address() != h.address {
-		return
-	}
-
-	log.Trace().Msg("Forwarding due to primary active address")
-
-	h.opts.BlobSidecarHandler(ctx, data)
-}
-
-func (h *activeHandler) blsToExecutionChangeHandler(ctx context.Context, data *capella.SignedBLSToExecutionChange) {
-	log := h.log.With().Str("address", h.address).Logger()
-	log.Trace().Msg("BLS to execution change event received")
-
-	// We only forward events from the currently active provider.  If we did not do this then we could end up with
-	// inconsistent results, for example a client may receive a `head` event and a subsequent call to fetch the head
-	// block end up with an earlier block.
-	if h.s.Address() != h.address {
-		return
-	}
-
-	log.Trace().Msg("Forwarding due to primary active address")
-
-	h.opts.BLSToExecutionChangeHandler(ctx, data)
 }
 
 func (h *activeHandler) chainReorgHandler(ctx context.Context, data *apiv1.ChainReorgEvent) {
@@ -301,22 +247,6 @@ func (h *activeHandler) proposerSlashingHandler(ctx context.Context, data *phase
 	log.Trace().Msg("Forwarding due to primary active address")
 
 	h.opts.ProposerSlashingHandler(ctx, data)
-}
-
-func (h *activeHandler) singleAttestationHandler(ctx context.Context, data *electra.SingleAttestation) {
-	log := h.log.With().Str("address", h.address).Logger()
-	log.Trace().Msg("Single attestation event received")
-
-	// We only forward events from the currently active provider.  If we did not do this then we could end up with
-	// inconsistent results, for example a client may receive a `head` event and a subsequent call to fetch the head
-	// block end up with an earlier block.
-	if h.s.Address() != h.address {
-		return
-	}
-
-	log.Trace().Msg("Forwarding due to primary active address")
-
-	h.opts.SingleAttestationHandler(ctx, data)
 }
 
 func (h *activeHandler) voluntaryExitHandler(ctx context.Context, data *phase0.SignedVoluntaryExit) {

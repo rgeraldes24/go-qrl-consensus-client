@@ -16,9 +16,9 @@ package multi
 import (
 	"context"
 
-	"github.com/attestantio/go-eth2-client/metrics"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/theQRL/go-qrl-consensus-client/metrics"
 )
 
 var (

@@ -19,32 +19,31 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/attestantio/go-eth2-client/spec/altair"
-	"github.com/attestantio/go-eth2-client/spec/capella"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/pkg/errors"
+	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // blindedBeaconBlockBodyJSON is the spec representation of the struct.
 type blindedBeaconBlockBodyJSON struct {
-	RANDAOReveal           string                                `json:"randao_reveal"`
-	ETH1Data               *phase0.ETH1Data                      `json:"eth1_data"`
-	Graffiti               string                                `json:"graffiti"`
-	ProposerSlashings      []*phase0.ProposerSlashing            `json:"proposer_slashings"`
-	AttesterSlashings      []*phase0.AttesterSlashing            `json:"attester_slashings"`
-	Attestations           []*phase0.Attestation                 `json:"attestations"`
-	Deposits               []*phase0.Deposit                     `json:"deposits"`
-	VoluntaryExits         []*phase0.SignedVoluntaryExit         `json:"voluntary_exits"`
-	SyncAggregate          *altair.SyncAggregate                 `json:"sync_aggregate"`
-	ExecutionPayloadHeader *capella.ExecutionPayloadHeader       `json:"execution_payload_header"`
-	BLSToExecutionChanges  []*capella.SignedBLSToExecutionChange `json:"bls_to_execution_changes"`
+	RANDAOReveal           string                          `json:"randao_reveal"`
+	ExecutionData          *phase0.ExecutionData           `json:"execution_data"`
+	Graffiti               string                          `json:"graffiti"`
+	ProposerSlashings      []*phase0.ProposerSlashing      `json:"proposer_slashings"`
+	AttesterSlashings      []*phase0.AttesterSlashing      `json:"attester_slashings"`
+	Attestations           []*phase0.Attestation           `json:"attestations"`
+	Deposits               []*phase0.Deposit               `json:"deposits"`
+	VoluntaryExits         []*phase0.SignedVoluntaryExit   `json:"voluntary_exits"`
+	SyncAggregate          *altair.SyncAggregate           `json:"sync_aggregate"`
+	ExecutionPayloadHeader *capella.ExecutionPayloadHeader `json:"execution_payload_header"`
 }
 
 // MarshalJSON implements json.Marshaler.
 func (b *BlindedBeaconBlockBody) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&blindedBeaconBlockBodyJSON{
 		RANDAOReveal:           fmt.Sprintf("%#x", b.RANDAOReveal),
-		ETH1Data:               b.ETH1Data,
+		ExecutionData:          b.ExecutionData,
 		Graffiti:               fmt.Sprintf("%#x", b.Graffiti),
 		ProposerSlashings:      b.ProposerSlashings,
 		AttesterSlashings:      b.AttesterSlashings,
@@ -53,7 +52,6 @@ func (b *BlindedBeaconBlockBody) MarshalJSON() ([]byte, error) {
 		VoluntaryExits:         b.VoluntaryExits,
 		SyncAggregate:          b.SyncAggregate,
 		ExecutionPayloadHeader: b.ExecutionPayloadHeader,
-		BLSToExecutionChanges:  b.BLSToExecutionChanges,
 	})
 }
 
@@ -83,11 +81,11 @@ func (b *BlindedBeaconBlockBody) unpack(data *blindedBeaconBlockBodyJSON) error 
 
 	copy(b.RANDAOReveal[:], randaoReveal)
 
-	if data.ETH1Data == nil {
+	if data.ExecutionData == nil {
 		return errors.New("ETH1 data missing")
 	}
 
-	b.ETH1Data = data.ETH1Data
+	b.ExecutionData = data.ExecutionData
 	if data.Graffiti == "" {
 		return errors.New("graffiti missing")
 	}
@@ -168,17 +166,6 @@ func (b *BlindedBeaconBlockBody) unpack(data *blindedBeaconBlockBodyJSON) error 
 	}
 
 	b.ExecutionPayloadHeader = data.ExecutionPayloadHeader
-	if data.BLSToExecutionChanges == nil {
-		b.BLSToExecutionChanges = make([]*capella.SignedBLSToExecutionChange, 0)
-	} else {
-		for i := range data.BLSToExecutionChanges {
-			if data.BLSToExecutionChanges[i] == nil {
-				return fmt.Errorf("bls to execution changes entry %d missing", i)
-			}
-		}
-
-		b.BLSToExecutionChanges = data.BLSToExecutionChanges
-	}
 
 	return nil
 }

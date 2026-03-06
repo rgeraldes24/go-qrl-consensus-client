@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/stretchr/testify/require"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 func TestDecodeJSONStruct(t *testing.T) {

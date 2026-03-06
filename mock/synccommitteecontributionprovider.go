@@ -17,9 +17,9 @@ import (
 	"context"
 
 	bitfield "github.com/OffchainLabs/go-bitfield"
-	"github.com/attestantio/go-eth2-client/api"
-	"github.com/attestantio/go-eth2-client/spec/altair"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // SyncCommitteeContribution provides a sync committee contribution.

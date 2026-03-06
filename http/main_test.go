@@ -20,8 +20,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/rs/zerolog"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // timeout for tests.

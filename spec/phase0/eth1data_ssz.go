@@ -7,13 +7,13 @@ import (
 	ssz "github.com/ferranbt/fastssz"
 )
 
-// MarshalSSZ ssz marshals the ETH1Data object
-func (e *ETH1Data) MarshalSSZ() ([]byte, error) {
+// MarshalSSZ ssz marshals the ExecutionData object
+func (e *ExecutionData) MarshalSSZ() ([]byte, error) {
 	return ssz.MarshalSSZ(e)
 }
 
-// MarshalSSZTo ssz marshals the ETH1Data object to a target array
-func (e *ETH1Data) MarshalSSZTo(buf []byte) (dst []byte, err error) {
+// MarshalSSZTo ssz marshals the ExecutionData object to a target array
+func (e *ExecutionData) MarshalSSZTo(buf []byte) (dst []byte, err error) {
 	dst = buf
 
 	// Field (0) 'DepositRoot'
@@ -24,7 +24,7 @@ func (e *ETH1Data) MarshalSSZTo(buf []byte) (dst []byte, err error) {
 
 	// Field (2) 'BlockHash'
 	if size := len(e.BlockHash); size != 32 {
-		err = ssz.ErrBytesLengthFn("ETH1Data.BlockHash", size, 32)
+		err = ssz.ErrBytesLengthFn("ExecutionData.BlockHash", size, 32)
 		return
 	}
 	dst = append(dst, e.BlockHash...)
@@ -32,8 +32,8 @@ func (e *ETH1Data) MarshalSSZTo(buf []byte) (dst []byte, err error) {
 	return
 }
 
-// UnmarshalSSZ ssz unmarshals the ETH1Data object
-func (e *ETH1Data) UnmarshalSSZ(buf []byte) error {
+// UnmarshalSSZ ssz unmarshals the ExecutionData object
+func (e *ExecutionData) UnmarshalSSZ(buf []byte) error {
 	var err error
 	size := uint64(len(buf))
 	if size != 72 {
@@ -55,19 +55,19 @@ func (e *ETH1Data) UnmarshalSSZ(buf []byte) error {
 	return err
 }
 
-// SizeSSZ returns the ssz encoded size in bytes for the ETH1Data object
-func (e *ETH1Data) SizeSSZ() (size int) {
+// SizeSSZ returns the ssz encoded size in bytes for the ExecutionData object
+func (e *ExecutionData) SizeSSZ() (size int) {
 	size = 72
 	return
 }
 
-// HashTreeRoot ssz hashes the ETH1Data object
-func (e *ETH1Data) HashTreeRoot() ([32]byte, error) {
+// HashTreeRoot ssz hashes the ExecutionData object
+func (e *ExecutionData) HashTreeRoot() ([32]byte, error) {
 	return ssz.HashWithDefaultHasher(e)
 }
 
-// HashTreeRootWith ssz hashes the ETH1Data object with a hasher
-func (e *ETH1Data) HashTreeRootWith(hh ssz.HashWalker) (err error) {
+// HashTreeRootWith ssz hashes the ExecutionData object with a hasher
+func (e *ExecutionData) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 	indx := hh.Index()
 
 	// Field (0) 'DepositRoot'
@@ -78,7 +78,7 @@ func (e *ETH1Data) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 
 	// Field (2) 'BlockHash'
 	if size := len(e.BlockHash); size != 32 {
-		err = ssz.ErrBytesLengthFn("ETH1Data.BlockHash", size, 32)
+		err = ssz.ErrBytesLengthFn("ExecutionData.BlockHash", size, 32)
 		return
 	}
 	hh.PutBytes(e.BlockHash)
@@ -87,7 +87,7 @@ func (e *ETH1Data) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 	return
 }
 
-// GetTree ssz hashes the ETH1Data object
-func (e *ETH1Data) GetTree() (*ssz.Node, error) {
+// GetTree ssz hashes the ExecutionData object
+func (e *ExecutionData) GetTree() (*ssz.Node, error) {
 	return ssz.ProofTree(e)
 }

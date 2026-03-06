@@ -16,8 +16,8 @@ package phase0_test
 import (
 	"testing"
 
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/stretchr/testify/require"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 func TestZeroPubKey(t *testing.T) {

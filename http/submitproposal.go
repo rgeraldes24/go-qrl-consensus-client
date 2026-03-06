@@ -20,9 +20,9 @@ import (
 	"errors"
 	"strings"
 
-	client "github.com/attestantio/go-eth2-client"
-	"github.com/attestantio/go-eth2-client/api"
-	"github.com/attestantio/go-eth2-client/spec"
+	client "github.com/theQRL/go-qrl-consensus-client"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
 )
 
 // SubmitProposal submits a proposal.
@@ -115,12 +115,6 @@ func (*Service) submitProposalJSON(_ context.Context,
 		specJSON, err = json.Marshal(proposal.Bellatrix)
 	case spec.DataVersionCapella:
 		specJSON, err = json.Marshal(proposal.Capella)
-	case spec.DataVersionDeneb:
-		specJSON, err = json.Marshal(proposal.Deneb)
-	case spec.DataVersionElectra:
-		specJSON, err = json.Marshal(proposal.Electra)
-	case spec.DataVersionFulu:
-		specJSON, err = json.Marshal(proposal.Fulu)
 	default:
 		err = errors.New("unknown proposal version")
 	}
@@ -147,20 +141,8 @@ func (*Service) submitProposalSSZ(_ context.Context,
 	}
 
 	switch proposal.Version {
-	case spec.DataVersionPhase0:
-		specSSZ, err = proposal.Phase0.MarshalSSZ()
-	case spec.DataVersionAltair:
-		specSSZ, err = proposal.Altair.MarshalSSZ()
-	case spec.DataVersionBellatrix:
-		specSSZ, err = proposal.Bellatrix.MarshalSSZ()
 	case spec.DataVersionCapella:
 		specSSZ, err = proposal.Capella.MarshalSSZ()
-	case spec.DataVersionDeneb:
-		specSSZ, err = proposal.Deneb.MarshalSSZ()
-	case spec.DataVersionElectra:
-		specSSZ, err = proposal.Electra.MarshalSSZ()
-	case spec.DataVersionFulu:
-		specSSZ, err = proposal.Fulu.MarshalSSZ()
 	default:
 		err = errors.New("unknown proposal version")
 	}

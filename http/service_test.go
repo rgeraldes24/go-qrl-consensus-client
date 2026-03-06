@@ -19,10 +19,10 @@ import (
 	"testing"
 	"time"
 
-	client "github.com/attestantio/go-eth2-client"
-	v1 "github.com/attestantio/go-eth2-client/http"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	client "github.com/theQRL/go-qrl-consensus-client"
+	v1 "github.com/theQRL/go-qrl-consensus-client/http"
 )
 
 func TestService(t *testing.T) {
@@ -125,7 +125,6 @@ func TestInterfaces(t *testing.T) {
 	assert.Implements(t, (*client.AttestationPoolProvider)(nil), s)
 	assert.Implements(t, (*client.AttestationsSubmitter)(nil), s)
 	assert.Implements(t, (*client.AttesterDutiesProvider)(nil), s)
-	assert.Implements(t, (*client.BLSToExecutionChangesSubmitter)(nil), s)
 	assert.Implements(t, (*client.BeaconBlockHeadersProvider)(nil), s)
 	assert.Implements(t, (*client.BeaconBlockRootProvider)(nil), s)
 	assert.Implements(t, (*client.BeaconBlockSubmitter)(nil), s)

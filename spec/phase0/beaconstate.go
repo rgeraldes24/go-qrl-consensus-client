@@ -36,8 +36,8 @@ type BeaconState struct {
 	BlockRoots                  []Root `dynssz-size:"SLOTS_PER_HISTORICAL_ROOT,32" ssz-size:"8192,32"`
 	StateRoots                  []Root `dynssz-size:"SLOTS_PER_HISTORICAL_ROOT,32" ssz-size:"8192,32"`
 	HistoricalRoots             []Root `dynssz-max:"HISTORICAL_ROOTS_LIMIT"        ssz-max:"16777216" ssz-size:"?,32"`
-	ETH1Data                    *ETH1Data
-	ETH1DataVotes               []*ETH1Data `dynssz-max:"EPOCHS_PER_ETH1_VOTING_PERIOD*SLOTS_PER_EPOCH" ssz-max:"2048"`
+	ExecutionData               *ExecutionData
+	ExecutionDataVotes          []*ExecutionData `dynssz-max:"EPOCHS_PER_ETH1_VOTING_PERIOD*SLOTS_PER_EPOCH" ssz-max:"2048"`
 	ETH1DepositIndex            uint64
 	Validators                  []*Validator          `dynssz-max:"VALIDATOR_REGISTRY_LIMIT"         ssz-max:"1099511627776"`
 	Balances                    []Gwei                `dynssz-max:"VALIDATOR_REGISTRY_LIMIT"         ssz-max:"1099511627776"`
@@ -61,8 +61,8 @@ type beaconStateJSON struct {
 	BlockRoots                  []string              `json:"block_roots"`
 	StateRoots                  []string              `json:"state_roots"`
 	HistoricalRoots             []string              `json:"historical_roots"`
-	ETH1Data                    *ETH1Data             `json:"eth1_data"`
-	ETH1DataVotes               []*ETH1Data           `json:"eth1_data_votes"`
+	ExecutionData               *ExecutionData        `json:"execution_data"`
+	ExecutionDataVotes          []*ExecutionData      `json:"execution_data_votes"`
 	ETH1DepositIndex            string                `json:"eth1_deposit_index"`
 	Validators                  []*Validator          `json:"validators"`
 	Balances                    []string              `json:"balances"`
@@ -86,8 +86,8 @@ type beaconStateYAML struct {
 	BlockRoots                  []Root                `json:"block_roots"`
 	StateRoots                  []Root                `json:"state_roots"`
 	HistoricalRoots             []Root                `json:"historical_roots"`
-	ETH1Data                    *ETH1Data             `json:"eth1_data"`
-	ETH1DataVotes               []*ETH1Data           `json:"eth1_data_votes"`
+	ExecutionData               *ExecutionData        `json:"execution_data"`
+	ExecutionDataVotes          []*ExecutionData      `json:"execution_data_votes"`
 	ETH1DepositIndex            uint64                `json:"eth1_deposit_index"`
 	Validators                  []*Validator          `json:"validators"`
 	Balances                    []Gwei                `json:"balances"`
@@ -142,8 +142,8 @@ func (s *BeaconState) MarshalJSON() ([]byte, error) {
 		BlockRoots:                  blockRoots,
 		StateRoots:                  stateRoots,
 		HistoricalRoots:             historicalRoots,
-		ETH1Data:                    s.ETH1Data,
-		ETH1DataVotes:               s.ETH1DataVotes,
+		ExecutionData:               s.ExecutionData,
+		ExecutionDataVotes:          s.ExecutionDataVotes,
 		ETH1DepositIndex:            strconv.FormatUint(s.ETH1DepositIndex, 10),
 		Validators:                  s.Validators,
 		Balances:                    balances,
@@ -181,8 +181,8 @@ func (s *BeaconState) MarshalYAML() ([]byte, error) {
 		BlockRoots:                  s.BlockRoots,
 		StateRoots:                  s.StateRoots,
 		HistoricalRoots:             s.HistoricalRoots,
-		ETH1Data:                    s.ETH1Data,
-		ETH1DataVotes:               s.ETH1DataVotes,
+		ExecutionData:               s.ExecutionData,
+		ExecutionDataVotes:          s.ExecutionDataVotes,
 		ETH1DepositIndex:            s.ETH1DepositIndex,
 		Validators:                  s.Validators,
 		Balances:                    s.Balances,
@@ -329,13 +329,13 @@ func (s *BeaconState) unpack(data *beaconStateJSON) error {
 		copy(s.HistoricalRoots[i][:], historicalRoot)
 	}
 
-	if data.ETH1Data == nil {
+	if data.ExecutionData == nil {
 		return errors.New("eth1 data missing")
 	}
 
-	s.ETH1Data = data.ETH1Data
-	// ETH1DataVotes can be empty, but if present the individual votes must not be null.
-	if data.ETH1DataVotes != nil {
+	s.ExecutionData = data.ExecutionData
+	// ExecutionDataVotes can be empty, but if present the individual votes must not be null.
+	if data.ExecutionDataVotes != nil {
 		for i := range data.Validators {
 			if data.Validators[i] == nil {
 				return fmt.Errorf("validators entry %d missing", i)
@@ -343,7 +343,7 @@ func (s *BeaconState) unpack(data *beaconStateJSON) error {
 		}
 	}
 
-	s.ETH1DataVotes = data.ETH1DataVotes
+	s.ExecutionDataVotes = data.ExecutionDataVotes
 	if data.Validators == nil {
 		return errors.New("validators missing")
 	}

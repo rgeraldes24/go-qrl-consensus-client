@@ -20,9 +20,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/attestantio/go-eth2-client/spec/altair"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/pkg/errors"
+	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // beaconStateJSON is the spec representation of the struct.
@@ -35,8 +35,8 @@ type beaconStateJSON struct {
 	BlockRoots                   []string                  `json:"block_roots"`
 	StateRoots                   []string                  `json:"state_roots"`
 	HistoricalRoots              []string                  `json:"historical_roots"`
-	ETH1Data                     *phase0.ETH1Data          `json:"eth1_data"`
-	ETH1DataVotes                []*phase0.ETH1Data        `json:"eth1_data_votes"`
+	ExecutionData                *phase0.ExecutionData     `json:"execution_data"`
+	ExecutionDataVotes           []*phase0.ExecutionData   `json:"execution_data_votes"`
 	ETH1DepositIndex             string                    `json:"eth1_deposit_index"`
 	Validators                   []*phase0.Validator       `json:"validators"`
 	Balances                     []string                  `json:"balances"`
@@ -113,8 +113,8 @@ func (s *BeaconState) MarshalJSON() ([]byte, error) {
 		BlockRoots:                   blockRoots,
 		StateRoots:                   stateRoots,
 		HistoricalRoots:              historicalRoots,
-		ETH1Data:                     s.ETH1Data,
-		ETH1DataVotes:                s.ETH1DataVotes,
+		ExecutionData:                s.ExecutionData,
+		ExecutionDataVotes:           s.ExecutionDataVotes,
 		ETH1DepositIndex:             strconv.FormatUint(s.ETH1DepositIndex, 10),
 		Validators:                   s.Validators,
 		Balances:                     balances,
@@ -254,13 +254,13 @@ func (s *BeaconState) unpack(data *beaconStateJSON) error {
 		copy(s.HistoricalRoots[i][:], historicalRoot)
 	}
 
-	if data.ETH1Data == nil {
+	if data.ExecutionData == nil {
 		return errors.New("eth1 data missing")
 	}
 
-	s.ETH1Data = data.ETH1Data
-	// ETH1DataVotes can be empty, but if present the individual votes must not be null.
-	if data.ETH1DataVotes != nil {
+	s.ExecutionData = data.ExecutionData
+	// ExecutionDataVotes can be empty, but if present the individual votes must not be null.
+	if data.ExecutionDataVotes != nil {
 		for i := range data.Validators {
 			if data.Validators[i] == nil {
 				return fmt.Errorf("validators entry %d missing", i)
@@ -268,7 +268,7 @@ func (s *BeaconState) unpack(data *beaconStateJSON) error {
 		}
 	}
 
-	s.ETH1DataVotes = data.ETH1DataVotes
+	s.ExecutionDataVotes = data.ExecutionDataVotes
 	if data.Validators == nil {
 		return errors.New("validators missing")
 	}

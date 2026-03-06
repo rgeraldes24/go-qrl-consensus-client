@@ -17,13 +17,13 @@ import (
 	"context"
 	"testing"
 
-	consensusclient "github.com/attestantio/go-eth2-client"
-	api "github.com/attestantio/go-eth2-client/api/v1"
-	"github.com/attestantio/go-eth2-client/mock"
-	"github.com/attestantio/go-eth2-client/multi"
-	"github.com/attestantio/go-eth2-client/testclients"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
+	consensusclient "github.com/theQRL/go-qrl-consensus-client"
+	api "github.com/theQRL/go-qrl-consensus-client/api/v1"
+	"github.com/theQRL/go-qrl-consensus-client/mock"
+	"github.com/theQRL/go-qrl-consensus-client/multi"
+	"github.com/theQRL/go-qrl-consensus-client/testclients"
 )
 
 func TestSubmitBeaconCommitteeSubscriptions(t *testing.T) {

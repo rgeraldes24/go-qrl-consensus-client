@@ -20,14 +20,14 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/attestantio/go-eth2-client/spec/altair"
-	"github.com/attestantio/go-eth2-client/spec/capella"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	ssz "github.com/ferranbt/fastssz"
 	"github.com/goccy/go-yaml"
 	"github.com/golang/snappy"
 	clone "github.com/huandu/go-clone/generic"
 	require "github.com/stretchr/testify/require"
+	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // TestConsensusSpec tests the types against the Ethereum consensus spec tests.
@@ -93,8 +93,8 @@ func TestConsensusSpec(t *testing.T) {
 			s:    &phase0.DepositMessage{},
 		},
 		{
-			name: "Eth1Data",
-			s:    &phase0.ETH1Data{},
+			name: "ExecutionData",
+			s:    &phase0.ExecutionData{},
 		},
 		{
 			name: "ExecutionPayload",

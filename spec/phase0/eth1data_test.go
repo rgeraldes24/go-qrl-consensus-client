@@ -18,13 +18,13 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/goccy/go-yaml"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
-func TestETH1DataJSON(t *testing.T) {
+func TestExecutionDataJSON(t *testing.T) {
 	tests := []struct {
 		name  string
 		input []byte
@@ -112,7 +112,7 @@ func TestETH1DataJSON(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			var res phase0.ETH1Data
+			var res phase0.ExecutionData
 			err := json.Unmarshal(test.input, &res)
 			if test.err != "" {
 				require.EqualError(t, err, test.err)
@@ -126,7 +126,7 @@ func TestETH1DataJSON(t *testing.T) {
 	}
 }
 
-func TestETH1DataYAML(t *testing.T) {
+func TestExecutionDataYAML(t *testing.T) {
 	tests := []struct {
 		name  string
 		input []byte
@@ -141,7 +141,7 @@ func TestETH1DataYAML(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			var res phase0.ETH1Data
+			var res phase0.ExecutionData
 			err := yaml.Unmarshal(test.input, &res)
 			if test.err != "" {
 				require.EqualError(t, err, test.err)

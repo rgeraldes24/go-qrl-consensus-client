@@ -1,4 +1,4 @@
-module github.com/attestantio/go-eth2-client
+module github.com/theQRL/go-qrl-consensus-client
 
 go 1.25
 

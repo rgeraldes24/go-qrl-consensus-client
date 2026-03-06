@@ -27,7 +27,7 @@ import (
 // BeaconBlockBody represents the body of a beacon block.
 type BeaconBlockBody struct {
 	RANDAOReveal      BLSSignature `ssz-size:"96"`
-	ETH1Data          *ETH1Data
+	ExecutionData     *ExecutionData
 	Graffiti          [32]byte               `ssz-size:"32"`
 	ProposerSlashings []*ProposerSlashing    `dynssz-max:"MAX_PROPOSER_SLASHINGS" ssz-max:"16"`
 	AttesterSlashings []*AttesterSlashing    `dynssz-max:"MAX_ATTESTER_SLASHINGS" ssz-max:"2"`
@@ -39,7 +39,7 @@ type BeaconBlockBody struct {
 // beaconBlockBodyJSON is the spec representation of the struct.
 type beaconBlockBodyJSON struct {
 	RANDAOReveal      string                 `json:"randao_reveal"`
-	ETH1Data          *ETH1Data              `json:"eth1_data"`
+	ExecutionData     *ExecutionData         `json:"execution_data"`
 	Graffiti          string                 `json:"graffiti"`
 	ProposerSlashings []*ProposerSlashing    `json:"proposer_slashings"`
 	AttesterSlashings []*AttesterSlashing    `json:"attester_slashings"`
@@ -51,7 +51,7 @@ type beaconBlockBodyJSON struct {
 // beaconBlockBodyYAML is the spec representation of the struct.
 type beaconBlockBodyYAML struct {
 	RANDAOReveal      string                 `yaml:"randao_reveal"`
-	ETH1Data          *ETH1Data              `yaml:"eth1_data"`
+	ExecutionData     *ExecutionData         `yaml:"execution_data"`
 	Graffiti          string                 `yaml:"graffiti"`
 	ProposerSlashings []*ProposerSlashing    `yaml:"proposer_slashings"`
 	AttesterSlashings []*AttesterSlashing    `yaml:"attester_slashings"`
@@ -64,7 +64,7 @@ type beaconBlockBodyYAML struct {
 func (b *BeaconBlockBody) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&beaconBlockBodyJSON{
 		RANDAOReveal:      fmt.Sprintf("%#x", b.RANDAOReveal),
-		ETH1Data:          b.ETH1Data,
+		ExecutionData:     b.ExecutionData,
 		Graffiti:          fmt.Sprintf("%#x", b.Graffiti),
 		ProposerSlashings: b.ProposerSlashings,
 		AttesterSlashings: b.AttesterSlashings,
@@ -100,11 +100,11 @@ func (b *BeaconBlockBody) unpack(beaconBlockBodyJSON *beaconBlockBodyJSON) error
 
 	copy(b.RANDAOReveal[:], randaoReveal)
 
-	if beaconBlockBodyJSON.ETH1Data == nil {
+	if beaconBlockBodyJSON.ExecutionData == nil {
 		return errors.New("ETH1 data missing")
 	}
 
-	b.ETH1Data = beaconBlockBodyJSON.ETH1Data
+	b.ExecutionData = beaconBlockBodyJSON.ExecutionData
 	if beaconBlockBodyJSON.Graffiti == "" {
 		return errors.New("graffiti missing")
 	}
@@ -153,7 +153,7 @@ func (b *BeaconBlockBody) unpack(beaconBlockBodyJSON *beaconBlockBodyJSON) error
 func (b *BeaconBlockBody) MarshalYAML() ([]byte, error) {
 	yamlBytes, err := yaml.MarshalWithOptions(&beaconBlockBodyYAML{
 		RANDAOReveal:      fmt.Sprintf("%#x", b.RANDAOReveal),
-		ETH1Data:          b.ETH1Data,
+		ExecutionData:     b.ExecutionData,
 		Graffiti:          fmt.Sprintf("%#x", b.Graffiti),
 		ProposerSlashings: b.ProposerSlashings,
 		AttesterSlashings: b.AttesterSlashings,

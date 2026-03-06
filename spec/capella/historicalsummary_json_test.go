@@ -17,9 +17,9 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/attestantio/go-eth2-client/spec/capella"
-	require "github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/assert"
+	require "github.com/stretchr/testify/require"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 func TestHistoricalSummaryJSON(t *testing.T) {
