@@ -18,6 +18,7 @@ import (
 	"testing"
 
 	require "github.com/stretchr/testify/require"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 func TestParticipationFlagsUnmarshalJSON(t *testing.T) {

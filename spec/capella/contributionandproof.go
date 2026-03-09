@@ -23,14 +23,13 @@ import (
 
 	"github.com/goccy/go-yaml"
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // ContributionAndProof is the Ethereum 2 contribution and proof structure.
 type ContributionAndProof struct {
-	AggregatorIndex capella.ValidatorIndex
+	AggregatorIndex ValidatorIndex
 	Contribution    *SyncCommitteeContribution
-	SelectionProof  capella.BLSSignature `ssz-size:"96"`
+	SelectionProof  MLDSA87Signature `ssz-size:"4627"`
 }
 
 // contributionAndProofJSON is the spec representation of the struct.
@@ -76,7 +75,7 @@ func (a *ContributionAndProof) unpack(contributionAndProofJSON *contributionAndP
 		return errors.Wrap(err, "invalid value for aggregator index")
 	}
 
-	a.AggregatorIndex = capella.ValidatorIndex(aggregatorIndex)
+	a.AggregatorIndex = ValidatorIndex(aggregatorIndex)
 
 	if contributionAndProofJSON.Contribution == nil {
 		return errors.New("contribution missing")
@@ -92,7 +91,7 @@ func (a *ContributionAndProof) unpack(contributionAndProofJSON *contributionAndP
 		return errors.Wrap(err, "invalid value for selection proof")
 	}
 
-	if len(selectionProof) != capella.SignatureLength {
+	if len(selectionProof) != SignatureLength {
 		return errors.New("incorrect length for selection proof")
 	}
 

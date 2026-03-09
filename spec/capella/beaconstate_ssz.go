@@ -5,7 +5,6 @@ package capella
 
 import (
 	ssz "github.com/ferranbt/fastssz"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // MarshalSSZ ssz marshals the BeaconState object
@@ -85,8 +84,8 @@ func (b *BeaconState) MarshalSSZTo(buf []byte) (dst []byte, err error) {
 	dst = ssz.WriteOffset(dst, offset)
 	offset += len(b.ExecutionDataVotes) * 72
 
-	// Field (10) 'ETH1DepositIndex'
-	dst = ssz.MarshalUint64(dst, b.ETH1DepositIndex)
+	// Field (10) 'ExecutionDepositIndex'
+	dst = ssz.MarshalUint64(dst, b.ExecutionDepositIndex)
 
 	// Offset (11) 'Validators'
 	dst = ssz.WriteOffset(dst, offset)
@@ -354,8 +353,8 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 		return ssz.ErrOffset
 	}
 
-	// Field (10) 'ETH1DepositIndex'
-	b.ETH1DepositIndex = ssz.UnmarshallUint64(buf[524544:524552])
+	// Field (10) 'ExecutionDepositIndex'
+	b.ExecutionDepositIndex = ssz.UnmarshallUint64(buf[524544:524552])
 
 	// Offset (11) 'Validators'
 	if o11 = ssz.ReadOffset(buf[524552:524556]); o11 > size || o9 > o11 {
@@ -494,10 +493,10 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 		if err != nil {
 			return err
 		}
-		b.Validators = make([]*capella.Validator, num)
+		b.Validators = make([]*Validator, num)
 		for ii := 0; ii < num; ii++ {
 			if b.Validators[ii] == nil {
-				b.Validators[ii] = new(capella.Validator)
+				b.Validators[ii] = new(Validator)
 			}
 			if err = b.Validators[ii].UnmarshalSSZ(buf[ii*121 : (ii+1)*121]); err != nil {
 				return err
@@ -512,9 +511,9 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 		if err != nil {
 			return err
 		}
-		b.Balances = make([]capella.Gwei, num)
+		b.Balances = make([]Gwei, num)
 		for ii := 0; ii < num; ii++ {
-			b.Balances[ii] = capella.Gwei(ssz.UnmarshallUint64(buf[ii*8 : (ii+1)*8]))
+			b.Balances[ii] = Gwei(ssz.UnmarshallUint64(buf[ii*8 : (ii+1)*8]))
 		}
 	}
 
@@ -525,9 +524,9 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 		if err != nil {
 			return err
 		}
-		b.PreviousEpochParticipation = make([]capella.ParticipationFlags, num)
+		b.PreviousEpochParticipation = make([]ParticipationFlags, num)
 		for ii := 0; ii < num; ii++ {
-			b.PreviousEpochParticipation[ii] = capella.ParticipationFlags(ssz.UnmarshallUint8(buf[ii*1 : (ii+1)*1]))
+			b.PreviousEpochParticipation[ii] = ParticipationFlags(ssz.UnmarshallUint8(buf[ii*1 : (ii+1)*1]))
 		}
 	}
 
@@ -538,9 +537,9 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 		if err != nil {
 			return err
 		}
-		b.CurrentEpochParticipation = make([]capella.ParticipationFlags, num)
+		b.CurrentEpochParticipation = make([]ParticipationFlags, num)
 		for ii := 0; ii < num; ii++ {
-			b.CurrentEpochParticipation[ii] = capella.ParticipationFlags(ssz.UnmarshallUint8(buf[ii*1 : (ii+1)*1]))
+			b.CurrentEpochParticipation[ii] = ParticipationFlags(ssz.UnmarshallUint8(buf[ii*1 : (ii+1)*1]))
 		}
 	}
 
@@ -645,7 +644,7 @@ func (b *BeaconState) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 
 	// Field (3) 'Fork'
 	if b.Fork == nil {
-		b.Fork = new(capella.Fork)
+		b.Fork = new(Fork)
 	}
 	if err = b.Fork.HashTreeRootWith(hh); err != nil {
 		return
@@ -653,7 +652,7 @@ func (b *BeaconState) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 
 	// Field (4) 'LatestBlockHeader'
 	if b.LatestBlockHeader == nil {
-		b.LatestBlockHeader = new(capella.BeaconBlockHeader)
+		b.LatestBlockHeader = new(BeaconBlockHeader)
 	}
 	if err = b.LatestBlockHeader.HashTreeRootWith(hh); err != nil {
 		return
@@ -713,7 +712,7 @@ func (b *BeaconState) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 
 	// Field (8) 'ExecutionData'
 	if b.ExecutionData == nil {
-		b.ExecutionData = new(capella.ExecutionData)
+		b.ExecutionData = new(ExecutionData)
 	}
 	if err = b.ExecutionData.HashTreeRootWith(hh); err != nil {
 		return
@@ -735,8 +734,8 @@ func (b *BeaconState) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 		hh.MerkleizeWithMixin(subIndx, num, 2048)
 	}
 
-	// Field (10) 'ETH1DepositIndex'
-	hh.PutUint64(b.ETH1DepositIndex)
+	// Field (10) 'ExecutionDepositIndex'
+	hh.PutUint64(b.ExecutionDepositIndex)
 
 	// Field (11) 'Validators'
 	{
@@ -838,7 +837,7 @@ func (b *BeaconState) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 
 	// Field (18) 'PreviousJustifiedCheckpoint'
 	if b.PreviousJustifiedCheckpoint == nil {
-		b.PreviousJustifiedCheckpoint = new(capella.Checkpoint)
+		b.PreviousJustifiedCheckpoint = new(Checkpoint)
 	}
 	if err = b.PreviousJustifiedCheckpoint.HashTreeRootWith(hh); err != nil {
 		return
@@ -846,7 +845,7 @@ func (b *BeaconState) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 
 	// Field (19) 'CurrentJustifiedCheckpoint'
 	if b.CurrentJustifiedCheckpoint == nil {
-		b.CurrentJustifiedCheckpoint = new(capella.Checkpoint)
+		b.CurrentJustifiedCheckpoint = new(Checkpoint)
 	}
 	if err = b.CurrentJustifiedCheckpoint.HashTreeRootWith(hh); err != nil {
 		return
@@ -854,7 +853,7 @@ func (b *BeaconState) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 
 	// Field (20) 'FinalizedCheckpoint'
 	if b.FinalizedCheckpoint == nil {
-		b.FinalizedCheckpoint = new(capella.Checkpoint)
+		b.FinalizedCheckpoint = new(Checkpoint)
 	}
 	if err = b.FinalizedCheckpoint.HashTreeRootWith(hh); err != nil {
 		return
@@ -877,7 +876,7 @@ func (b *BeaconState) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 
 	// Field (22) 'CurrentSyncCommittee'
 	if b.CurrentSyncCommittee == nil {
-		b.CurrentSyncCommittee = new(capella.SyncCommittee)
+		b.CurrentSyncCommittee = new(SyncCommittee)
 	}
 	if err = b.CurrentSyncCommittee.HashTreeRootWith(hh); err != nil {
 		return
@@ -885,7 +884,7 @@ func (b *BeaconState) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 
 	// Field (23) 'NextSyncCommittee'
 	if b.NextSyncCommittee == nil {
-		b.NextSyncCommittee = new(capella.SyncCommittee)
+		b.NextSyncCommittee = new(SyncCommittee)
 	}
 	if err = b.NextSyncCommittee.HashTreeRootWith(hh); err != nil {
 		return

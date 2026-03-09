@@ -80,7 +80,7 @@ func (b *BlindedBeaconBlockBody) unpack(data *blindedBeaconBlockBodyJSON) error 
 	copy(b.RANDAOReveal[:], randaoReveal)
 
 	if data.ExecutionData == nil {
-		return errors.New("ETH1 data missing")
+		return errors.New("Execution data missing")
 	}
 
 	b.ExecutionData = data.ExecutionData

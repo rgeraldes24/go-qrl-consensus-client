@@ -16,6 +16,8 @@ package capella_test
 // Create a test to verify gwei.unmarshalJSON
 import (
 	"testing"
+
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 func TestSlotUnmarshalJSON(t *testing.T) {

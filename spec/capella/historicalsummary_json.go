@@ -56,7 +56,7 @@ func (h *HistoricalSummary) unpack(data *historicalSummaryJSON) error {
 		return errors.Wrap(err, "invalid value for block summary root")
 	}
 
-	if len(blockSummaryRoot) != capella.RootLength {
+	if len(blockSummaryRoot) != RootLength {
 		return errors.New("incorrect length for block summary root")
 	}
 
@@ -71,7 +71,7 @@ func (h *HistoricalSummary) unpack(data *historicalSummaryJSON) error {
 		return errors.Wrap(err, "invalid value for state summary root")
 	}
 
-	if len(stateSummaryRoot) != capella.RootLength {
+	if len(stateSummaryRoot) != RootLength {
 		return errors.New("incorrect length for state summary root")
 	}
 

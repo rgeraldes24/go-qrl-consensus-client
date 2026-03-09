@@ -99,16 +99,16 @@ func (v *VersionedAttestation) HashTreeRoot() ([32]byte, error) {
 }
 
 // Signature returns the signature of the attestation.
-func (v *VersionedAttestation) Signature() (capella.BLSSignature, error) {
+func (v *VersionedAttestation) Signature() (capella.MLDSA87Signature, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
-			return capella.BLSSignature{}, errors.New("no Capella attestation")
+			return capella.MLDSA87Signature{}, errors.New("no Capella attestation")
 		}
 
 		return v.Capella.Signature, nil
 	default:
-		return capella.BLSSignature{}, errors.New("unknown version")
+		return capella.MLDSA87Signature{}, errors.New("unknown version")
 	}
 }
 

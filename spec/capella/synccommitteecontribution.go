@@ -33,7 +33,7 @@ type SyncCommitteeContribution struct {
 	SubcommitteeIndex uint64
 	// AggregationBits size is SYNC_COMMITTEE_SIZE // SYNC_COMMITTEE_SUBNET_COUNT
 	AggregationBits bitfield.Bitvector128 `dynssz-size:"SYNC_COMMITTEE_SIZE/SYNC_COMMITTEE_SUBNET_COUNT" ssz-size:"16"`
-	Signature       BLSSignature          `ssz-size:"96"`
+	Signature       MLDSA87Signature      `ssz-size:"4627"`
 }
 
 // syncCommitteeContributionJSON is the spec representation of the struct.

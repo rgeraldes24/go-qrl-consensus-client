@@ -35,7 +35,7 @@ type beaconStateJSON struct {
 	HistoricalRoots              []string                `json:"historical_roots"`
 	ExecutionData                *ExecutionData          `json:"execution_data"`
 	ExecutionDataVotes           []*ExecutionData        `json:"execution_data_votes"`
-	ETH1DepositIndex             string                  `json:"eth1_deposit_index"`
+	ExecutionDepositIndex        string                  `json:"execution_deposit_index"`
 	Validators                   []*Validator            `json:"validators"`
 	Balances                     []string                `json:"balances"`
 	RANDAOMixes                  []string                `json:"randao_mixes"`
@@ -113,7 +113,7 @@ func (s *BeaconState) MarshalJSON() ([]byte, error) {
 		HistoricalRoots:              historicalRoots,
 		ExecutionData:                s.ExecutionData,
 		ExecutionDataVotes:           s.ExecutionDataVotes,
-		ETH1DepositIndex:             strconv.FormatUint(s.ETH1DepositIndex, 10),
+		ExecutionDepositIndex:        strconv.FormatUint(s.ExecutionDepositIndex, 10),
 		Validators:                   s.Validators,
 		Balances:                     balances,
 		RANDAOMixes:                  randaoMixes,
@@ -278,11 +278,11 @@ func (s *BeaconState) unpack(data *beaconStateJSON) error {
 	}
 
 	s.Validators = data.Validators
-	if data.ETH1DepositIndex == "" {
+	if data.ExecutionDepositIndex == "" {
 		return errors.New("eth1 deposit index missing")
 	}
 
-	if s.ETH1DepositIndex, err = strconv.ParseUint(data.ETH1DepositIndex, 10, 64); err != nil {
+	if s.ExecutionDepositIndex, err = strconv.ParseUint(data.ExecutionDepositIndex, 10, 64); err != nil {
 		return errors.Wrap(err, "invalid value for eth1 deposit index")
 	}
 

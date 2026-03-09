@@ -29,7 +29,7 @@ import (
 type Attestation struct {
 	AggregationBits bitfield.Bitlist `dynssz-max:"MAX_VALIDATORS_PER_COMMITTEE" ssz-max:"2048"`
 	Data            *AttestationData
-	Signature       BLSSignature `ssz-size:"96"`
+	Signature       MLDSA87Signature `ssz-size:"4627"`
 }
 
 // attestationJSON is a raw representation of the struct.

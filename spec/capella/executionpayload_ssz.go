@@ -194,13 +194,13 @@ func (e *ExecutionPayload) UnmarshalSSZ(buf []byte) error {
 		if err != nil {
 			return err
 		}
-		e.Transactions = make([]capella.Transaction, num)
+		e.Transactions = make([]Transaction, num)
 		err = ssz.UnmarshalDynamic(buf, num, func(indx int, buf []byte) (err error) {
 			if len(buf) > 1073741824 {
 				return ssz.ErrBytesLength
 			}
 			if cap(e.Transactions[indx]) == 0 {
-				e.Transactions[indx] = capella.Transaction(make([]byte, 0, len(buf)))
+				e.Transactions[indx] = Transaction(make([]byte, 0, len(buf)))
 			}
 			e.Transactions[indx] = append(e.Transactions[indx], buf...)
 			return nil

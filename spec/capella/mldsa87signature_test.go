@@ -1,4 +1,4 @@
-// Copyright © 2022, 2023 Attestant Limited.
+// Copyright © 2024 Attestant Limited.
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -11,27 +11,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package capella
+package capella_test
 
 import (
-	"fmt"
+	"testing"
 
-	"github.com/goccy/go-yaml"
+	"github.com/stretchr/testify/require"
 	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
-// SignedBlindedBeaconBlock is a signed beacon block.
-type SignedBlindedBeaconBlock struct {
-	Message   *BlindedBeaconBlock
-	Signature capella.MLDSA87Signature `ssz-size:"4627"`
-}
+func TestZeroMLDSA87Signature(t *testing.T) {
+	zeroSignature := &capella.MLDSA87Signature{}
+	require.True(t, zeroSignature.IsZero())
 
-// String returns a string version of the structure.
-func (s *SignedBlindedBeaconBlock) String() string {
-	data, err := yaml.Marshal(s)
-	if err != nil {
-		return fmt.Sprintf("ERR: %v", err)
-	}
-
-	return string(data)
+	nonZeroSignature := &capella.MLDSA87Signature{0x01}
+	require.False(t, nonZeroSignature.IsZero())
 }

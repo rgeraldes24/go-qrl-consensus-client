@@ -49,7 +49,7 @@ func TestAttestationRewards(t *testing.T) {
 				Indices: []capella.ValidatorIndex{
 					0, 1,
 				},
-				PubKeys: []capella.BLSPubKey{
+				PubKeys: []capella.MLDSA87PubKey{
 					*mustParsePubKey("0xb2ff4716ed345b05dd1dfc6a5a9fa70856d8c75dcc9e881dd2f766d5f891326f0d10e96f3a444ce6c912b69c22c6754d"),
 					*mustParsePubKey("0x8e323fd501233cd4d1b9d63d74076a38de50f2f584b001a5ac2412e4e46adb26d2fb2a6041e7e8c57cd4df0916729219"),
 				},

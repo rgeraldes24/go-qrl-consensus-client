@@ -5,7 +5,6 @@ package capella
 
 import (
 	ssz "github.com/ferranbt/fastssz"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // MarshalSSZ ssz marshals the ContributionAndProof object
@@ -43,7 +42,7 @@ func (c *ContributionAndProof) UnmarshalSSZ(buf []byte) error {
 	}
 
 	// Field (0) 'AggregatorIndex'
-	c.AggregatorIndex = capella.ValidatorIndex(ssz.UnmarshallUint64(buf[0:8]))
+	c.AggregatorIndex = ValidatorIndex(ssz.UnmarshallUint64(buf[0:8]))
 
 	// Field (1) 'Contribution'
 	if c.Contribution == nil {

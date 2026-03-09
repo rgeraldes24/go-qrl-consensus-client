@@ -39,7 +39,7 @@ func TestSubmitVoluntaryExit(t *testing.T) {
 					ValidatorIndex: 12345,
 					Epoch:          2,
 				},
-				Signature: capella.BLSSignature{},
+				Signature: capella.MLDSA87Signature{},
 			},
 		},
 	}

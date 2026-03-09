@@ -49,7 +49,7 @@ func TestSyncCommitteeRewards(t *testing.T) {
 				Indices: []capella.ValidatorIndex{
 					286437,
 				},
-				PubKeys: []capella.BLSPubKey{
+				PubKeys: []capella.MLDSA87PubKey{
 					*mustParsePubKey("0xb7dd1c63cfe60163ffcb889d502b0af3b8ab41cb0dc95edb46eccfeb79e984886fe54f800e813ae09d48e98087010a10"),
 				},
 			},

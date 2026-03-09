@@ -32,7 +32,7 @@ type beaconStateYAML struct {
 	HistoricalRoots              []string                `json:"historical_roots"`
 	ExecutionData                *ExecutionData          `json:"execution_data"`
 	ExecutionDataVotes           []*ExecutionData        `json:"execution_data_votes"`
-	ETH1DepositIndex             uint64                  `json:"eth1_deposit_index"`
+	ExecutionDepositIndex        uint64                  `json:"execution_deposit_index"`
 	Validators                   []*Validator            `json:"validators"`
 	Balances                     []uint64                `json:"balances"`
 	RANDAOMixes                  []string                `json:"randao_mixes"`
@@ -105,7 +105,7 @@ func (s *BeaconState) MarshalYAML() ([]byte, error) {
 		HistoricalRoots:              historicalRoots,
 		ExecutionData:                s.ExecutionData,
 		ExecutionDataVotes:           s.ExecutionDataVotes,
-		ETH1DepositIndex:             s.ETH1DepositIndex,
+		ExecutionDepositIndex:        s.ExecutionDepositIndex,
 		Validators:                   s.Validators,
 		Balances:                     balances,
 		RANDAOMixes:                  randaoMixes,

@@ -33,7 +33,7 @@ func TestBeaconStateRoot(t *testing.T) {
 	tests := []struct {
 		name     string
 		opts     *api.BeaconStateRootOpts
-		expected *capella.BLSSignature
+		expected *capella.MLDSA87Signature
 		err      string
 		errCode  int
 	}{

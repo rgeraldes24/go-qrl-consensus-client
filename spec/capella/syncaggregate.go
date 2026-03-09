@@ -28,7 +28,7 @@ import (
 // SyncAggregate is the Ethereum 2 sync aggregate structure.
 type SyncAggregate struct {
 	SyncCommitteeBits      bitfield.Bitvector512 `dynssz-size:"SYNC_COMMITTEE_SIZE/8" ssz-size:"64"`
-	SyncCommitteeSignature BLSSignature          `ssz-size:"96"`
+	SyncCommitteeSignature MLDSA87Signature      `ssz-size:"4627"`
 }
 
 // syncAggregateJSON is the spec representation of the struct.

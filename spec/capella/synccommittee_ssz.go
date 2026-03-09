@@ -44,7 +44,7 @@ func (s *SyncCommittee) UnmarshalSSZ(buf []byte) error {
 	}
 
 	// Field (0) 'Pubkeys'
-	s.Pubkeys = make([]BLSPubKey, 512)
+	s.Pubkeys = make([]MLDSA87PubKey, 512)
 	for ii := 0; ii < 512; ii++ {
 		copy(s.Pubkeys[ii][:], buf[0:24576][ii*48:(ii+1)*48])
 	}

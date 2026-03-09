@@ -30,7 +30,7 @@ type IndexedAttestation struct {
 	// Currently using primitives as sszgen does not handle []ValidatorIndex
 	AttestingIndices []uint64 `ssz-max:"2048"`
 	Data             *AttestationData
-	Signature        BLSSignature `ssz-size:"96"`
+	Signature        MLDSA87Signature `ssz-size:"4627"`
 }
 
 // indexedAttestationJSON is the spec representation of the struct.

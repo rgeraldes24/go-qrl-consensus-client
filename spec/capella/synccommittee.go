@@ -26,8 +26,8 @@ import (
 
 // SyncCommittee is the Ethereum 2 sync committee structure.
 type SyncCommittee struct {
-	Pubkeys         []BLSPubKey `dynssz-size:"SYNC_COMMITTEE_SIZE,48" ssz-size:"512,48"`
-	AggregatePubkey BLSPubKey   `ssz-size:"48"`
+	Pubkeys         []MLDSA87PubKey `dynssz-size:"SYNC_COMMITTEE_SIZE,48" ssz-size:"512,48"`
+	AggregatePubkey MLDSA87PubKey   `ssz-size:"2592"`
 }
 
 // syncCommitteeJSON is the spec representation of the struct.
@@ -70,7 +70,7 @@ func (s *SyncCommittee) unpack(syncCommitteeJSON *syncCommitteeJSON) error {
 		return errors.New("public keys missing")
 	}
 
-	s.Pubkeys = make([]BLSPubKey, len(syncCommitteeJSON.Pubkeys))
+	s.Pubkeys = make([]MLDSA87PubKey, len(syncCommitteeJSON.Pubkeys))
 	for i := range syncCommitteeJSON.Pubkeys {
 		pubKey, err := hex.DecodeString(strings.TrimPrefix(syncCommitteeJSON.Pubkeys[i], "0x"))
 		if err != nil {

@@ -26,6 +26,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/theQRL/go-qrl-consensus-client/http"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 func TestSpecConformance(t *testing.T) {
@@ -34,7 +35,6 @@ func TestSpecConformance(t *testing.T) {
 
 	expected := map[string]interface{}{
 		"BASE_REWARD_FACTOR":                    uint64(0),
-		"BLS_WITHDRAWAL_PREFIX":                 []byte{},
 		"CHURN_LIMIT_QUOTIENT":                  uint64(0),
 		"CONFIG_NAME":                           "",
 		"DEPOSIT_CHAIN_ID":                      uint64(0),
@@ -50,11 +50,11 @@ func TestSpecConformance(t *testing.T) {
 		"DOMAIN_APPLICATION_BUILDER":            capella.DomainType{},
 		"EFFECTIVE_BALANCE_INCREMENT":           uint64(0),
 		"EJECTION_BALANCE":                      uint64(0),
-		"EPOCHS_PER_ETH1_VOTING_PERIOD":         uint64(0),
+		"EPOCHS_PER_EXECUTION_VOTING_PERIOD":    uint64(0),
 		"EPOCHS_PER_HISTORICAL_VECTOR":          uint64(0),
 		"EPOCHS_PER_RANDOM_SUBNET_SUBSCRIPTION": uint64(0),
 		"EPOCHS_PER_SLASHINGS_VECTOR":           uint64(0),
-		"ETH1_FOLLOW_DISTANCE":                  uint64(0),
+		"EXECUTION_FOLLOW_DISTANCE":             uint64(0),
 		"GENESIS_DELAY":                         time.Duration(0),
 		"GENESIS_FORK_VERSION":                  capella.Version{},
 		"HISTORICAL_ROOTS_LIMIT":                uint64(0),
@@ -84,7 +84,7 @@ func TestSpecConformance(t *testing.T) {
 		"PROPOSER_REWARD_QUOTIENT":              uint64(0),
 		"RANDOM_SUBNETS_PER_VALIDATOR":          uint64(0),
 		"SAFE_SLOTS_TO_UPDATE_JUSTIFIED":        uint64(0),
-		"SECONDS_PER_ETH1_BLOCK":                time.Duration(0),
+		"SECONDS_PER_EXECUTION_BLOCK":           time.Duration(0),
 		"SECONDS_PER_SLOT":                      time.Duration(0),
 		"SHARD_COMMITTEE_PERIOD":                uint64(0),
 		"SHUFFLE_ROUND_COUNT":                   uint64(0),

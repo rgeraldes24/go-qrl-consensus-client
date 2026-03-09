@@ -30,21 +30,21 @@ import (
 //
 //nolint:revive
 type ExecutionPayload struct {
-	ParentHash    capella.Hash32           `ssz-size:"32"`
-	FeeRecipient  capella.ExecutionAddress `ssz-size:"20"`
-	StateRoot     [32]byte                 `ssz-size:"32"`
-	ReceiptsRoot  [32]byte                 `ssz-size:"32"`
-	LogsBloom     [256]byte                `ssz-size:"256"`
-	PrevRandao    [32]byte                 `ssz-size:"32"`
+	ParentHash    Hash32           `ssz-size:"32"`
+	FeeRecipient  ExecutionAddress `ssz-size:"20"`
+	StateRoot     [32]byte         `ssz-size:"32"`
+	ReceiptsRoot  [32]byte         `ssz-size:"32"`
+	LogsBloom     [256]byte        `ssz-size:"256"`
+	PrevRandao    [32]byte         `ssz-size:"32"`
 	BlockNumber   uint64
 	GasLimit      uint64
 	GasUsed       uint64
 	Timestamp     uint64
-	ExtraData     []byte                `dynssz-max:"MAX_EXTRA_DATA_BYTES"                                   ssz-max:"32"`
-	BaseFeePerGas [32]byte              `ssz-size:"32"`
-	BlockHash     capella.Hash32        `ssz-size:"32"`
-	Transactions  []capella.Transaction `dynssz-max:"MAX_TRANSACTIONS_PER_PAYLOAD,MAX_BYTES_PER_TRANSACTION" ssz-max:"1048576,1073741824" ssz-size:"?,?"`
-	Withdrawals   []*Withdrawal         `dynssz-max:"MAX_WITHDRAWALS_PER_PAYLOAD"                            ssz-max:"16"`
+	ExtraData     []byte        `dynssz-max:"MAX_EXTRA_DATA_BYTES"                                   ssz-max:"32"`
+	BaseFeePerGas [32]byte      `ssz-size:"32"`
+	BlockHash     Hash32        `ssz-size:"32"`
+	Transactions  []Transaction `dynssz-max:"MAX_TRANSACTIONS_PER_PAYLOAD,MAX_BYTES_PER_TRANSACTION" ssz-max:"1048576,1073741824" ssz-size:"?,?"`
+	Withdrawals   []*Withdrawal `dynssz-max:"MAX_WITHDRAWALS_PER_PAYLOAD"                            ssz-max:"16"`
 }
 
 // executionPayloadJSON is the spec representation of the struct.
@@ -212,7 +212,7 @@ func (e *ExecutionPayload) unpack(data *executionPayloadJSON) error {
 		return errors.Wrap(err, "invalid value for parent hash")
 	}
 
-	if len(parentHash) != capella.Hash32Length {
+	if len(parentHash) != Hash32Length {
 		return errors.New("incorrect length for parent hash")
 	}
 
@@ -227,7 +227,7 @@ func (e *ExecutionPayload) unpack(data *executionPayloadJSON) error {
 		return errors.Wrap(err, "invalid value for fee recipient")
 	}
 
-	if len(feeRecipient) != capella.FeeRecipientLength {
+	if len(feeRecipient) != FeeRecipientLength {
 		return errors.New("incorrect length for fee recipient")
 	}
 
@@ -413,7 +413,7 @@ func (e *ExecutionPayload) unpack(data *executionPayloadJSON) error {
 		return errors.Wrap(err, "invalid value for block hash")
 	}
 
-	if len(blockHash) != capella.Hash32Length {
+	if len(blockHash) != Hash32Length {
 		return errors.New("incorrect length for block hash")
 	}
 
@@ -423,11 +423,11 @@ func (e *ExecutionPayload) unpack(data *executionPayloadJSON) error {
 		return errors.New("transactions missing")
 	}
 
-	if len(data.Transactions) > capella.MaxTransactionsPerPayload {
+	if len(data.Transactions) > MaxTransactionsPerPayload {
 		return errors.Wrap(err, "incorrect length for transactions")
 	}
 
-	transactions := make([]capella.Transaction, len(data.Transactions))
+	transactions := make([]Transaction, len(data.Transactions))
 	for i := range data.Transactions {
 		if data.Transactions[i] == "" {
 			return errors.New("transaction missing")
@@ -438,7 +438,7 @@ func (e *ExecutionPayload) unpack(data *executionPayloadJSON) error {
 			return errors.Wrap(err, "invalid value for transaction")
 		}
 
-		if len(transactions[i]) > capella.MaxBytesPerTransaction {
+		if len(transactions[i]) > MaxBytesPerTransaction {
 			return errors.Wrap(err, "incorrect length for transaction")
 		}
 	}
