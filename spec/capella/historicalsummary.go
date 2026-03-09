@@ -17,13 +17,12 @@ import (
 	"fmt"
 
 	"github.com/goccy/go-yaml"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // HistoricalSummary represents a summary of past consensus state.
 type HistoricalSummary struct {
-	BlockSummaryRoot phase0.Root `ssz-size:"32"`
-	StateSummaryRoot phase0.Root `ssz-size:"32"`
+	BlockSummaryRoot Root `ssz-size:"32"`
+	StateSummaryRoot Root `ssz-size:"32"`
 }
 
 // String returns a string version of the structure.

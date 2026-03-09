@@ -22,13 +22,12 @@ import (
 
 	"github.com/goccy/go-yaml"
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // SignedBeaconBlock is a signed beacon block.
 type SignedBeaconBlock struct {
 	Message   *BeaconBlock
-	Signature phase0.BLSSignature `ssz-size:"96"`
+	Signature BLSSignature `ssz-size:"96"`
 }
 
 // signedBeaconBlockJSON is the spec representation of the struct.
@@ -110,7 +109,7 @@ func (s *SignedBeaconBlock) unpack(data *signedBeaconBlockJSON) error {
 		return errors.Wrap(err, "invalid value for signature")
 	}
 
-	if len(signature) != phase0.SignatureLength {
+	if len(signature) != SignatureLength {
 		return fmt.Errorf("incorrect length %d for signature", len(signature))
 	}
 

@@ -20,11 +20,11 @@ import (
 	"errors"
 
 	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // SubmitVoluntaryExit submits a voluntary exit.
-func (s *Service) SubmitVoluntaryExit(ctx context.Context, voluntaryExit *phase0.SignedVoluntaryExit) error {
+func (s *Service) SubmitVoluntaryExit(ctx context.Context, voluntaryExit *capella.SignedVoluntaryExit) error {
 	if err := s.assertIsSynced(ctx); err != nil {
 		return err
 	}

@@ -17,15 +17,15 @@ import (
 	"fmt"
 
 	"github.com/goccy/go-yaml"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // BlindedBeaconBlock represents a blinded beacon block.
 type BlindedBeaconBlock struct {
-	Slot          phase0.Slot
-	ProposerIndex phase0.ValidatorIndex
-	ParentRoot    phase0.Root `ssz-size:"32"`
-	StateRoot     phase0.Root `ssz-size:"32"`
+	Slot          capella.Slot
+	ProposerIndex capella.ValidatorIndex
+	ParentRoot    capella.Root `ssz-size:"32"`
+	StateRoot     capella.Root `ssz-size:"32"`
 	Body          *BlindedBeaconBlockBody
 }
 

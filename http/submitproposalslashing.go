@@ -20,11 +20,11 @@ import (
 	"errors"
 
 	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // SubmitProposalSlashing submits a proposal slashing.
-func (s *Service) SubmitProposalSlashing(ctx context.Context, slashing *phase0.ProposerSlashing) error {
+func (s *Service) SubmitProposalSlashing(ctx context.Context, slashing *capella.ProposerSlashing) error {
 	if err := s.assertIsSynced(ctx); err != nil {
 		return err
 	}

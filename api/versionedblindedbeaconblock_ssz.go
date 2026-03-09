@@ -46,7 +46,7 @@ func (v *VersionedBlindedBeaconBlock) UnmarshalSSZ(buf []byte) error {
 	}
 
 	tail := buf
-	var o1, o2, o3, o4, o5 uint64
+	var o1, o2, o3 uint64
 
 	// Field (0) 'Version'
 	v.Version = spec.DataVersion(ssz.UnmarshallUint64(buf[0:8]))

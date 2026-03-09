@@ -23,7 +23,7 @@ import (
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	"github.com/theQRL/go-qrl-consensus-client/mock"
 	"github.com/theQRL/go-qrl-consensus-client/multi"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 	"github.com/theQRL/go-qrl-consensus-client/testclients"
 )
 
@@ -55,7 +55,7 @@ func TestSyncCommitteeContribution(t *testing.T) {
 		res, err := multiClient.(consensusclient.SyncCommitteeContributionProvider).SyncCommitteeContribution(ctx, &api.SyncCommitteeContributionOpts{
 			Slot:              1,
 			SubcommitteeIndex: 2,
-			BeaconBlockRoot:   phase0.Root{},
+			BeaconBlockRoot:   capella.Root{},
 		})
 		require.NoError(t, err)
 		require.NotNil(t, res)

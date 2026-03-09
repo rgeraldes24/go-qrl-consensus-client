@@ -21,17 +21,17 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // SyncCommitteeDuty is the data regarding which validators have the duty to contribute to sync committees in a slot.
 type SyncCommitteeDuty struct {
 	// PubKey is the public key of the validator that should contribute.
-	PubKey phase0.BLSPubKey
+	PubKey capella.BLSPubKey
 	// ValidatorIndex is the index of the validator that should contribute.
-	ValidatorIndex phase0.ValidatorIndex
+	ValidatorIndex capella.ValidatorIndex
 	// ValidatorSyncCommitteeIndices is the index of the validator in the list of validators in the committee.
-	ValidatorSyncCommitteeIndices []phase0.CommitteeIndex
+	ValidatorSyncCommitteeIndices []capella.CommitteeIndex
 }
 
 // syncCommitteeDutyJSON is the spec representation of the struct.
@@ -88,20 +88,20 @@ func (s *SyncCommitteeDuty) UnmarshalJSON(input []byte) error {
 		return errors.Wrap(err, "invalid value for validator index")
 	}
 
-	s.ValidatorIndex = phase0.ValidatorIndex(validatorIndex)
+	s.ValidatorIndex = capella.ValidatorIndex(validatorIndex)
 
 	if len(syncCommitteeDutyJSON.ValidatorSyncCommitteeIndices) == 0 {
 		return errors.New("validator sync committee indices missing")
 	}
 
-	s.ValidatorSyncCommitteeIndices = make([]phase0.CommitteeIndex, len(syncCommitteeDutyJSON.ValidatorSyncCommitteeIndices))
+	s.ValidatorSyncCommitteeIndices = make([]capella.CommitteeIndex, len(syncCommitteeDutyJSON.ValidatorSyncCommitteeIndices))
 	for i := range syncCommitteeDutyJSON.ValidatorSyncCommitteeIndices {
 		committeeIndex, err := strconv.ParseUint(syncCommitteeDutyJSON.ValidatorSyncCommitteeIndices[i], 10, 64)
 		if err != nil {
 			return errors.Wrap(err, "invalid value for sync committee index")
 		}
 
-		s.ValidatorSyncCommitteeIndices[i] = phase0.CommitteeIndex(committeeIndex)
+		s.ValidatorSyncCommitteeIndices[i] = capella.CommitteeIndex(committeeIndex)
 	}
 
 	return nil

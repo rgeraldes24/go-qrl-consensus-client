@@ -22,7 +22,7 @@ import (
 	consensusclient "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/mock"
 	"github.com/theQRL/go-qrl-consensus-client/multi"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 	"github.com/theQRL/go-qrl-consensus-client/testclients"
 )
 
@@ -51,7 +51,7 @@ func TestSubmitVoluntaryExit(t *testing.T) {
 	require.NoError(t, err)
 
 	for i := 0; i < 128; i++ {
-		err := multiClient.(consensusclient.VoluntaryExitSubmitter).SubmitVoluntaryExit(ctx, &phase0.SignedVoluntaryExit{})
+		err := multiClient.(consensusclient.VoluntaryExitSubmitter).SubmitVoluntaryExit(ctx, &capella.SignedVoluntaryExit{})
 		require.NoError(t, err)
 	}
 	// At this point we expect mock 3 to be in active (unless probability hates us).

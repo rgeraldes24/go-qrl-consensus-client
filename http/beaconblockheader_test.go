@@ -19,12 +19,12 @@ import (
 	"os"
 	"testing"
 
+	"github.com/stretchr/testify/require"
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
 	"github.com/theQRL/go-qrl-consensus-client/http"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
-	"github.com/stretchr/testify/require"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 func TestBeaconBlockHeader(t *testing.T) {
@@ -48,8 +48,8 @@ func TestBeaconBlockHeader(t *testing.T) {
 			expected: &apiv1.BeaconBlockHeader{
 				Root:      *mustParseRoot("0x4d611d5b93fdab69013a7f0a2f961caca0c853f87cfe9595fe50038163079360"),
 				Canonical: true,
-				Header: &phase0.SignedBeaconBlockHeader{
-					Message: &phase0.BeaconBlockHeader{
+				Header: &capella.SignedBeaconBlockHeader{
+					Message: &capella.BeaconBlockHeader{
 						Slot:          0,
 						ProposerIndex: 0,
 						ParentRoot:    *mustParseRoot("0x0000000000000000000000000000000000000000000000000000000000000000"),

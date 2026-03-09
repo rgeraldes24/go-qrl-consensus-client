@@ -19,12 +19,12 @@ import (
 	"strconv"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // SyncCommitteeReward is the rewards for a validator in a sync committee.
 type SyncCommitteeReward struct {
-	ValidatorIndex phase0.ValidatorIndex
+	ValidatorIndex capella.ValidatorIndex
 	// Reward can be negative, so it is an int64 (but still a Gwei value).
 	Reward int64
 }
@@ -61,7 +61,7 @@ func (s *SyncCommitteeReward) UnmarshalJSON(input []byte) error {
 		return errors.Wrap(err, "invalid value for validator index")
 	}
 
-	s.ValidatorIndex = phase0.ValidatorIndex(validatorIndex)
+	s.ValidatorIndex = capella.ValidatorIndex(validatorIndex)
 
 	if data.Reward == "" {
 		return errors.New("reward missing")

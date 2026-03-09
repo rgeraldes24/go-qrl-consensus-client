@@ -17,14 +17,14 @@ import (
 	"context"
 
 	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // Fork fetches fork information for the given state.
 func (s *Service) Fork(ctx context.Context,
 	opts *api.ForkOpts,
 ) (
-	*api.Response[*phase0.Fork],
+	*api.Response[*capella.Fork],
 	error,
 ) {
 	if s.ForkFunc != nil {
@@ -36,7 +36,7 @@ func (s *Service) Fork(ctx context.Context,
 		return nil, err
 	}
 
-	return &api.Response[*phase0.Fork]{
+	return &api.Response[*capella.Fork]{
 		Data:     fork,
 		Metadata: make(map[string]any),
 	}, nil

@@ -21,14 +21,14 @@ import (
 
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // SyncCommitteeContribution provides a sync committee contribution.
 func (s *Service) SyncCommitteeContribution(ctx context.Context,
 	opts *api.SyncCommitteeContributionOpts,
 ) (
-	*api.Response[*altair.SyncCommitteeContribution],
+	*api.Response[*capella.SyncCommitteeContribution],
 	error,
 ) {
 	if err := s.assertIsActive(ctx); err != nil {
@@ -55,7 +55,7 @@ func (s *Service) SyncCommitteeContribution(ctx context.Context,
 		return nil, err
 	}
 
-	data, metadata, err := decodeJSONResponse(bytes.NewReader(httpResponse.body), altair.SyncCommitteeContribution{})
+	data, metadata, err := decodeJSONResponse(bytes.NewReader(httpResponse.body), capella.SyncCommitteeContribution{})
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +79,7 @@ func (s *Service) SyncCommitteeContribution(ctx context.Context,
 		)
 	}
 
-	return &api.Response[*altair.SyncCommitteeContribution]{
+	return &api.Response[*capella.SyncCommitteeContribution]{
 		Metadata: metadata,
 		Data:     &data,
 	}, nil

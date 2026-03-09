@@ -22,17 +22,17 @@ import (
 )
 
 func TestError(t *testing.T) {
-	v1 := &api.VersionedProposal{
-		Version: spec.DataVersionAltair,
+	v1 := &api.VersionedBlindedProposal{
+		Version: spec.DataVersionCapella,
 	}
 
-	_, err := v1.KZGProofs()
+	_, err := v1.Slot()
 	require.ErrorIs(t, err, api.ErrUnsupportedVersion)
 
-	v2 := &api.VersionedProposal{
-		Version: spec.DataVersionDeneb,
+	v2 := &api.VersionedBlindedProposal{
+		Version: spec.DataVersionCapella,
 	}
 
-	_, err = v2.KZGProofs()
+	_, err = v2.Slot()
 	require.ErrorIs(t, err, api.ErrDataMissing)
 }

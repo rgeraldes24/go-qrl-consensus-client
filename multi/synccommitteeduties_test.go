@@ -23,7 +23,7 @@ import (
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	"github.com/theQRL/go-qrl-consensus-client/mock"
 	"github.com/theQRL/go-qrl-consensus-client/multi"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 	"github.com/theQRL/go-qrl-consensus-client/testclients"
 )
 
@@ -54,7 +54,7 @@ func TestSyncCommitteeDuties(t *testing.T) {
 	for i := 0; i < 128; i++ {
 		res, err := multiClient.(consensusclient.SyncCommitteeDutiesProvider).SyncCommitteeDuties(ctx, &api.SyncCommitteeDutiesOpts{
 			Epoch:   1,
-			Indices: []phase0.ValidatorIndex{1, 2, 3},
+			Indices: []capella.ValidatorIndex{1, 2, 3},
 		})
 		require.NoError(t, err)
 		require.NotNil(t, res)

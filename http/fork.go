@@ -21,14 +21,14 @@ import (
 
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // Fork fetches fork information for the given options.
 func (s *Service) Fork(ctx context.Context,
 	opts *api.ForkOpts,
 ) (
-	*api.Response[*phase0.Fork],
+	*api.Response[*capella.Fork],
 	error,
 ) {
 	if err := s.assertIsActive(ctx); err != nil {
@@ -50,12 +50,12 @@ func (s *Service) Fork(ctx context.Context,
 		return nil, err
 	}
 
-	data, metadata, err := decodeJSONResponse(bytes.NewReader(httpResponse.body), phase0.Fork{})
+	data, metadata, err := decodeJSONResponse(bytes.NewReader(httpResponse.body), capella.Fork{})
 	if err != nil {
 		return nil, err
 	}
 
-	return &api.Response[*phase0.Fork]{
+	return &api.Response[*capella.Fork]{
 		Metadata: metadata,
 		Data:     &data,
 	}, nil

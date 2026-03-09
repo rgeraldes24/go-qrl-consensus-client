@@ -18,14 +18,14 @@ import (
 
 	consensusclient "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // SyncCommitteeContribution provides a sync committee contribution.
 func (s *Service) SyncCommitteeContribution(ctx context.Context,
 	opts *api.SyncCommitteeContributionOpts,
 ) (
-	*api.Response[*altair.SyncCommitteeContribution],
+	*api.Response[*capella.SyncCommitteeContribution],
 	error,
 ) {
 	res, err := s.doCall(ctx, func(ctx context.Context, client consensusclient.Service) (any, error) {
@@ -40,7 +40,7 @@ func (s *Service) SyncCommitteeContribution(ctx context.Context,
 		return nil, err
 	}
 
-	response, isResponse := res.(*api.Response[*altair.SyncCommitteeContribution])
+	response, isResponse := res.(*api.Response[*capella.SyncCommitteeContribution])
 	if !isResponse {
 		return nil, ErrIncorrectType
 	}

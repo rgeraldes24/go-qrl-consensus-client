@@ -24,7 +24,7 @@ import (
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	"github.com/theQRL/go-qrl-consensus-client/http"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 func TestAttestationData(t *testing.T) {
@@ -64,7 +64,7 @@ func TestAttestationData(t *testing.T) {
 		{
 			name: "Good",
 			opts: &api.AttestationDataOpts{
-				Slot: phase0.Slot(uint64(time.Since(genesisResponse.Data.GenesisTime).Seconds()) / uint64(slotDuration.Seconds())),
+				Slot: capella.Slot(uint64(time.Since(genesisResponse.Data.GenesisTime).Seconds()) / uint64(slotDuration.Seconds())),
 			},
 		},
 	}

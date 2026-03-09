@@ -20,11 +20,11 @@ import (
 	"errors"
 
 	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // SubmitSyncCommitteeMessages submits sync committee messages.
-func (s *Service) SubmitSyncCommitteeMessages(ctx context.Context, messages []*altair.SyncCommitteeMessage) error {
+func (s *Service) SubmitSyncCommitteeMessages(ctx context.Context, messages []*capella.SyncCommitteeMessage) error {
 	if err := s.assertIsSynced(ctx); err != nil {
 		return err
 	}

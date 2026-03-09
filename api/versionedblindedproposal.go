@@ -16,8 +16,7 @@ package api
 import (
 	apiv1capella "github.com/theQRL/go-qrl-consensus-client/api/v1/capella"
 	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/bellatrix"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // VersionedBlindedProposal contains a versioned blinded proposal.
@@ -32,7 +31,7 @@ func (v *VersionedBlindedProposal) IsEmpty() bool {
 }
 
 // Slot returns the slot of the blinded proposal.
-func (v *VersionedBlindedProposal) Slot() (phase0.Slot, error) {
+func (v *VersionedBlindedProposal) Slot() (capella.Slot, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil {
@@ -46,7 +45,7 @@ func (v *VersionedBlindedProposal) Slot() (phase0.Slot, error) {
 }
 
 // ProposerIndex returns the proposer index of the blinded proposal.
-func (v *VersionedBlindedProposal) ProposerIndex() (phase0.ValidatorIndex, error) {
+func (v *VersionedBlindedProposal) ProposerIndex() (capella.ValidatorIndex, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil {
@@ -60,17 +59,17 @@ func (v *VersionedBlindedProposal) ProposerIndex() (phase0.ValidatorIndex, error
 }
 
 // RandaoReveal returns the RANDAO reveal of the blinded proposal.
-func (v *VersionedBlindedProposal) RandaoReveal() (phase0.BLSSignature, error) {
+func (v *VersionedBlindedProposal) RandaoReveal() (capella.BLSSignature, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Body == nil {
-			return phase0.BLSSignature{}, ErrDataMissing
+			return capella.BLSSignature{}, ErrDataMissing
 		}
 
 		return v.Capella.Body.RANDAOReveal, nil
 	default:
-		return phase0.BLSSignature{}, ErrUnsupportedVersion
+		return capella.BLSSignature{}, ErrUnsupportedVersion
 	}
 }
 
@@ -112,91 +111,91 @@ func (v *VersionedBlindedProposal) Attestations() ([]spec.VersionedAttestation, 
 }
 
 // Root returns the root of the blinded proposal.
-func (v *VersionedBlindedProposal) Root() (phase0.Root, error) {
+func (v *VersionedBlindedProposal) Root() (capella.Root, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.Capella.HashTreeRoot()
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
 // BodyRoot returns the body root of the blinded proposal.
-func (v *VersionedBlindedProposal) BodyRoot() (phase0.Root, error) {
+func (v *VersionedBlindedProposal) BodyRoot() (capella.Root, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Body == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.Capella.Body.HashTreeRoot()
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
 // ParentRoot returns the parent root of the blinded proposal.
-func (v *VersionedBlindedProposal) ParentRoot() (phase0.Root, error) {
+func (v *VersionedBlindedProposal) ParentRoot() (capella.Root, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.Capella.ParentRoot, nil
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
 // StateRoot returns the state root of the blinded proposal.
-func (v *VersionedBlindedProposal) StateRoot() (phase0.Root, error) {
+func (v *VersionedBlindedProposal) StateRoot() (capella.Root, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.Capella.StateRoot, nil
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
 // TransactionsRoot returns the transactions root of the blinded proposal.
-func (v *VersionedBlindedProposal) TransactionsRoot() (phase0.Root, error) {
+func (v *VersionedBlindedProposal) TransactionsRoot() (capella.Root, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Body == nil ||
 			v.Capella.Body.ExecutionPayloadHeader == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.Capella.Body.ExecutionPayloadHeader.TransactionsRoot, nil
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
 // FeeRecipient returns the fee recipient of the blinded proposal.
-func (v *VersionedBlindedProposal) FeeRecipient() (bellatrix.ExecutionAddress, error) {
+func (v *VersionedBlindedProposal) FeeRecipient() (capella.ExecutionAddress, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Body == nil ||
 			v.Capella.Body.ExecutionPayloadHeader == nil {
-			return bellatrix.ExecutionAddress{}, ErrDataMissing
+			return capella.ExecutionAddress{}, ErrDataMissing
 		}
 
 		return v.Capella.Body.ExecutionPayloadHeader.FeeRecipient, nil
 	default:
-		return bellatrix.ExecutionAddress{}, ErrUnsupportedVersion
+		return capella.ExecutionAddress{}, ErrUnsupportedVersion
 	}
 }
 

@@ -22,17 +22,17 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // HeadEvent is the data for the head event.
 type HeadEvent struct {
-	Slot                      phase0.Slot
-	Block                     phase0.Root
-	State                     phase0.Root
+	Slot                      capella.Slot
+	Block                     capella.Root
+	State                     capella.Root
 	EpochTransition           bool
-	CurrentDutyDependentRoot  phase0.Root
-	PreviousDutyDependentRoot phase0.Root
+	CurrentDutyDependentRoot  capella.Root
+	PreviousDutyDependentRoot capella.Root
 }
 
 // headEventJSON is the spec representation of the struct.
@@ -54,7 +54,7 @@ func (e *HeadEvent) MarshalJSON() ([]byte, error) {
 		EpochTransition: e.EpochTransition,
 	}
 	// Optional fields (for now).
-	var zeroRoot phase0.Root
+	var zeroRoot capella.Root
 	if !bytes.Equal(zeroRoot[:], e.CurrentDutyDependentRoot[:]) {
 		data.CurrentDutyDependentRoot = fmt.Sprintf("%#x", e.CurrentDutyDependentRoot)
 	}
@@ -84,7 +84,7 @@ func (e *HeadEvent) UnmarshalJSON(input []byte) error {
 		return errors.Wrap(err, "invalid value for slot")
 	}
 
-	e.Slot = phase0.Slot(slot)
+	e.Slot = capella.Slot(slot)
 
 	if headEventJSON.Block == "" {
 		return errors.New("block missing")

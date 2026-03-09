@@ -17,11 +17,11 @@ import (
 	"context"
 
 	consensusclient "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // SubmitVoluntaryExit submits a voluntary exit.
-func (s *Service) SubmitVoluntaryExit(ctx context.Context, voluntaryExit *phase0.SignedVoluntaryExit) error {
+func (s *Service) SubmitVoluntaryExit(ctx context.Context, voluntaryExit *capella.SignedVoluntaryExit) error {
 	_, err := s.doCall(ctx, func(ctx context.Context, client consensusclient.Service) (any, error) {
 		err := client.(consensusclient.VoluntaryExitSubmitter).SubmitVoluntaryExit(ctx, voluntaryExit)
 		if err != nil {

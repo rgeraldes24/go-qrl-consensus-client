@@ -5,7 +5,6 @@ package capella
 
 import (
 	ssz "github.com/ferranbt/fastssz"
-	"github.com/theQRL/go-qrl-consensus-client/spec/bellatrix"
 )
 
 // MarshalSSZ ssz marshals the ExecutionPayload object
@@ -195,13 +194,13 @@ func (e *ExecutionPayload) UnmarshalSSZ(buf []byte) error {
 		if err != nil {
 			return err
 		}
-		e.Transactions = make([]bellatrix.Transaction, num)
+		e.Transactions = make([]capella.Transaction, num)
 		err = ssz.UnmarshalDynamic(buf, num, func(indx int, buf []byte) (err error) {
 			if len(buf) > 1073741824 {
 				return ssz.ErrBytesLength
 			}
 			if cap(e.Transactions[indx]) == 0 {
-				e.Transactions[indx] = bellatrix.Transaction(make([]byte, 0, len(buf)))
+				e.Transactions[indx] = capella.Transaction(make([]byte, 0, len(buf)))
 			}
 			e.Transactions[indx] = append(e.Transactions[indx], buf...)
 			return nil

@@ -15,9 +15,7 @@ package api
 
 import (
 	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
 	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // VersionedBlockRequest contains a versioned signed beacon block request.
@@ -27,7 +25,7 @@ type VersionedBlockRequest struct {
 }
 
 // Slot returns the slot of the signed beacon block.
-func (v *VersionedBlockRequest) Slot() (phase0.Slot, error) {
+func (v *VersionedBlockRequest) Slot() (capella.Slot, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
@@ -42,19 +40,19 @@ func (v *VersionedBlockRequest) Slot() (phase0.Slot, error) {
 }
 
 // ExecutionBlockHash returns the block hash of the beacon block.
-func (v *VersionedBlockRequest) ExecutionBlockHash() (phase0.Hash32, error) {
+func (v *VersionedBlockRequest) ExecutionBlockHash() (capella.Hash32, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil ||
 			v.Capella.Message.Body == nil ||
 			v.Capella.Message.Body.ExecutionPayload == nil {
-			return phase0.Hash32{}, ErrDataMissing
+			return capella.Hash32{}, ErrDataMissing
 		}
 
 		return v.Capella.Message.Body.ExecutionPayload.BlockHash, nil
 	default:
-		return phase0.Hash32{}, ErrUnsupportedVersion
+		return capella.Hash32{}, ErrUnsupportedVersion
 	}
 }
 
@@ -83,63 +81,63 @@ func (v *VersionedBlockRequest) Attestations() ([]spec.VersionedAttestation, err
 }
 
 // Root returns the root of the beacon block.
-func (v *VersionedBlockRequest) Root() (phase0.Root, error) {
+func (v *VersionedBlockRequest) Root() (capella.Root, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.Capella.Message.HashTreeRoot()
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
 // BodyRoot returns the body root of the beacon block.
-func (v *VersionedBlockRequest) BodyRoot() (phase0.Root, error) {
+func (v *VersionedBlockRequest) BodyRoot() (capella.Root, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil ||
 			v.Capella.Message.Body == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.Capella.Message.Body.HashTreeRoot()
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
 // ParentRoot returns the parent root of the beacon block.
-func (v *VersionedBlockRequest) ParentRoot() (phase0.Root, error) {
+func (v *VersionedBlockRequest) ParentRoot() (capella.Root, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.Capella.Message.ParentRoot, nil
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
 // StateRoot returns the state root of the beacon block.
-func (v *VersionedBlockRequest) StateRoot() (phase0.Root, error) {
+func (v *VersionedBlockRequest) StateRoot() (capella.Root, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.Capella.Message.StateRoot, nil
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
@@ -168,7 +166,7 @@ func (v *VersionedBlockRequest) AttesterSlashings() ([]spec.VersionedAttesterSla
 }
 
 // ProposerSlashings returns the proposer slashings of the beacon block.
-func (v *VersionedBlockRequest) ProposerSlashings() ([]*phase0.ProposerSlashing, error) {
+func (v *VersionedBlockRequest) ProposerSlashings() ([]*capella.ProposerSlashing, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
@@ -184,7 +182,7 @@ func (v *VersionedBlockRequest) ProposerSlashings() ([]*phase0.ProposerSlashing,
 }
 
 // SyncAggregate returns the sync aggregate of the beacon block.
-func (v *VersionedBlockRequest) SyncAggregate() (*altair.SyncAggregate, error) {
+func (v *VersionedBlockRequest) SyncAggregate() (*capella.SyncAggregate, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||

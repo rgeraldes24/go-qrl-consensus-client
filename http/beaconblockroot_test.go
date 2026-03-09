@@ -24,7 +24,7 @@ import (
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	"github.com/theQRL/go-qrl-consensus-client/http"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 func TestBeaconBlockRoot(t *testing.T) {
@@ -34,7 +34,7 @@ func TestBeaconBlockRoot(t *testing.T) {
 	tests := []struct {
 		name     string
 		opts     *api.BeaconBlockRootOpts
-		expected *phase0.Root
+		expected *capella.Root
 		err      string
 		errCode  int
 	}{

@@ -31,9 +31,7 @@ import (
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
 	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
-	"github.com/theQRL/go-qrl-consensus-client/spec/electra"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // Events feeds requested events with the given topics to the supplied handler.
@@ -128,8 +126,6 @@ func (*Service) checkEventSpecificHandler(opts *api.EventsOpts, topic string) er
 	switch topic {
 	case "attestation":
 		hasHandler = opts.AttestationHandler != nil
-	case "attester_slashing":
-		hasHandler = opts.AttesterSlashingHandler != nil
 	case "block":
 		hasHandler = opts.BlockHandler != nil
 	case "block_gossip":
@@ -138,8 +134,6 @@ func (*Service) checkEventSpecificHandler(opts *api.EventsOpts, topic string) er
 		hasHandler = opts.ChainReorgHandler != nil
 	case "contribution_and_proof":
 		hasHandler = opts.ContributionAndProofHandler != nil
-	case "data_column_sidecar":
-		hasHandler = opts.DataColumnSidecarHandler != nil
 	case "finalized_checkpoint":
 		hasHandler = opts.FinalizedCheckpointHandler != nil
 	case "head":
@@ -148,8 +142,6 @@ func (*Service) checkEventSpecificHandler(opts *api.EventsOpts, topic string) er
 		hasHandler = opts.PayloadAttributesHandler != nil
 	case "proposer_slashing":
 		hasHandler = opts.ProposerSlashingHandler != nil
-	case "single_attestation":
-		hasHandler = opts.SingleAttestationHandler != nil
 	case "voluntary_exit":
 		hasHandler = opts.VoluntaryExitHandler != nil
 	default:
@@ -179,8 +171,6 @@ func (s *Service) handleEvent(ctx context.Context,
 	switch string(msg.Event) {
 	case "attestation":
 		s.handleAttestationEvent(ctx, msg, opts)
-	case "attester_slashing":
-		s.handleAttesterSlashingEvent(ctx, msg, opts)
 	case "block":
 		s.handleBlockEvent(ctx, msg, opts)
 	case "block_gossip":
@@ -189,8 +179,6 @@ func (s *Service) handleEvent(ctx context.Context,
 		s.handleChainReorgEvent(ctx, msg, opts)
 	case "contribution_and_proof":
 		s.handleContributionAndProofEvent(ctx, msg, opts)
-	case "data_column_sidecar":
-		s.handleDataColumnSidecarEvent(ctx, msg, opts)
 	case "finalized_checkpoint":
 		s.handleFinalizedCheckpointEvent(ctx, msg, opts)
 	case "head":
@@ -199,8 +187,6 @@ func (s *Service) handleEvent(ctx context.Context,
 		s.handlePayloadAttributesEvent(ctx, msg, opts)
 	case "proposer_slashing":
 		s.handleProposerSlashingEvent(ctx, msg, opts)
-	case "single_attestation":
-		s.handleSingleAttestationEvent(ctx, msg, opts)
 	case "voluntary_exit":
 		s.handleVoluntaryExitEvent(ctx, msg, opts)
 	case "":
@@ -227,33 +213,6 @@ func (*Service) handleAttestationEvent(ctx context.Context,
 	switch {
 	case opts.AttestationHandler != nil:
 		opts.AttestationHandler(ctx, data)
-	case opts.Handler != nil:
-		opts.Handler(&apiv1.Event{
-			Topic: string(msg.Event),
-			Data:  data,
-		})
-	default:
-		log.Debug().Msg("No specific or generic handler supplied; ignoring")
-	}
-}
-
-func (*Service) handleAttesterSlashingEvent(ctx context.Context,
-	msg *sse.Event,
-	opts *api.EventsOpts,
-) {
-	log := zerolog.Ctx(ctx)
-	data := &electra.AttesterSlashing{}
-
-	err := json.Unmarshal(msg.Data, data)
-	if err != nil {
-		log.Error().Err(err).RawJSON("data", msg.Data).Msg("Failed to parse attester slashing event")
-
-		return
-	}
-
-	switch {
-	case opts.AttesterSlashingHandler != nil:
-		opts.AttesterSlashingHandler(ctx, data)
 	case opts.Handler != nil:
 		opts.Handler(&apiv1.Event{
 			Topic: string(msg.Event),
@@ -350,7 +309,7 @@ func (*Service) handleContributionAndProofEvent(ctx context.Context,
 	opts *api.EventsOpts,
 ) {
 	log := zerolog.Ctx(ctx)
-	data := &altair.SignedContributionAndProof{}
+	data := &capella.SignedContributionAndProof{}
 
 	err := json.Unmarshal(msg.Data, data)
 	if err != nil {
@@ -458,7 +417,7 @@ func (*Service) handleProposerSlashingEvent(ctx context.Context,
 	opts *api.EventsOpts,
 ) {
 	log := zerolog.Ctx(ctx)
-	data := &phase0.ProposerSlashing{}
+	data := &capella.ProposerSlashing{}
 
 	err := json.Unmarshal(msg.Data, data)
 	if err != nil {
@@ -480,39 +439,12 @@ func (*Service) handleProposerSlashingEvent(ctx context.Context,
 	}
 }
 
-func (*Service) handleSingleAttestationEvent(ctx context.Context,
-	msg *sse.Event,
-	opts *api.EventsOpts,
-) {
-	log := zerolog.Ctx(ctx)
-	data := &electra.SingleAttestation{}
-
-	err := json.Unmarshal(msg.Data, data)
-	if err != nil {
-		log.Error().Err(err).RawJSON("data", msg.Data).Msg("Failed to parse single attestation")
-
-		return
-	}
-
-	switch {
-	case opts.SingleAttestationHandler != nil:
-		opts.SingleAttestationHandler(ctx, data)
-	case opts.Handler != nil:
-		opts.Handler(&apiv1.Event{
-			Topic: string(msg.Event),
-			Data:  data,
-		})
-	default:
-		log.Debug().Msg("No specific or generic handler supplied; ignoring")
-	}
-}
-
 func (*Service) handleVoluntaryExitEvent(ctx context.Context,
 	msg *sse.Event,
 	opts *api.EventsOpts,
 ) {
 	log := zerolog.Ctx(ctx)
-	data := &phase0.SignedVoluntaryExit{}
+	data := &capella.SignedVoluntaryExit{}
 
 	err := json.Unmarshal(msg.Data, data)
 	if err != nil {
@@ -524,33 +456,6 @@ func (*Service) handleVoluntaryExitEvent(ctx context.Context,
 	switch {
 	case opts.VoluntaryExitHandler != nil:
 		opts.VoluntaryExitHandler(ctx, data)
-	case opts.Handler != nil:
-		opts.Handler(&apiv1.Event{
-			Topic: string(msg.Event),
-			Data:  data,
-		})
-	default:
-		log.Debug().Msg("No specific or generic handler supplied; ignoring")
-	}
-}
-
-func (*Service) handleDataColumnSidecarEvent(ctx context.Context,
-	msg *sse.Event,
-	opts *api.EventsOpts,
-) {
-	log := zerolog.Ctx(ctx)
-	data := &apiv1.DataColumnSidecarEvent{}
-
-	err := json.Unmarshal(msg.Data, data)
-	if err != nil {
-		log.Error().Err(err).RawJSON("data", msg.Data).Msg("Failed to parse data column sidecar event")
-
-		return
-	}
-
-	switch {
-	case opts.DataColumnSidecarHandler != nil:
-		opts.DataColumnSidecarHandler(ctx, data)
 	case opts.Handler != nil:
 		opts.Handler(&apiv1.Event{
 			Topic: string(msg.Event),

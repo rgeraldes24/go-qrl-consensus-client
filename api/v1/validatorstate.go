@@ -17,7 +17,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // ValidatorState defines the state of the validator.
@@ -164,10 +164,10 @@ func (v ValidatorState) valid() bool {
 }
 
 // ValidatorToState is a helper that calculates the validator status given a validator struct.
-func ValidatorToState(validator *phase0.Validator,
-	balance *phase0.Gwei,
-	currentEpoch phase0.Epoch,
-	farFutureEpoch phase0.Epoch,
+func ValidatorToState(validator *capella.Validator,
+	balance *capella.Gwei,
+	currentEpoch capella.Epoch,
+	farFutureEpoch capella.Epoch,
 ) ValidatorState {
 	if validator == nil {
 		return ValidatorStateUnknown

@@ -16,10 +16,10 @@ package mock
 import (
 	"context"
 
-	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // SubmitSyncCommitteeContributions submits sync committee contributions.
-func (*Service) SubmitSyncCommitteeContributions(_ context.Context, _ []*altair.SignedContributionAndProof) error {
+func (*Service) SubmitSyncCommitteeContributions(_ context.Context, _ []*capella.SignedContributionAndProof) error {
 	return nil
 }

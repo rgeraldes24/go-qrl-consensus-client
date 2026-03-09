@@ -5,8 +5,6 @@ package capella
 
 import (
 	ssz "github.com/ferranbt/fastssz"
-	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // MarshalSSZ ssz marshals the BeaconBlockBody object
@@ -24,7 +22,7 @@ func (b *BeaconBlockBody) MarshalSSZTo(buf []byte) (dst []byte, err error) {
 
 	// Field (1) 'ExecutionData'
 	if b.ExecutionData == nil {
-		b.ExecutionData = new(phase0.ExecutionData)
+		b.ExecutionData = new(ExecutionData)
 	}
 	if dst, err = b.ExecutionData.MarshalSSZTo(dst); err != nil {
 		return
@@ -61,7 +59,7 @@ func (b *BeaconBlockBody) MarshalSSZTo(buf []byte) (dst []byte, err error) {
 
 	// Field (8) 'SyncAggregate'
 	if b.SyncAggregate == nil {
-		b.SyncAggregate = new(altair.SyncAggregate)
+		b.SyncAggregate = new(SyncAggregate)
 	}
 	if dst, err = b.SyncAggregate.MarshalSSZTo(dst); err != nil {
 		return
@@ -167,7 +165,7 @@ func (b *BeaconBlockBody) UnmarshalSSZ(buf []byte) error {
 
 	// Field (1) 'ExecutionData'
 	if b.ExecutionData == nil {
-		b.ExecutionData = new(phase0.ExecutionData)
+		b.ExecutionData = new(ExecutionData)
 	}
 	if err = b.ExecutionData.UnmarshalSSZ(buf[96:168]); err != nil {
 		return err
@@ -207,7 +205,7 @@ func (b *BeaconBlockBody) UnmarshalSSZ(buf []byte) error {
 
 	// Field (8) 'SyncAggregate'
 	if b.SyncAggregate == nil {
-		b.SyncAggregate = new(altair.SyncAggregate)
+		b.SyncAggregate = new(SyncAggregate)
 	}
 	if err = b.SyncAggregate.UnmarshalSSZ(buf[220:380]); err != nil {
 		return err
@@ -225,10 +223,10 @@ func (b *BeaconBlockBody) UnmarshalSSZ(buf []byte) error {
 		if err != nil {
 			return err
 		}
-		b.ProposerSlashings = make([]*phase0.ProposerSlashing, num)
+		b.ProposerSlashings = make([]*ProposerSlashing, num)
 		for ii := 0; ii < num; ii++ {
 			if b.ProposerSlashings[ii] == nil {
-				b.ProposerSlashings[ii] = new(phase0.ProposerSlashing)
+				b.ProposerSlashings[ii] = new(ProposerSlashing)
 			}
 			if err = b.ProposerSlashings[ii].UnmarshalSSZ(buf[ii*416 : (ii+1)*416]); err != nil {
 				return err
@@ -243,10 +241,10 @@ func (b *BeaconBlockBody) UnmarshalSSZ(buf []byte) error {
 		if err != nil {
 			return err
 		}
-		b.AttesterSlashings = make([]*phase0.AttesterSlashing, num)
+		b.AttesterSlashings = make([]*AttesterSlashing, num)
 		err = ssz.UnmarshalDynamic(buf, num, func(indx int, buf []byte) (err error) {
 			if b.AttesterSlashings[indx] == nil {
-				b.AttesterSlashings[indx] = new(phase0.AttesterSlashing)
+				b.AttesterSlashings[indx] = new(AttesterSlashing)
 			}
 			if err = b.AttesterSlashings[indx].UnmarshalSSZ(buf); err != nil {
 				return err
@@ -265,10 +263,10 @@ func (b *BeaconBlockBody) UnmarshalSSZ(buf []byte) error {
 		if err != nil {
 			return err
 		}
-		b.Attestations = make([]*phase0.Attestation, num)
+		b.Attestations = make([]*Attestation, num)
 		err = ssz.UnmarshalDynamic(buf, num, func(indx int, buf []byte) (err error) {
 			if b.Attestations[indx] == nil {
-				b.Attestations[indx] = new(phase0.Attestation)
+				b.Attestations[indx] = new(Attestation)
 			}
 			if err = b.Attestations[indx].UnmarshalSSZ(buf); err != nil {
 				return err
@@ -287,10 +285,10 @@ func (b *BeaconBlockBody) UnmarshalSSZ(buf []byte) error {
 		if err != nil {
 			return err
 		}
-		b.Deposits = make([]*phase0.Deposit, num)
+		b.Deposits = make([]*Deposit, num)
 		for ii := 0; ii < num; ii++ {
 			if b.Deposits[ii] == nil {
-				b.Deposits[ii] = new(phase0.Deposit)
+				b.Deposits[ii] = new(Deposit)
 			}
 			if err = b.Deposits[ii].UnmarshalSSZ(buf[ii*1240 : (ii+1)*1240]); err != nil {
 				return err
@@ -305,10 +303,10 @@ func (b *BeaconBlockBody) UnmarshalSSZ(buf []byte) error {
 		if err != nil {
 			return err
 		}
-		b.VoluntaryExits = make([]*phase0.SignedVoluntaryExit, num)
+		b.VoluntaryExits = make([]*SignedVoluntaryExit, num)
 		for ii := 0; ii < num; ii++ {
 			if b.VoluntaryExits[ii] == nil {
-				b.VoluntaryExits[ii] = new(phase0.SignedVoluntaryExit)
+				b.VoluntaryExits[ii] = new(SignedVoluntaryExit)
 			}
 			if err = b.VoluntaryExits[ii].UnmarshalSSZ(buf[ii*112 : (ii+1)*112]); err != nil {
 				return err
@@ -378,7 +376,7 @@ func (b *BeaconBlockBody) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 
 	// Field (1) 'ExecutionData'
 	if b.ExecutionData == nil {
-		b.ExecutionData = new(phase0.ExecutionData)
+		b.ExecutionData = new(ExecutionData)
 	}
 	if err = b.ExecutionData.HashTreeRootWith(hh); err != nil {
 		return
@@ -469,7 +467,7 @@ func (b *BeaconBlockBody) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 
 	// Field (8) 'SyncAggregate'
 	if b.SyncAggregate == nil {
-		b.SyncAggregate = new(altair.SyncAggregate)
+		b.SyncAggregate = new(SyncAggregate)
 	}
 	if err = b.SyncAggregate.HashTreeRootWith(hh); err != nil {
 		return

@@ -18,8 +18,7 @@ import (
 
 	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
 	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/bellatrix"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // VersionedSignedValidatorRegistration contains a versioned SignedValidatorRegistrationV1.
@@ -29,16 +28,16 @@ type VersionedSignedValidatorRegistration struct {
 }
 
 // FeeRecipient returns the fee recipient of the signed validator registration.
-func (v *VersionedSignedValidatorRegistration) FeeRecipient() (bellatrix.ExecutionAddress, error) {
+func (v *VersionedSignedValidatorRegistration) FeeRecipient() (capella.ExecutionAddress, error) {
 	switch v.Version {
 	case spec.BuilderVersionV1:
 		if v.V1 == nil {
-			return bellatrix.ExecutionAddress{}, ErrDataMissing
+			return capella.ExecutionAddress{}, ErrDataMissing
 		}
 
 		return v.V1.Message.FeeRecipient, nil
 	default:
-		return bellatrix.ExecutionAddress{}, ErrUnsupportedVersion
+		return capella.ExecutionAddress{}, ErrUnsupportedVersion
 	}
 }
 
@@ -71,29 +70,29 @@ func (v *VersionedSignedValidatorRegistration) Timestamp() (time.Time, error) {
 }
 
 // PubKey returns the public key of the signed validator registration.
-func (v *VersionedSignedValidatorRegistration) PubKey() (phase0.BLSPubKey, error) {
+func (v *VersionedSignedValidatorRegistration) PubKey() (capella.BLSPubKey, error) {
 	switch v.Version {
 	case spec.BuilderVersionV1:
 		if v.V1 == nil {
-			return phase0.BLSPubKey{}, ErrDataMissing
+			return capella.BLSPubKey{}, ErrDataMissing
 		}
 
 		return v.V1.Message.Pubkey, nil
 	default:
-		return phase0.BLSPubKey{}, ErrUnsupportedVersion
+		return capella.BLSPubKey{}, ErrUnsupportedVersion
 	}
 }
 
 // Root returns the root of the validator registration.
-func (v *VersionedSignedValidatorRegistration) Root() (phase0.Root, error) {
+func (v *VersionedSignedValidatorRegistration) Root() (capella.Root, error) {
 	switch v.Version {
 	case spec.BuilderVersionV1:
 		if v.V1 == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.V1.Message.HashTreeRoot()
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }

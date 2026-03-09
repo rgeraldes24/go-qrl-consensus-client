@@ -23,14 +23,14 @@ import (
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // ValidatorBalances provides the validator balances for the given options.
 func (s *Service) ValidatorBalances(ctx context.Context,
 	opts *api.ValidatorBalancesOpts,
 ) (
-	*api.Response[map[phase0.ValidatorIndex]phase0.Gwei],
+	*api.Response[map[capella.ValidatorIndex]capella.Gwei],
 	error,
 ) {
 	if err := s.assertIsActive(ctx); err != nil {
@@ -78,7 +78,7 @@ func (s *Service) ValidatorBalances(ctx context.Context,
 func (*Service) validatorBalancesFromJSON(_ context.Context,
 	httpResponse *httpResponse,
 ) (
-	*api.Response[map[phase0.ValidatorIndex]phase0.Gwei],
+	*api.Response[map[capella.ValidatorIndex]capella.Gwei],
 	error,
 ) {
 	data, metadata, err := decodeJSONResponse(bytes.NewReader(httpResponse.body), []*apiv1.ValidatorBalance{})
@@ -86,8 +86,8 @@ func (*Service) validatorBalancesFromJSON(_ context.Context,
 		return nil, err
 	}
 
-	response := &api.Response[map[phase0.ValidatorIndex]phase0.Gwei]{
-		Data:     make(map[phase0.ValidatorIndex]phase0.Gwei),
+	response := &api.Response[map[capella.ValidatorIndex]capella.Gwei]{
+		Data:     make(map[capella.ValidatorIndex]capella.Gwei),
 		Metadata: metadata,
 	}
 

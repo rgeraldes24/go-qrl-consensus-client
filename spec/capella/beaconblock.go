@@ -23,15 +23,14 @@ import (
 
 	"github.com/goccy/go-yaml"
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // BeaconBlock represents a beacon block.
 type BeaconBlock struct {
-	Slot          phase0.Slot
-	ProposerIndex phase0.ValidatorIndex
-	ParentRoot    phase0.Root `ssz-size:"32"`
-	StateRoot     phase0.Root `ssz-size:"32"`
+	Slot          Slot
+	ProposerIndex ValidatorIndex
+	ParentRoot    Root `ssz-size:"32"`
+	StateRoot     Root `ssz-size:"32"`
 	Body          *BeaconBlockBody
 }
 
@@ -121,7 +120,7 @@ func (b *BeaconBlock) unpack(data *beaconBlockJSON) error {
 		return errors.Wrap(err, "invalid value for slot")
 	}
 
-	b.Slot = phase0.Slot(slot)
+	b.Slot = Slot(slot)
 
 	if data.ProposerIndex == "" {
 		return errors.New("proposer index missing")
@@ -132,7 +131,7 @@ func (b *BeaconBlock) unpack(data *beaconBlockJSON) error {
 		return errors.Wrap(err, "invalid value for proposer index")
 	}
 
-	b.ProposerIndex = phase0.ValidatorIndex(proposerIndex)
+	b.ProposerIndex = ValidatorIndex(proposerIndex)
 
 	if data.ParentRoot == "" {
 		return errors.New("parent root missing")
@@ -143,7 +142,7 @@ func (b *BeaconBlock) unpack(data *beaconBlockJSON) error {
 		return errors.Wrap(err, "invalid value for parent root")
 	}
 
-	if len(parentRoot) != phase0.RootLength {
+	if len(parentRoot) != RootLength {
 		return errors.New("incorrect length for parent root")
 	}
 
@@ -158,7 +157,7 @@ func (b *BeaconBlock) unpack(data *beaconBlockJSON) error {
 		return errors.Wrap(err, "invalid value for state root")
 	}
 
-	if len(stateRoot) != phase0.RootLength {
+	if len(stateRoot) != RootLength {
 		return errors.New("incorrect length for state root")
 	}
 

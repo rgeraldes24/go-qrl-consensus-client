@@ -13,14 +13,14 @@
 
 package api
 
-import "github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+import "github.com/theQRL/go-qrl-consensus-client/spec/capella"
 
 // SyncCommitteeDutiesOpts are the options for obtaining sync committee duties.
 type SyncCommitteeDutiesOpts struct {
 	Common CommonOpts
 
 	// Epoch is the epoch for which the data is obtained.
-	Epoch phase0.Epoch
+	Epoch capella.Epoch
 	// Indices is a list of validators for which to obtain the duties.
-	Indices []phase0.ValidatorIndex
+	Indices []capella.ValidatorIndex
 }

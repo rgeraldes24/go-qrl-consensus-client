@@ -16,10 +16,10 @@ package mock
 import (
 	"context"
 
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // SubmitProposalSlashing submits a proposal slashing.
-func (*Service) SubmitProposalSlashing(_ context.Context, _ *phase0.ProposerSlashing) error {
+func (*Service) SubmitProposalSlashing(_ context.Context, _ *capella.ProposerSlashing) error {
 	return nil
 }

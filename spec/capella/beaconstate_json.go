@@ -21,40 +21,38 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // beaconStateJSON is the spec representation of the struct.
 type beaconStateJSON struct {
-	GenesisTime                  string                    `json:"genesis_time"`
-	GenesisValidatorsRoot        string                    `json:"genesis_validators_root"`
-	Slot                         string                    `json:"slot"`
-	Fork                         *phase0.Fork              `json:"fork"`
-	LatestBlockHeader            *phase0.BeaconBlockHeader `json:"latest_block_header"`
-	BlockRoots                   []string                  `json:"block_roots"`
-	StateRoots                   []string                  `json:"state_roots"`
-	HistoricalRoots              []string                  `json:"historical_roots"`
-	ExecutionData                *phase0.ExecutionData     `json:"execution_data"`
-	ExecutionDataVotes           []*phase0.ExecutionData   `json:"execution_data_votes"`
-	ETH1DepositIndex             string                    `json:"eth1_deposit_index"`
-	Validators                   []*phase0.Validator       `json:"validators"`
-	Balances                     []string                  `json:"balances"`
-	RANDAOMixes                  []string                  `json:"randao_mixes"`
-	Slashings                    []string                  `json:"slashings"`
-	PreviousEpochParticipation   []string                  `json:"previous_epoch_participation"`
-	CurrentEpochParticipation    []string                  `json:"current_epoch_participation"`
-	JustificationBits            string                    `json:"justification_bits"`
-	PreviousJustifiedCheckpoint  *phase0.Checkpoint        `json:"previous_justified_checkpoint"`
-	CurrentJustifiedCheckpoint   *phase0.Checkpoint        `json:"current_justified_checkpoint"`
-	FinalizedCheckpoint          *phase0.Checkpoint        `json:"finalized_checkpoint"`
-	InactivityScores             []string                  `json:"inactivity_scores"`
-	CurrentSyncCommittee         *altair.SyncCommittee     `json:"current_sync_committee"`
-	NextSyncCommittee            *altair.SyncCommittee     `json:"next_sync_committee"`
-	LatestExecutionPayloadHeader *ExecutionPayloadHeader   `json:"latest_execution_payload_header"`
-	NextWithdrawalIndex          string                    `json:"next_withdrawal_index"`
-	NextWithdrawalValidatorIndex string                    `json:"next_withdrawal_validator_index"`
-	HistoricalSummaries          []*HistoricalSummary      `json:"historical_summaries"`
+	GenesisTime                  string                  `json:"genesis_time"`
+	GenesisValidatorsRoot        string                  `json:"genesis_validators_root"`
+	Slot                         string                  `json:"slot"`
+	Fork                         *Fork                   `json:"fork"`
+	LatestBlockHeader            *BeaconBlockHeader      `json:"latest_block_header"`
+	BlockRoots                   []string                `json:"block_roots"`
+	StateRoots                   []string                `json:"state_roots"`
+	HistoricalRoots              []string                `json:"historical_roots"`
+	ExecutionData                *ExecutionData          `json:"execution_data"`
+	ExecutionDataVotes           []*ExecutionData        `json:"execution_data_votes"`
+	ETH1DepositIndex             string                  `json:"eth1_deposit_index"`
+	Validators                   []*Validator            `json:"validators"`
+	Balances                     []string                `json:"balances"`
+	RANDAOMixes                  []string                `json:"randao_mixes"`
+	Slashings                    []string                `json:"slashings"`
+	PreviousEpochParticipation   []string                `json:"previous_epoch_participation"`
+	CurrentEpochParticipation    []string                `json:"current_epoch_participation"`
+	JustificationBits            string                  `json:"justification_bits"`
+	PreviousJustifiedCheckpoint  *Checkpoint             `json:"previous_justified_checkpoint"`
+	CurrentJustifiedCheckpoint   *Checkpoint             `json:"current_justified_checkpoint"`
+	FinalizedCheckpoint          *Checkpoint             `json:"finalized_checkpoint"`
+	InactivityScores             []string                `json:"inactivity_scores"`
+	CurrentSyncCommittee         *SyncCommittee          `json:"current_sync_committee"`
+	NextSyncCommittee            *SyncCommittee          `json:"next_sync_committee"`
+	LatestExecutionPayloadHeader *ExecutionPayloadHeader `json:"latest_execution_payload_header"`
+	NextWithdrawalIndex          string                  `json:"next_withdrawal_index"`
+	NextWithdrawalValidatorIndex string                  `json:"next_withdrawal_validator_index"`
+	HistoricalSummaries          []*HistoricalSummary    `json:"historical_summaries"`
 }
 
 // MarshalJSON implements json.Marshaler.
@@ -169,7 +167,7 @@ func (s *BeaconState) unpack(data *beaconStateJSON) error {
 		return errors.Wrap(err, "invalid value for genesis validators root")
 	}
 
-	if len(genesisValidatorsRoot) != phase0.RootLength {
+	if len(genesisValidatorsRoot) != RootLength {
 		return fmt.Errorf("incorrect length %d for genesis validators root", len(genesisValidatorsRoot))
 	}
 
@@ -184,7 +182,7 @@ func (s *BeaconState) unpack(data *beaconStateJSON) error {
 		return errors.Wrap(err, "invalid value for slot")
 	}
 
-	s.Slot = phase0.Slot(slot)
+	s.Slot = Slot(slot)
 
 	if data.Fork == nil {
 		return errors.New("fork missing")
@@ -200,7 +198,7 @@ func (s *BeaconState) unpack(data *beaconStateJSON) error {
 		return errors.New("block roots missing")
 	}
 
-	s.BlockRoots = make([]phase0.Root, len(data.BlockRoots))
+	s.BlockRoots = make([]Root, len(data.BlockRoots))
 	for i := range data.BlockRoots {
 		if data.BlockRoots[i] == "" {
 			return fmt.Errorf("block root %d missing", i)
@@ -211,14 +209,14 @@ func (s *BeaconState) unpack(data *beaconStateJSON) error {
 			return errors.Wrap(err, fmt.Sprintf("invalid value for block root %d", i))
 		}
 
-		if len(blockRoot) != phase0.RootLength {
+		if len(blockRoot) != RootLength {
 			return fmt.Errorf("incorrect length %d for block root %d", len(blockRoot), i)
 		}
 
 		copy(s.BlockRoots[i][:], blockRoot)
 	}
 
-	s.StateRoots = make([]phase0.Root, len(data.StateRoots))
+	s.StateRoots = make([]Root, len(data.StateRoots))
 	for i := range data.StateRoots {
 		if data.StateRoots[i] == "" {
 			return fmt.Errorf("state root %d missing", i)
@@ -229,14 +227,14 @@ func (s *BeaconState) unpack(data *beaconStateJSON) error {
 			return errors.Wrap(err, fmt.Sprintf("invalid value for state root %d", i))
 		}
 
-		if len(stateRoot) != phase0.RootLength {
+		if len(stateRoot) != RootLength {
 			return fmt.Errorf("incorrect length %d for state root %d", len(stateRoot), i)
 		}
 
 		copy(s.StateRoots[i][:], stateRoot)
 	}
 
-	s.HistoricalRoots = make([]phase0.Root, len(data.HistoricalRoots))
+	s.HistoricalRoots = make([]Root, len(data.HistoricalRoots))
 	for i := range data.HistoricalRoots {
 		if data.HistoricalRoots[i] == "" {
 			return fmt.Errorf("historical root %d missing", i)
@@ -247,7 +245,7 @@ func (s *BeaconState) unpack(data *beaconStateJSON) error {
 			return errors.Wrap(err, fmt.Sprintf("invalid value for historical root %d", i))
 		}
 
-		if len(historicalRoot) != phase0.RootLength {
+		if len(historicalRoot) != RootLength {
 			return fmt.Errorf("incorrect length %d for historical root %d", len(historicalRoot), i)
 		}
 
@@ -288,7 +286,7 @@ func (s *BeaconState) unpack(data *beaconStateJSON) error {
 		return errors.Wrap(err, "invalid value for eth1 deposit index")
 	}
 
-	s.Balances = make([]phase0.Gwei, len(data.Balances))
+	s.Balances = make([]Gwei, len(data.Balances))
 	for i := range data.Balances {
 		if data.Balances[i] == "" {
 			return fmt.Errorf("balance %d missing", i)
@@ -299,10 +297,10 @@ func (s *BeaconState) unpack(data *beaconStateJSON) error {
 			return errors.Wrap(err, fmt.Sprintf("invalid value for balance %d", i))
 		}
 
-		s.Balances[i] = phase0.Gwei(balance)
+		s.Balances[i] = Gwei(balance)
 	}
 
-	s.RANDAOMixes = make([]phase0.Root, len(data.RANDAOMixes))
+	s.RANDAOMixes = make([]Root, len(data.RANDAOMixes))
 	for i := range data.RANDAOMixes {
 		if data.RANDAOMixes[i] == "" {
 			return fmt.Errorf("RANDAO mix %d missing", i)
@@ -313,14 +311,14 @@ func (s *BeaconState) unpack(data *beaconStateJSON) error {
 			return errors.Wrap(err, fmt.Sprintf("invalid value for RANDAO mix %d", i))
 		}
 
-		if len(randaoMix) != phase0.RootLength {
+		if len(randaoMix) != RootLength {
 			return fmt.Errorf("incorrect length %d for RANDAO mix %d", len(randaoMix), i)
 		}
 
 		copy(s.RANDAOMixes[i][:], randaoMix)
 	}
 
-	s.Slashings = make([]phase0.Gwei, len(data.Slashings))
+	s.Slashings = make([]Gwei, len(data.Slashings))
 	for i := range data.Slashings {
 		if data.Slashings[i] == "" {
 			return fmt.Errorf("slashing %d missing", i)
@@ -331,10 +329,10 @@ func (s *BeaconState) unpack(data *beaconStateJSON) error {
 			return errors.Wrap(err, fmt.Sprintf("invalid value for slashing %d", i))
 		}
 
-		s.Slashings[i] = phase0.Gwei(slashings)
+		s.Slashings[i] = Gwei(slashings)
 	}
 
-	s.PreviousEpochParticipation = make([]altair.ParticipationFlags, len(data.PreviousEpochParticipation))
+	s.PreviousEpochParticipation = make([]ParticipationFlags, len(data.PreviousEpochParticipation))
 	for i := range data.PreviousEpochParticipation {
 		if data.PreviousEpochParticipation[i] == "" {
 			return fmt.Errorf("previous epoch attestation %d missing", i)
@@ -345,10 +343,10 @@ func (s *BeaconState) unpack(data *beaconStateJSON) error {
 			return errors.Wrap(err, fmt.Sprintf("invalid value for previous epoch attestation %d", i))
 		}
 
-		s.PreviousEpochParticipation[i] = altair.ParticipationFlags(previousEpochAttestation)
+		s.PreviousEpochParticipation[i] = ParticipationFlags(previousEpochAttestation)
 	}
 
-	s.CurrentEpochParticipation = make([]altair.ParticipationFlags, len(data.CurrentEpochParticipation))
+	s.CurrentEpochParticipation = make([]ParticipationFlags, len(data.CurrentEpochParticipation))
 	for i := range data.CurrentEpochParticipation {
 		if data.CurrentEpochParticipation[i] == "" {
 			return fmt.Errorf("current epoch attestation %d missing", i)
@@ -359,7 +357,7 @@ func (s *BeaconState) unpack(data *beaconStateJSON) error {
 			return errors.Wrap(err, fmt.Sprintf("invalid value for current epoch attestation %d", i))
 		}
 
-		s.CurrentEpochParticipation[i] = altair.ParticipationFlags(currentEpochAttestation)
+		s.CurrentEpochParticipation[i] = ParticipationFlags(currentEpochAttestation)
 	}
 
 	if data.JustificationBits == "" {
@@ -429,7 +427,7 @@ func (s *BeaconState) unpack(data *beaconStateJSON) error {
 		return errors.Wrap(err, "invalid value for next withdrawal validator index")
 	}
 
-	s.NextWithdrawalValidatorIndex = phase0.ValidatorIndex(nextWithdrawalValidatorIndex)
+	s.NextWithdrawalValidatorIndex = ValidatorIndex(nextWithdrawalValidatorIndex)
 
 	if data.HistoricalSummaries == nil {
 		return errors.New("historical summaries missing")

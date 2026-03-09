@@ -18,24 +18,24 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // Finality is the data regarding finality checkpoints at a given state.
 type Finality struct {
 	// Finalized is the finalized checkpoint.
-	Finalized *phase0.Checkpoint
+	Finalized *capella.Checkpoint
 	// Justified is the justified checkpoint.
-	Justified *phase0.Checkpoint
+	Justified *capella.Checkpoint
 	// PreviousJustified is the previous justified checkpoint.
-	PreviousJustified *phase0.Checkpoint
+	PreviousJustified *capella.Checkpoint
 }
 
 // finalityJSON is the spec representation of the struct.
 type finalityJSON struct {
-	Finalized         *phase0.Checkpoint `json:"finalized"`
-	Justified         *phase0.Checkpoint `json:"current_justified"`
-	PreviousJustified *phase0.Checkpoint `json:"previous_justified"`
+	Finalized         *capella.Checkpoint `json:"finalized"`
+	Justified         *capella.Checkpoint `json:"current_justified"`
+	PreviousJustified *capella.Checkpoint `json:"previous_justified"`
 }
 
 // MarshalJSON implements json.Marshaler.

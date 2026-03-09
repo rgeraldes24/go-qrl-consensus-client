@@ -17,13 +17,13 @@ import (
 	"fmt"
 
 	"github.com/goccy/go-yaml"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // SignedBlindedBeaconBlock is a signed beacon block.
 type SignedBlindedBeaconBlock struct {
 	Message   *BlindedBeaconBlock
-	Signature phase0.BLSSignature `ssz-size:"96"`
+	Signature capella.BLSSignature `ssz-size:"96"`
 }
 
 // String returns a string version of the structure.

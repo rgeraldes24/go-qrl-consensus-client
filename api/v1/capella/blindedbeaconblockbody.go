@@ -17,22 +17,20 @@ import (
 	"fmt"
 
 	"github.com/goccy/go-yaml"
-	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
 	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // BlindedBeaconBlockBody represents the body of a blinded beacon block.
 type BlindedBeaconBlockBody struct {
-	RANDAOReveal           phase0.BLSSignature `ssz-size:"96"`
-	ExecutionData          *phase0.ExecutionData
-	Graffiti               [32]byte                      `ssz-size:"32"`
-	ProposerSlashings      []*phase0.ProposerSlashing    `ssz-max:"16"`
-	AttesterSlashings      []*phase0.AttesterSlashing    `ssz-max:"2"`
-	Attestations           []*phase0.Attestation         `ssz-max:"128"`
-	Deposits               []*phase0.Deposit             `ssz-max:"16"`
-	VoluntaryExits         []*phase0.SignedVoluntaryExit `ssz-max:"16"`
-	SyncAggregate          *altair.SyncAggregate
+	RANDAOReveal           capella.BLSSignature `ssz-size:"96"`
+	ExecutionData          *capella.ExecutionData
+	Graffiti               [32]byte                       `ssz-size:"32"`
+	ProposerSlashings      []*capella.ProposerSlashing    `ssz-max:"16"`
+	AttesterSlashings      []*capella.AttesterSlashing    `ssz-max:"2"`
+	Attestations           []*capella.Attestation         `ssz-max:"128"`
+	Deposits               []*capella.Deposit             `ssz-max:"16"`
+	VoluntaryExits         []*capella.SignedVoluntaryExit `ssz-max:"16"`
+	SyncAggregate          *capella.SyncAggregate
 	ExecutionPayloadHeader *capella.ExecutionPayloadHeader
 }
 

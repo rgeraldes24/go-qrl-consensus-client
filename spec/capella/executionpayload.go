@@ -24,29 +24,27 @@ import (
 
 	"github.com/goccy/go-yaml"
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/bellatrix"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // ExecutionPayload represents an execution layer payload.
 //
 //nolint:revive
 type ExecutionPayload struct {
-	ParentHash    phase0.Hash32              `ssz-size:"32"`
-	FeeRecipient  bellatrix.ExecutionAddress `ssz-size:"20"`
-	StateRoot     [32]byte                   `ssz-size:"32"`
-	ReceiptsRoot  [32]byte                   `ssz-size:"32"`
-	LogsBloom     [256]byte                  `ssz-size:"256"`
-	PrevRandao    [32]byte                   `ssz-size:"32"`
+	ParentHash    capella.Hash32           `ssz-size:"32"`
+	FeeRecipient  capella.ExecutionAddress `ssz-size:"20"`
+	StateRoot     [32]byte                 `ssz-size:"32"`
+	ReceiptsRoot  [32]byte                 `ssz-size:"32"`
+	LogsBloom     [256]byte                `ssz-size:"256"`
+	PrevRandao    [32]byte                 `ssz-size:"32"`
 	BlockNumber   uint64
 	GasLimit      uint64
 	GasUsed       uint64
 	Timestamp     uint64
-	ExtraData     []byte                  `dynssz-max:"MAX_EXTRA_DATA_BYTES"                                   ssz-max:"32"`
-	BaseFeePerGas [32]byte                `ssz-size:"32"`
-	BlockHash     phase0.Hash32           `ssz-size:"32"`
-	Transactions  []bellatrix.Transaction `dynssz-max:"MAX_TRANSACTIONS_PER_PAYLOAD,MAX_BYTES_PER_TRANSACTION" ssz-max:"1048576,1073741824" ssz-size:"?,?"`
-	Withdrawals   []*Withdrawal           `dynssz-max:"MAX_WITHDRAWALS_PER_PAYLOAD"                            ssz-max:"16"`
+	ExtraData     []byte                `dynssz-max:"MAX_EXTRA_DATA_BYTES"                                   ssz-max:"32"`
+	BaseFeePerGas [32]byte              `ssz-size:"32"`
+	BlockHash     capella.Hash32        `ssz-size:"32"`
+	Transactions  []capella.Transaction `dynssz-max:"MAX_TRANSACTIONS_PER_PAYLOAD,MAX_BYTES_PER_TRANSACTION" ssz-max:"1048576,1073741824" ssz-size:"?,?"`
+	Withdrawals   []*Withdrawal         `dynssz-max:"MAX_WITHDRAWALS_PER_PAYLOAD"                            ssz-max:"16"`
 }
 
 // executionPayloadJSON is the spec representation of the struct.
@@ -214,7 +212,7 @@ func (e *ExecutionPayload) unpack(data *executionPayloadJSON) error {
 		return errors.Wrap(err, "invalid value for parent hash")
 	}
 
-	if len(parentHash) != phase0.Hash32Length {
+	if len(parentHash) != capella.Hash32Length {
 		return errors.New("incorrect length for parent hash")
 	}
 
@@ -229,7 +227,7 @@ func (e *ExecutionPayload) unpack(data *executionPayloadJSON) error {
 		return errors.Wrap(err, "invalid value for fee recipient")
 	}
 
-	if len(feeRecipient) != bellatrix.FeeRecipientLength {
+	if len(feeRecipient) != capella.FeeRecipientLength {
 		return errors.New("incorrect length for fee recipient")
 	}
 
@@ -415,7 +413,7 @@ func (e *ExecutionPayload) unpack(data *executionPayloadJSON) error {
 		return errors.Wrap(err, "invalid value for block hash")
 	}
 
-	if len(blockHash) != phase0.Hash32Length {
+	if len(blockHash) != capella.Hash32Length {
 		return errors.New("incorrect length for block hash")
 	}
 
@@ -425,11 +423,11 @@ func (e *ExecutionPayload) unpack(data *executionPayloadJSON) error {
 		return errors.New("transactions missing")
 	}
 
-	if len(data.Transactions) > bellatrix.MaxTransactionsPerPayload {
+	if len(data.Transactions) > capella.MaxTransactionsPerPayload {
 		return errors.Wrap(err, "incorrect length for transactions")
 	}
 
-	transactions := make([]bellatrix.Transaction, len(data.Transactions))
+	transactions := make([]capella.Transaction, len(data.Transactions))
 	for i := range data.Transactions {
 		if data.Transactions[i] == "" {
 			return errors.New("transaction missing")
@@ -440,7 +438,7 @@ func (e *ExecutionPayload) unpack(data *executionPayloadJSON) error {
 			return errors.Wrap(err, "invalid value for transaction")
 		}
 
-		if len(transactions[i]) > bellatrix.MaxBytesPerTransaction {
+		if len(transactions[i]) > capella.MaxBytesPerTransaction {
 			return errors.Wrap(err, "incorrect length for transaction")
 		}
 	}

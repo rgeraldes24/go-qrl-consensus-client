@@ -18,14 +18,14 @@ import (
 
 	consensusclient "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // ForkSchedule provides details of past and future changes in the chain's fork version.
 func (s *Service) ForkSchedule(ctx context.Context,
 	opts *api.ForkScheduleOpts,
 ) (
-	*api.Response[[]*phase0.Fork],
+	*api.Response[[]*capella.Fork],
 	error,
 ) {
 	res, err := s.doCall(ctx, func(ctx context.Context, client consensusclient.Service) (any, error) {
@@ -40,7 +40,7 @@ func (s *Service) ForkSchedule(ctx context.Context,
 		return nil, err
 	}
 
-	response, isResponse := res.(*api.Response[[]*phase0.Fork])
+	response, isResponse := res.(*api.Response[[]*capella.Fork])
 	if !isResponse {
 		return nil, ErrIncorrectType
 	}

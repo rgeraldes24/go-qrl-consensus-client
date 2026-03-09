@@ -21,13 +21,13 @@ import (
 	"time"
 
 	"github.com/theQRL/go-qrl-consensus-client/spec"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 
-	"github.com/OffchainLabs/go-bitfield"
 	"github.com/stretchr/testify/require"
+	bitfield "github.com/theQRL/go-bitfield"
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	"github.com/theQRL/go-qrl-consensus-client/http"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 func TestSubmitAttestations(t *testing.T) {
@@ -55,7 +55,7 @@ func TestSubmitAttestations(t *testing.T) {
 		{
 			name: "Good",
 			opts: &api.AttestationDataOpts{
-				Slot: phase0.Slot(uint64(time.Since(genesisResponse.Data.GenesisTime).Seconds()) / uint64(slotDuration.Seconds())),
+				Slot: capella.Slot(uint64(time.Since(genesisResponse.Data.GenesisTime).Seconds()) / uint64(slotDuration.Seconds())),
 			},
 		},
 	}
@@ -68,10 +68,10 @@ func TestSubmitAttestations(t *testing.T) {
 
 			aggregationBits := bitfield.NewBitlist(160)
 			aggregationBits.SetBitAt(1, true)
-			attestation := &phase0.Attestation{
+			attestation := &capella.Attestation{
 				AggregationBits: aggregationBits,
 				Data:            attestationDataResponse.Data,
-				Signature: phase0.BLSSignature([96]byte{
+				Signature: capella.BLSSignature([96]byte{
 					0xb1, 0x3c, 0xa7, 0x7f, 0xda, 0xb9, 0x0f, 0xce, 0xdf, 0x0c, 0xda, 0x74, 0xe9, 0xe9, 0xda, 0x1e,
 					0xdb, 0xe4, 0x32, 0x91, 0x09, 0x48, 0xca, 0xad, 0xca, 0x64, 0xbb, 0xfb, 0x93, 0x34, 0x26, 0x44,
 					0xac, 0xbb, 0xd3, 0xa1, 0x02, 0x4c, 0xa3, 0x9b, 0xd3, 0x50, 0x70, 0xca, 0xb3, 0xc6, 0x90, 0xd4,
@@ -82,7 +82,7 @@ func TestSubmitAttestations(t *testing.T) {
 			}
 
 			versionedAttestations := []*spec.VersionedAttestation{
-				{Version: spec.DataVersionPhase0, Phase0: attestation},
+				{Version: spec.DataVersionCapella, Capella: attestation},
 			}
 			opts := &api.SubmitAttestationsOpts{
 				Attestations: versionedAttestations,

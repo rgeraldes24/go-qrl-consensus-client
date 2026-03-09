@@ -24,27 +24,25 @@ import (
 
 	"github.com/goccy/go-yaml"
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/bellatrix"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // ExecutionPayloadHeader represents an execution layer payload header.
 type ExecutionPayloadHeader struct {
-	ParentHash       phase0.Hash32              `ssz-size:"32"`
-	FeeRecipient     bellatrix.ExecutionAddress `ssz-size:"20"`
-	StateRoot        [32]byte                   `ssz-size:"32"`
-	ReceiptsRoot     [32]byte                   `ssz-size:"32"`
-	LogsBloom        [256]byte                  `ssz-size:"256"`
-	PrevRandao       [32]byte                   `ssz-size:"32"`
+	ParentHash       Hash32           `ssz-size:"32"`
+	FeeRecipient     ExecutionAddress `ssz-size:"20"`
+	StateRoot        [32]byte         `ssz-size:"32"`
+	ReceiptsRoot     [32]byte         `ssz-size:"32"`
+	LogsBloom        [256]byte        `ssz-size:"256"`
+	PrevRandao       [32]byte         `ssz-size:"32"`
 	BlockNumber      uint64
 	GasLimit         uint64
 	GasUsed          uint64
 	Timestamp        uint64
-	ExtraData        []byte        `ssz-max:"32"`
-	BaseFeePerGas    [32]byte      `ssz-size:"32"`
-	BlockHash        phase0.Hash32 `ssz-size:"32"`
-	TransactionsRoot phase0.Root   `ssz-size:"32"`
-	WithdrawalsRoot  phase0.Root   `ssz-size:"32"`
+	ExtraData        []byte   `ssz-max:"32"`
+	BaseFeePerGas    [32]byte `ssz-size:"32"`
+	BlockHash        Hash32   `ssz-size:"32"`
+	TransactionsRoot Root     `ssz-size:"32"`
+	WithdrawalsRoot  Root     `ssz-size:"32"`
 }
 
 // executionPayloadHeaderJSON is the spec representation of the struct.
@@ -202,7 +200,7 @@ func (e *ExecutionPayloadHeader) unpack(data *executionPayloadHeaderJSON) error 
 		return errors.Wrap(err, "invalid value for parent hash")
 	}
 
-	if len(parentHash) != phase0.Hash32Length {
+	if len(parentHash) != Hash32Length {
 		return errors.New("incorrect length for parent hash")
 	}
 
@@ -217,7 +215,7 @@ func (e *ExecutionPayloadHeader) unpack(data *executionPayloadHeaderJSON) error 
 		return errors.Wrap(err, "invalid value for fee recipient")
 	}
 
-	if len(feeRecipient) != bellatrix.FeeRecipientLength {
+	if len(feeRecipient) != FeeRecipientLength {
 		return errors.New("incorrect length for fee recipient")
 	}
 
@@ -403,7 +401,7 @@ func (e *ExecutionPayloadHeader) unpack(data *executionPayloadHeaderJSON) error 
 		return errors.Wrap(err, "invalid value for block hash")
 	}
 
-	if len(blockHash) != phase0.Hash32Length {
+	if len(blockHash) != Hash32Length {
 		return errors.New("incorrect length for block hash")
 	}
 
@@ -418,7 +416,7 @@ func (e *ExecutionPayloadHeader) unpack(data *executionPayloadHeaderJSON) error 
 		return errors.Wrap(err, "invalid value for transactions root")
 	}
 
-	if len(transactionsRoot) != phase0.Hash32Length {
+	if len(transactionsRoot) != Hash32Length {
 		return errors.New("incorrect length for transactions root")
 	}
 
@@ -433,7 +431,7 @@ func (e *ExecutionPayloadHeader) unpack(data *executionPayloadHeaderJSON) error 
 		return errors.Wrap(err, "invalid value for withdrawals root")
 	}
 
-	if len(withdrawalsRoot) != phase0.Hash32Length {
+	if len(withdrawalsRoot) != Hash32Length {
 		return errors.New("incorrect length for withdrawals root")
 	}
 

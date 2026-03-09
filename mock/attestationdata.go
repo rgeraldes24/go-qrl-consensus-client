@@ -17,24 +17,24 @@ import (
 	"context"
 
 	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // AttestationData fetches the attestation data for the given slot and committee index.
 func (s *Service) AttestationData(ctx context.Context,
 	opts *api.AttestationDataOpts,
 ) (
-	*api.Response[*phase0.AttestationData],
+	*api.Response[*capella.AttestationData],
 	error,
 ) {
 	if s.AttestationDataFunc != nil {
 		return s.AttestationDataFunc(ctx, opts)
 	}
 
-	return &api.Response[*phase0.AttestationData]{
-		Data: &phase0.AttestationData{
-			Source: &phase0.Checkpoint{},
-			Target: &phase0.Checkpoint{},
+	return &api.Response[*capella.AttestationData]{
+		Data: &capella.AttestationData{
+			Source: &capella.Checkpoint{},
+			Target: &capella.Checkpoint{},
 		},
 		Metadata: make(map[string]any),
 	}, nil

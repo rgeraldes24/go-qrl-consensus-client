@@ -16,8 +16,7 @@ package api
 import (
 	apiv1capella "github.com/theQRL/go-qrl-consensus-client/api/v1/capella"
 	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/bellatrix"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // VersionedBlindedBeaconBlock contains a versioned blinded beacon block.
@@ -32,7 +31,7 @@ func (v *VersionedBlindedBeaconBlock) IsEmpty() bool {
 }
 
 // Slot returns the slot of the blinded beacon block.
-func (v *VersionedBlindedBeaconBlock) Slot() (phase0.Slot, error) {
+func (v *VersionedBlindedBeaconBlock) Slot() (capella.Slot, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil {
@@ -46,7 +45,7 @@ func (v *VersionedBlindedBeaconBlock) Slot() (phase0.Slot, error) {
 }
 
 // ProposerIndex returns the proposer index of the beacon block.
-func (v *VersionedBlindedBeaconBlock) ProposerIndex() (phase0.ValidatorIndex, error) {
+func (v *VersionedBlindedBeaconBlock) ProposerIndex() (capella.ValidatorIndex, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil {
@@ -60,17 +59,17 @@ func (v *VersionedBlindedBeaconBlock) ProposerIndex() (phase0.ValidatorIndex, er
 }
 
 // RandaoReveal returns the RANDAO reveal of the blinded beacon block.
-func (v *VersionedBlindedBeaconBlock) RandaoReveal() (phase0.BLSSignature, error) {
+func (v *VersionedBlindedBeaconBlock) RandaoReveal() (capella.BLSSignature, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Body == nil {
-			return phase0.BLSSignature{}, ErrDataMissing
+			return capella.BLSSignature{}, ErrDataMissing
 		}
 
 		return v.Capella.Body.RANDAOReveal, nil
 	default:
-		return phase0.BLSSignature{}, ErrUnsupportedVersion
+		return capella.BLSSignature{}, ErrUnsupportedVersion
 	}
 }
 
@@ -112,90 +111,90 @@ func (v *VersionedBlindedBeaconBlock) Attestations() ([]spec.VersionedAttestatio
 }
 
 // Root returns the root of the blinded beacon block.
-func (v *VersionedBlindedBeaconBlock) Root() (phase0.Root, error) {
+func (v *VersionedBlindedBeaconBlock) Root() (capella.Root, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.Capella.HashTreeRoot()
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
 // BodyRoot returns the body root of the blinded beacon block.
-func (v *VersionedBlindedBeaconBlock) BodyRoot() (phase0.Root, error) {
+func (v *VersionedBlindedBeaconBlock) BodyRoot() (capella.Root, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.Capella.Body.HashTreeRoot()
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
 // ParentRoot returns the parent root of the blinded beacon block.
-func (v *VersionedBlindedBeaconBlock) ParentRoot() (phase0.Root, error) {
+func (v *VersionedBlindedBeaconBlock) ParentRoot() (capella.Root, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.Capella.ParentRoot, nil
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
 // StateRoot returns the state root of the blinded beacon block.
-func (v *VersionedBlindedBeaconBlock) StateRoot() (phase0.Root, error) {
+func (v *VersionedBlindedBeaconBlock) StateRoot() (capella.Root, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.Capella.StateRoot, nil
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
 // TransactionsRoot returns the transactions root of the blinded beacon block.
-func (v *VersionedBlindedBeaconBlock) TransactionsRoot() (phase0.Root, error) {
+func (v *VersionedBlindedBeaconBlock) TransactionsRoot() (capella.Root, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Body == nil ||
 			v.Capella.Body.ExecutionPayloadHeader == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.Capella.Body.ExecutionPayloadHeader.TransactionsRoot, nil
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
 // FeeRecipient returns the fee recipient of the blinded beacon block.
-func (v *VersionedBlindedBeaconBlock) FeeRecipient() (bellatrix.ExecutionAddress, error) {
+func (v *VersionedBlindedBeaconBlock) FeeRecipient() (capella.ExecutionAddress, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Body == nil ||
 			v.Capella.Body.ExecutionPayloadHeader == nil {
-			return bellatrix.ExecutionAddress{}, ErrDataMissing
+			return capella.ExecutionAddress{}, ErrDataMissing
 		}
 
 		return v.Capella.Body.ExecutionPayloadHeader.FeeRecipient, nil
 	default:
-		return bellatrix.ExecutionAddress{}, ErrUnsupportedVersion
+		return capella.ExecutionAddress{}, ErrUnsupportedVersion
 	}
 }
 

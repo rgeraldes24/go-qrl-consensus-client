@@ -19,18 +19,18 @@ import (
 
 	"github.com/pkg/errors"
 	consensusclient "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // emptyDomain is used for comparison purposes.
-var emptyDomain phase0.Domain
+var emptyDomain capella.Domain
 
 // Domain provides a domain for a given domain type at a given epoch.
 func (s *Service) Domain(ctx context.Context,
-	domainType phase0.DomainType,
-	epoch phase0.Epoch,
+	domainType capella.DomainType,
+	epoch capella.Epoch,
 ) (
-	phase0.Domain,
+	capella.Domain,
 	error,
 ) {
 	res, err := s.doCall(ctx, func(ctx context.Context, client consensusclient.Service) (any, error) {
@@ -46,12 +46,12 @@ func (s *Service) Domain(ctx context.Context,
 		return domain, nil
 	}, nil)
 	if err != nil {
-		return phase0.Domain{}, err
+		return capella.Domain{}, err
 	}
 
-	response, isResponse := res.(phase0.Domain)
+	response, isResponse := res.(capella.Domain)
 	if !isResponse {
-		return phase0.Domain{}, ErrIncorrectType
+		return capella.Domain{}, ErrIncorrectType
 	}
 
 	return response, nil
@@ -59,9 +59,9 @@ func (s *Service) Domain(ctx context.Context,
 
 // GenesisDomain provides a domain for a given domain type.
 func (s *Service) GenesisDomain(ctx context.Context,
-	domainType phase0.DomainType,
+	domainType capella.DomainType,
 ) (
-	phase0.Domain,
+	capella.Domain,
 	error,
 ) {
 	res, err := s.doCall(ctx, func(ctx context.Context, client consensusclient.Service) (any, error) {
@@ -77,12 +77,12 @@ func (s *Service) GenesisDomain(ctx context.Context,
 		return domain, nil
 	}, nil)
 	if err != nil {
-		return phase0.Domain{}, err
+		return capella.Domain{}, err
 	}
 
-	response, isResponse := res.(phase0.Domain)
+	response, isResponse := res.(capella.Domain)
 	if !isResponse {
-		return phase0.Domain{}, ErrIncorrectType
+		return capella.Domain{}, ErrIncorrectType
 	}
 
 	return response, nil

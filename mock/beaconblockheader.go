@@ -18,7 +18,7 @@ import (
 
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // BeaconBlockHeader provides the block header of a given block ID.
@@ -34,8 +34,8 @@ func (s *Service) BeaconBlockHeader(ctx context.Context,
 
 	return &api.Response[*apiv1.BeaconBlockHeader]{
 		Data: &apiv1.BeaconBlockHeader{
-			Header: &phase0.SignedBeaconBlockHeader{
-				Message: &phase0.BeaconBlockHeader{},
+			Header: &capella.SignedBeaconBlockHeader{
+				Message: &capella.BeaconBlockHeader{},
 			},
 		},
 		Metadata: make(map[string]any),

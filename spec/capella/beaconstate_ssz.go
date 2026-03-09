@@ -5,8 +5,7 @@ package capella
 
 import (
 	ssz "github.com/ferranbt/fastssz"
-	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // MarshalSSZ ssz marshals the BeaconState object
@@ -30,7 +29,7 @@ func (b *BeaconState) MarshalSSZTo(buf []byte) (dst []byte, err error) {
 
 	// Field (3) 'Fork'
 	if b.Fork == nil {
-		b.Fork = new(phase0.Fork)
+		b.Fork = new(Fork)
 	}
 	if dst, err = b.Fork.MarshalSSZTo(dst); err != nil {
 		return
@@ -38,7 +37,7 @@ func (b *BeaconState) MarshalSSZTo(buf []byte) (dst []byte, err error) {
 
 	// Field (4) 'LatestBlockHeader'
 	if b.LatestBlockHeader == nil {
-		b.LatestBlockHeader = new(phase0.BeaconBlockHeader)
+		b.LatestBlockHeader = new(BeaconBlockHeader)
 	}
 	if dst, err = b.LatestBlockHeader.MarshalSSZTo(dst); err != nil {
 		return
@@ -76,7 +75,7 @@ func (b *BeaconState) MarshalSSZTo(buf []byte) (dst []byte, err error) {
 
 	// Field (8) 'ExecutionData'
 	if b.ExecutionData == nil {
-		b.ExecutionData = new(phase0.ExecutionData)
+		b.ExecutionData = new(ExecutionData)
 	}
 	if dst, err = b.ExecutionData.MarshalSSZTo(dst); err != nil {
 		return
@@ -136,7 +135,7 @@ func (b *BeaconState) MarshalSSZTo(buf []byte) (dst []byte, err error) {
 
 	// Field (18) 'PreviousJustifiedCheckpoint'
 	if b.PreviousJustifiedCheckpoint == nil {
-		b.PreviousJustifiedCheckpoint = new(phase0.Checkpoint)
+		b.PreviousJustifiedCheckpoint = new(Checkpoint)
 	}
 	if dst, err = b.PreviousJustifiedCheckpoint.MarshalSSZTo(dst); err != nil {
 		return
@@ -144,7 +143,7 @@ func (b *BeaconState) MarshalSSZTo(buf []byte) (dst []byte, err error) {
 
 	// Field (19) 'CurrentJustifiedCheckpoint'
 	if b.CurrentJustifiedCheckpoint == nil {
-		b.CurrentJustifiedCheckpoint = new(phase0.Checkpoint)
+		b.CurrentJustifiedCheckpoint = new(Checkpoint)
 	}
 	if dst, err = b.CurrentJustifiedCheckpoint.MarshalSSZTo(dst); err != nil {
 		return
@@ -152,7 +151,7 @@ func (b *BeaconState) MarshalSSZTo(buf []byte) (dst []byte, err error) {
 
 	// Field (20) 'FinalizedCheckpoint'
 	if b.FinalizedCheckpoint == nil {
-		b.FinalizedCheckpoint = new(phase0.Checkpoint)
+		b.FinalizedCheckpoint = new(Checkpoint)
 	}
 	if dst, err = b.FinalizedCheckpoint.MarshalSSZTo(dst); err != nil {
 		return
@@ -164,7 +163,7 @@ func (b *BeaconState) MarshalSSZTo(buf []byte) (dst []byte, err error) {
 
 	// Field (22) 'CurrentSyncCommittee'
 	if b.CurrentSyncCommittee == nil {
-		b.CurrentSyncCommittee = new(altair.SyncCommittee)
+		b.CurrentSyncCommittee = new(SyncCommittee)
 	}
 	if dst, err = b.CurrentSyncCommittee.MarshalSSZTo(dst); err != nil {
 		return
@@ -172,7 +171,7 @@ func (b *BeaconState) MarshalSSZTo(buf []byte) (dst []byte, err error) {
 
 	// Field (23) 'NextSyncCommittee'
 	if b.NextSyncCommittee == nil {
-		b.NextSyncCommittee = new(altair.SyncCommittee)
+		b.NextSyncCommittee = new(SyncCommittee)
 	}
 	if dst, err = b.NextSyncCommittee.MarshalSSZTo(dst); err != nil {
 		return
@@ -303,11 +302,11 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 	copy(b.GenesisValidatorsRoot[:], buf[8:40])
 
 	// Field (2) 'Slot'
-	b.Slot = phase0.Slot(ssz.UnmarshallUint64(buf[40:48]))
+	b.Slot = Slot(ssz.UnmarshallUint64(buf[40:48]))
 
 	// Field (3) 'Fork'
 	if b.Fork == nil {
-		b.Fork = new(phase0.Fork)
+		b.Fork = new(Fork)
 	}
 	if err = b.Fork.UnmarshalSSZ(buf[48:64]); err != nil {
 		return err
@@ -315,20 +314,20 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 
 	// Field (4) 'LatestBlockHeader'
 	if b.LatestBlockHeader == nil {
-		b.LatestBlockHeader = new(phase0.BeaconBlockHeader)
+		b.LatestBlockHeader = new(BeaconBlockHeader)
 	}
 	if err = b.LatestBlockHeader.UnmarshalSSZ(buf[64:176]); err != nil {
 		return err
 	}
 
 	// Field (5) 'BlockRoots'
-	b.BlockRoots = make([]phase0.Root, 8192)
+	b.BlockRoots = make([]Root, 8192)
 	for ii := 0; ii < 8192; ii++ {
 		copy(b.BlockRoots[ii][:], buf[176:262320][ii*32:(ii+1)*32])
 	}
 
 	// Field (6) 'StateRoots'
-	b.StateRoots = make([]phase0.Root, 8192)
+	b.StateRoots = make([]Root, 8192)
 	for ii := 0; ii < 8192; ii++ {
 		copy(b.StateRoots[ii][:], buf[262320:524464][ii*32:(ii+1)*32])
 	}
@@ -344,7 +343,7 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 
 	// Field (8) 'ExecutionData'
 	if b.ExecutionData == nil {
-		b.ExecutionData = new(phase0.ExecutionData)
+		b.ExecutionData = new(ExecutionData)
 	}
 	if err = b.ExecutionData.UnmarshalSSZ(buf[524468:524540]); err != nil {
 		return err
@@ -369,15 +368,15 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 	}
 
 	// Field (13) 'RANDAOMixes'
-	b.RANDAOMixes = make([]phase0.Root, 65536)
+	b.RANDAOMixes = make([]Root, 65536)
 	for ii := 0; ii < 65536; ii++ {
 		copy(b.RANDAOMixes[ii][:], buf[524560:2621712][ii*32:(ii+1)*32])
 	}
 
 	// Field (14) 'Slashings'
-	b.Slashings = make([]phase0.Gwei, 8192)
+	b.Slashings = make([]Gwei, 8192)
 	for ii := 0; ii < 8192; ii++ {
-		b.Slashings[ii] = phase0.Gwei(ssz.UnmarshallUint64(buf[2621712:2687248][ii*8 : (ii+1)*8]))
+		b.Slashings[ii] = Gwei(ssz.UnmarshallUint64(buf[2621712:2687248][ii*8 : (ii+1)*8]))
 	}
 
 	// Offset (15) 'PreviousEpochParticipation'
@@ -398,7 +397,7 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 
 	// Field (18) 'PreviousJustifiedCheckpoint'
 	if b.PreviousJustifiedCheckpoint == nil {
-		b.PreviousJustifiedCheckpoint = new(phase0.Checkpoint)
+		b.PreviousJustifiedCheckpoint = new(Checkpoint)
 	}
 	if err = b.PreviousJustifiedCheckpoint.UnmarshalSSZ(buf[2687257:2687297]); err != nil {
 		return err
@@ -406,7 +405,7 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 
 	// Field (19) 'CurrentJustifiedCheckpoint'
 	if b.CurrentJustifiedCheckpoint == nil {
-		b.CurrentJustifiedCheckpoint = new(phase0.Checkpoint)
+		b.CurrentJustifiedCheckpoint = new(Checkpoint)
 	}
 	if err = b.CurrentJustifiedCheckpoint.UnmarshalSSZ(buf[2687297:2687337]); err != nil {
 		return err
@@ -414,7 +413,7 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 
 	// Field (20) 'FinalizedCheckpoint'
 	if b.FinalizedCheckpoint == nil {
-		b.FinalizedCheckpoint = new(phase0.Checkpoint)
+		b.FinalizedCheckpoint = new(Checkpoint)
 	}
 	if err = b.FinalizedCheckpoint.UnmarshalSSZ(buf[2687337:2687377]); err != nil {
 		return err
@@ -427,7 +426,7 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 
 	// Field (22) 'CurrentSyncCommittee'
 	if b.CurrentSyncCommittee == nil {
-		b.CurrentSyncCommittee = new(altair.SyncCommittee)
+		b.CurrentSyncCommittee = new(SyncCommittee)
 	}
 	if err = b.CurrentSyncCommittee.UnmarshalSSZ(buf[2687381:2712005]); err != nil {
 		return err
@@ -435,7 +434,7 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 
 	// Field (23) 'NextSyncCommittee'
 	if b.NextSyncCommittee == nil {
-		b.NextSyncCommittee = new(altair.SyncCommittee)
+		b.NextSyncCommittee = new(SyncCommittee)
 	}
 	if err = b.NextSyncCommittee.UnmarshalSSZ(buf[2712005:2736629]); err != nil {
 		return err
@@ -450,7 +449,7 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 	b.NextWithdrawalIndex = WithdrawalIndex(ssz.UnmarshallUint64(buf[2736633:2736641]))
 
 	// Field (26) 'NextWithdrawalValidatorIndex'
-	b.NextWithdrawalValidatorIndex = phase0.ValidatorIndex(ssz.UnmarshallUint64(buf[2736641:2736649]))
+	b.NextWithdrawalValidatorIndex = ValidatorIndex(ssz.UnmarshallUint64(buf[2736641:2736649]))
 
 	// Offset (27) 'HistoricalSummaries'
 	if o27 = ssz.ReadOffset(buf[2736649:2736653]); o27 > size || o24 > o27 {
@@ -464,7 +463,7 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 		if err != nil {
 			return err
 		}
-		b.HistoricalRoots = make([]phase0.Root, num)
+		b.HistoricalRoots = make([]Root, num)
 		for ii := 0; ii < num; ii++ {
 			copy(b.HistoricalRoots[ii][:], buf[ii*32:(ii+1)*32])
 		}
@@ -477,10 +476,10 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 		if err != nil {
 			return err
 		}
-		b.ExecutionDataVotes = make([]*phase0.ExecutionData, num)
+		b.ExecutionDataVotes = make([]*ExecutionData, num)
 		for ii := 0; ii < num; ii++ {
 			if b.ExecutionDataVotes[ii] == nil {
-				b.ExecutionDataVotes[ii] = new(phase0.ExecutionData)
+				b.ExecutionDataVotes[ii] = new(ExecutionData)
 			}
 			if err = b.ExecutionDataVotes[ii].UnmarshalSSZ(buf[ii*72 : (ii+1)*72]); err != nil {
 				return err
@@ -495,10 +494,10 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 		if err != nil {
 			return err
 		}
-		b.Validators = make([]*phase0.Validator, num)
+		b.Validators = make([]*capella.Validator, num)
 		for ii := 0; ii < num; ii++ {
 			if b.Validators[ii] == nil {
-				b.Validators[ii] = new(phase0.Validator)
+				b.Validators[ii] = new(capella.Validator)
 			}
 			if err = b.Validators[ii].UnmarshalSSZ(buf[ii*121 : (ii+1)*121]); err != nil {
 				return err
@@ -513,9 +512,9 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 		if err != nil {
 			return err
 		}
-		b.Balances = make([]phase0.Gwei, num)
+		b.Balances = make([]capella.Gwei, num)
 		for ii := 0; ii < num; ii++ {
-			b.Balances[ii] = phase0.Gwei(ssz.UnmarshallUint64(buf[ii*8 : (ii+1)*8]))
+			b.Balances[ii] = capella.Gwei(ssz.UnmarshallUint64(buf[ii*8 : (ii+1)*8]))
 		}
 	}
 
@@ -526,9 +525,9 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 		if err != nil {
 			return err
 		}
-		b.PreviousEpochParticipation = make([]altair.ParticipationFlags, num)
+		b.PreviousEpochParticipation = make([]capella.ParticipationFlags, num)
 		for ii := 0; ii < num; ii++ {
-			b.PreviousEpochParticipation[ii] = altair.ParticipationFlags(ssz.UnmarshallUint8(buf[ii*1 : (ii+1)*1]))
+			b.PreviousEpochParticipation[ii] = capella.ParticipationFlags(ssz.UnmarshallUint8(buf[ii*1 : (ii+1)*1]))
 		}
 	}
 
@@ -539,9 +538,9 @@ func (b *BeaconState) UnmarshalSSZ(buf []byte) error {
 		if err != nil {
 			return err
 		}
-		b.CurrentEpochParticipation = make([]altair.ParticipationFlags, num)
+		b.CurrentEpochParticipation = make([]capella.ParticipationFlags, num)
 		for ii := 0; ii < num; ii++ {
-			b.CurrentEpochParticipation[ii] = altair.ParticipationFlags(ssz.UnmarshallUint8(buf[ii*1 : (ii+1)*1]))
+			b.CurrentEpochParticipation[ii] = capella.ParticipationFlags(ssz.UnmarshallUint8(buf[ii*1 : (ii+1)*1]))
 		}
 	}
 
@@ -646,7 +645,7 @@ func (b *BeaconState) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 
 	// Field (3) 'Fork'
 	if b.Fork == nil {
-		b.Fork = new(phase0.Fork)
+		b.Fork = new(capella.Fork)
 	}
 	if err = b.Fork.HashTreeRootWith(hh); err != nil {
 		return
@@ -654,7 +653,7 @@ func (b *BeaconState) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 
 	// Field (4) 'LatestBlockHeader'
 	if b.LatestBlockHeader == nil {
-		b.LatestBlockHeader = new(phase0.BeaconBlockHeader)
+		b.LatestBlockHeader = new(capella.BeaconBlockHeader)
 	}
 	if err = b.LatestBlockHeader.HashTreeRootWith(hh); err != nil {
 		return
@@ -714,7 +713,7 @@ func (b *BeaconState) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 
 	// Field (8) 'ExecutionData'
 	if b.ExecutionData == nil {
-		b.ExecutionData = new(phase0.ExecutionData)
+		b.ExecutionData = new(capella.ExecutionData)
 	}
 	if err = b.ExecutionData.HashTreeRootWith(hh); err != nil {
 		return
@@ -839,7 +838,7 @@ func (b *BeaconState) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 
 	// Field (18) 'PreviousJustifiedCheckpoint'
 	if b.PreviousJustifiedCheckpoint == nil {
-		b.PreviousJustifiedCheckpoint = new(phase0.Checkpoint)
+		b.PreviousJustifiedCheckpoint = new(capella.Checkpoint)
 	}
 	if err = b.PreviousJustifiedCheckpoint.HashTreeRootWith(hh); err != nil {
 		return
@@ -847,7 +846,7 @@ func (b *BeaconState) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 
 	// Field (19) 'CurrentJustifiedCheckpoint'
 	if b.CurrentJustifiedCheckpoint == nil {
-		b.CurrentJustifiedCheckpoint = new(phase0.Checkpoint)
+		b.CurrentJustifiedCheckpoint = new(capella.Checkpoint)
 	}
 	if err = b.CurrentJustifiedCheckpoint.HashTreeRootWith(hh); err != nil {
 		return
@@ -855,7 +854,7 @@ func (b *BeaconState) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 
 	// Field (20) 'FinalizedCheckpoint'
 	if b.FinalizedCheckpoint == nil {
-		b.FinalizedCheckpoint = new(phase0.Checkpoint)
+		b.FinalizedCheckpoint = new(capella.Checkpoint)
 	}
 	if err = b.FinalizedCheckpoint.HashTreeRootWith(hh); err != nil {
 		return
@@ -878,7 +877,7 @@ func (b *BeaconState) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 
 	// Field (22) 'CurrentSyncCommittee'
 	if b.CurrentSyncCommittee == nil {
-		b.CurrentSyncCommittee = new(altair.SyncCommittee)
+		b.CurrentSyncCommittee = new(capella.SyncCommittee)
 	}
 	if err = b.CurrentSyncCommittee.HashTreeRootWith(hh); err != nil {
 		return
@@ -886,7 +885,7 @@ func (b *BeaconState) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 
 	// Field (23) 'NextSyncCommittee'
 	if b.NextSyncCommittee == nil {
-		b.NextSyncCommittee = new(altair.SyncCommittee)
+		b.NextSyncCommittee = new(capella.SyncCommittee)
 	}
 	if err = b.NextSyncCommittee.HashTreeRootWith(hh); err != nil {
 		return

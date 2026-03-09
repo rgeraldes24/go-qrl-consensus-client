@@ -18,7 +18,6 @@ import (
 
 	ssz "github.com/ferranbt/fastssz"
 	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 	proofutil "github.com/theQRL/go-qrl-consensus-client/util/proof"
 )
 
@@ -34,7 +33,7 @@ func (v *VersionedBeaconState) IsEmpty() bool {
 }
 
 // Slot returns the slot of the state.
-func (v *VersionedBeaconState) Slot() (phase0.Slot, error) {
+func (v *VersionedBeaconState) Slot() (capella.Slot, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
@@ -48,7 +47,7 @@ func (v *VersionedBeaconState) Slot() (phase0.Slot, error) {
 }
 
 // NextWithdrawalValidatorIndex returns the next withdrawal validator index of the state.
-func (v *VersionedBeaconState) NextWithdrawalValidatorIndex() (phase0.ValidatorIndex, error) {
+func (v *VersionedBeaconState) NextWithdrawalValidatorIndex() (capella.ValidatorIndex, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
@@ -62,7 +61,7 @@ func (v *VersionedBeaconState) NextWithdrawalValidatorIndex() (phase0.ValidatorI
 }
 
 // Validators returns the validators of the state.
-func (v *VersionedBeaconState) Validators() ([]*phase0.Validator, error) {
+func (v *VersionedBeaconState) Validators() ([]*capella.Validator, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
@@ -76,7 +75,7 @@ func (v *VersionedBeaconState) Validators() ([]*phase0.Validator, error) {
 }
 
 // ValidatorBalances returns the validator balances of the state.
-func (v *VersionedBeaconState) ValidatorBalances() ([]phase0.Gwei, error) {
+func (v *VersionedBeaconState) ValidatorBalances() ([]capella.Gwei, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
@@ -100,7 +99,7 @@ func (v *VersionedBeaconState) DepositRequestsStartIndex() (uint64, error) {
 }
 
 // DepositBalanceToConsume returns the deposit balance to consume of the state.
-func (v *VersionedBeaconState) DepositBalanceToConsume() (phase0.Gwei, error) {
+func (v *VersionedBeaconState) DepositBalanceToConsume() (capella.Gwei, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		return 0, errors.New("state does not provide deposit balance to consume")
@@ -110,7 +109,7 @@ func (v *VersionedBeaconState) DepositBalanceToConsume() (phase0.Gwei, error) {
 }
 
 // ExitBalanceToConsume returns the deposit balance to consume of the state.
-func (v *VersionedBeaconState) ExitBalanceToConsume() (phase0.Gwei, error) {
+func (v *VersionedBeaconState) ExitBalanceToConsume() (capella.Gwei, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		return 0, errors.New("state does not provide exit balance to consume")
@@ -120,7 +119,7 @@ func (v *VersionedBeaconState) ExitBalanceToConsume() (phase0.Gwei, error) {
 }
 
 // EarliestExitEpoch returns the earliest exit epoch of the state.
-func (v *VersionedBeaconState) EarliestExitEpoch() (phase0.Epoch, error) {
+func (v *VersionedBeaconState) EarliestExitEpoch() (capella.Epoch, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		return 0, errors.New("state does not provide earliest exit epoch")
@@ -130,7 +129,7 @@ func (v *VersionedBeaconState) EarliestExitEpoch() (phase0.Epoch, error) {
 }
 
 // ConsolidationBalanceToConsume returns the consolidation balance to consume of the state.
-func (v *VersionedBeaconState) ConsolidationBalanceToConsume() (phase0.Gwei, error) {
+func (v *VersionedBeaconState) ConsolidationBalanceToConsume() (capella.Gwei, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		return 0, errors.New("state does not provide consolidation balance to consume")
@@ -140,7 +139,7 @@ func (v *VersionedBeaconState) ConsolidationBalanceToConsume() (phase0.Gwei, err
 }
 
 // EarliestConsolidationEpoch returns the earliest consolidation epoch of the state.
-func (v *VersionedBeaconState) EarliestConsolidationEpoch() (phase0.Epoch, error) {
+func (v *VersionedBeaconState) EarliestConsolidationEpoch() (capella.Epoch, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		return 0, errors.New("state does not provide earliest consolidation epoch")
@@ -155,15 +154,15 @@ func (v *VersionedBeaconState) EarliestConsolidationEpoch() (phase0.Epoch, error
 //   - index: The index of the validator to retrieve
 //
 // Returns:
-//   - *phase0.Validator: The validator at the given index
+//   - *capella.Validator: The validator at the given index
 //   - error: If the index is invalid or there's an error accessing the validators
-func (v *VersionedBeaconState) ValidatorAtIndex(index phase0.ValidatorIndex) (*phase0.Validator, error) {
+func (v *VersionedBeaconState) ValidatorAtIndex(index capella.ValidatorIndex) (*capella.Validator, error) {
 	validators, err := v.Validators()
 	if err != nil {
 		return nil, err
 	}
 
-	if index >= phase0.ValidatorIndex(len(validators)) {
+	if index >= capella.ValidatorIndex(len(validators)) {
 		return nil, errors.New("validator index out of bounds")
 	}
 
@@ -176,15 +175,15 @@ func (v *VersionedBeaconState) ValidatorAtIndex(index phase0.ValidatorIndex) (*p
 //   - index: The index of the validator whose balance to retrieve
 //
 // Returns:
-//   - phase0.Gwei: The balance in Gwei
+//   - capella.Gwei: The balance in Gwei
 //   - error: If the index is invalid or there's an error accessing the balances
-func (v *VersionedBeaconState) ValidatorBalance(index phase0.ValidatorIndex) (phase0.Gwei, error) {
+func (v *VersionedBeaconState) ValidatorBalance(index capella.ValidatorIndex) (capella.Gwei, error) {
 	balances, err := v.ValidatorBalances()
 	if err != nil {
 		return 0, err
 	}
 
-	if index >= phase0.ValidatorIndex(len(balances)) {
+	if index >= capella.ValidatorIndex(len(balances)) {
 		return 0, errors.New("validator index out of bounds")
 	}
 
@@ -206,16 +205,16 @@ func (v *VersionedBeaconState) GetTree() (*ssz.Node, error) {
 }
 
 // HashTreeRoot returns the HashTreeRoot of the specific beacon state version.
-func (v *VersionedBeaconState) HashTreeRoot() (phase0.Hash32, error) {
+func (v *VersionedBeaconState) HashTreeRoot() (capella.Hash32, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.Hash32{}, errors.New("no Capella state")
+			return capella.Hash32{}, errors.New("no Capella state")
 		}
 
 		return v.Capella.HashTreeRoot()
 	default:
-		return phase0.Hash32{}, errors.New("unknown version")
+		return capella.Hash32{}, errors.New("unknown version")
 	}
 }
 
@@ -257,15 +256,15 @@ func (v *VersionedBeaconState) FieldGeneralizedIndex(name string) (int, error) {
 //   - name: The name of the field to get the root for
 //
 // Returns:
-//   - phase0.Hash32: The SSZ hash root of the field
+//   - capella.Hash32: The SSZ hash root of the field
 //   - error: If the field doesn't exist, the state is empty, or the field is not hash tree rootable
-func (v *VersionedBeaconState) FieldRoot(name string) (phase0.Hash32, error) {
+func (v *VersionedBeaconState) FieldRoot(name string) (capella.Hash32, error) {
 	fieldTree, err := v.FieldTree(name)
 	if err != nil {
-		return phase0.Hash32{}, err
+		return capella.Hash32{}, err
 	}
 
-	var root phase0.Hash32
+	var root capella.Hash32
 	copy(root[:], fieldTree.Hash())
 
 	return root, nil
@@ -291,9 +290,9 @@ func (v *VersionedBeaconState) FieldTree(name string) (*ssz.Node, error) {
 //   - name: The name of the field to generate a proof for
 //
 // Returns:
-//   - []phase0.Hash32: The Merkle proof as a sequence of 32-byte hashes
+//   - []capella.Hash32: The Merkle proof as a sequence of 32-byte hashes
 //   - error: If the field doesn't exist or there's an error generating the proof
-func (v *VersionedBeaconState) ProveField(name string) ([]phase0.Hash32, error) {
+func (v *VersionedBeaconState) ProveField(name string) ([]capella.Hash32, error) {
 	stateTree, err := v.GetTree()
 	if err != nil {
 		return nil, err
@@ -309,7 +308,7 @@ func (v *VersionedBeaconState) ProveField(name string) ([]phase0.Hash32, error) 
 		return nil, err
 	}
 
-	proofBytes := make([]phase0.Hash32, len(proof.Hashes))
+	proofBytes := make([]capella.Hash32, len(proof.Hashes))
 	for i, hash := range proof.Hashes {
 		copy(proofBytes[i][:], hash)
 	}
@@ -325,7 +324,7 @@ func (v *VersionedBeaconState) ProveField(name string) ([]phase0.Hash32, error) 
 // Returns:
 //   - bool: True if the proof is valid, false otherwise
 //   - error: If there's an error during verification
-func (v *VersionedBeaconState) VerifyFieldProof(proof []phase0.Hash32, name string) (bool, error) {
+func (v *VersionedBeaconState) VerifyFieldProof(proof []capella.Hash32, name string) (bool, error) {
 	// Get the state root
 	stateRoot, err := v.HashTreeRoot()
 	if err != nil {

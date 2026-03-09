@@ -5,7 +5,7 @@ package capella
 
 import (
 	ssz "github.com/ferranbt/fastssz"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // MarshalSSZ ssz marshals the BlindedBeaconBlock object
@@ -57,10 +57,10 @@ func (b *BlindedBeaconBlock) UnmarshalSSZ(buf []byte) error {
 	var o4 uint64
 
 	// Field (0) 'Slot'
-	b.Slot = phase0.Slot(ssz.UnmarshallUint64(buf[0:8]))
+	b.Slot = capella.Slot(ssz.UnmarshallUint64(buf[0:8]))
 
 	// Field (1) 'ProposerIndex'
-	b.ProposerIndex = phase0.ValidatorIndex(ssz.UnmarshallUint64(buf[8:16]))
+	b.ProposerIndex = capella.ValidatorIndex(ssz.UnmarshallUint64(buf[8:16]))
 
 	// Field (2) 'ParentRoot'
 	copy(b.ParentRoot[:], buf[16:48])

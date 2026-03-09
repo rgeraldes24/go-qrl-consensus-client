@@ -20,7 +20,6 @@ import (
 	apiv1capella "github.com/theQRL/go-qrl-consensus-client/api/v1/capella"
 	"github.com/theQRL/go-qrl-consensus-client/spec"
 	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // VersionedSignedProposal contains a versioned signed beacon node proposal.
@@ -53,7 +52,7 @@ func (v *VersionedSignedProposal) AssertPresent() error {
 }
 
 // Slot returns the slot of the signed proposal.
-func (v *VersionedSignedProposal) Slot() (phase0.Slot, error) {
+func (v *VersionedSignedProposal) Slot() (capella.Slot, error) {
 	err := v.assertMessagePresent()
 	if err != nil {
 		return 0, err
@@ -72,7 +71,7 @@ func (v *VersionedSignedProposal) Slot() (phase0.Slot, error) {
 }
 
 // ProposerIndex returns the proposer index of the signed proposal.
-func (v *VersionedSignedProposal) ProposerIndex() (phase0.ValidatorIndex, error) {
+func (v *VersionedSignedProposal) ProposerIndex() (capella.ValidatorIndex, error) {
 	if err := v.assertMessagePresent(); err != nil {
 		return 0, err
 	}
@@ -90,9 +89,9 @@ func (v *VersionedSignedProposal) ProposerIndex() (phase0.ValidatorIndex, error)
 }
 
 // ExecutionBlockHash returns the hash of the execution payload.
-func (v *VersionedSignedProposal) ExecutionBlockHash() (phase0.Hash32, error) {
+func (v *VersionedSignedProposal) ExecutionBlockHash() (capella.Hash32, error) {
 	if err := v.assertExecutionPayloadPresent(); err != nil {
-		return phase0.Hash32{}, err
+		return capella.Hash32{}, err
 	}
 
 	switch v.Version {
@@ -103,7 +102,7 @@ func (v *VersionedSignedProposal) ExecutionBlockHash() (phase0.Hash32, error) {
 
 		return v.Capella.Message.Body.ExecutionPayload.BlockHash, nil
 	default:
-		return phase0.Hash32{}, ErrUnsupportedVersion
+		return capella.Hash32{}, ErrUnsupportedVersion
 	}
 }
 

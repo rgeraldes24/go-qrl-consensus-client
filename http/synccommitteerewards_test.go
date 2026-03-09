@@ -24,7 +24,7 @@ import (
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	"github.com/theQRL/go-qrl-consensus-client/http"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 func TestSyncCommitteeRewards(t *testing.T) {
@@ -46,10 +46,10 @@ func TestSyncCommitteeRewards(t *testing.T) {
 			name: "MixedIndicesAndPubKeys",
 			opts: &api.SyncCommitteeRewardsOpts{
 				Block: "10760058",
-				Indices: []phase0.ValidatorIndex{
+				Indices: []capella.ValidatorIndex{
 					286437,
 				},
-				PubKeys: []phase0.BLSPubKey{
+				PubKeys: []capella.BLSPubKey{
 					*mustParsePubKey("0xb7dd1c63cfe60163ffcb889d502b0af3b8ab41cb0dc95edb46eccfeb79e984886fe54f800e813ae09d48e98087010a10"),
 				},
 			},
@@ -59,7 +59,7 @@ func TestSyncCommitteeRewards(t *testing.T) {
 			name: "NegativeRewards",
 			opts: &api.SyncCommitteeRewardsOpts{
 				Block: "10760058",
-				Indices: []phase0.ValidatorIndex{
+				Indices: []capella.ValidatorIndex{
 					1055307,
 				},
 			},

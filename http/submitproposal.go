@@ -107,12 +107,6 @@ func (*Service) submitProposalJSON(_ context.Context,
 	}
 
 	switch proposal.Version {
-	case spec.DataVersionPhase0:
-		specJSON, err = json.Marshal(proposal.Phase0)
-	case spec.DataVersionAltair:
-		specJSON, err = json.Marshal(proposal.Altair)
-	case spec.DataVersionBellatrix:
-		specJSON, err = json.Marshal(proposal.Bellatrix)
 	case spec.DataVersionCapella:
 		specJSON, err = json.Marshal(proposal.Capella)
 	default:

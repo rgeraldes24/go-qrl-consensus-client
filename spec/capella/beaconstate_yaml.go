@@ -18,40 +18,38 @@ import (
 	"fmt"
 
 	"github.com/goccy/go-yaml"
-	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // beaconStateYAML is the spec representation of the struct.
 type beaconStateYAML struct {
-	GenesisTime                  uint64                    `json:"genesis_time"`
-	GenesisValidatorsRoot        string                    `json:"genesis_validators_root"`
-	Slot                         uint64                    `json:"slot"`
-	Fork                         *phase0.Fork              `json:"fork"`
-	LatestBlockHeader            *phase0.BeaconBlockHeader `json:"latest_block_header"`
-	BlockRoots                   []string                  `json:"block_roots"`
-	StateRoots                   []string                  `json:"state_roots"`
-	HistoricalRoots              []string                  `json:"historical_roots"`
-	ExecutionData                *phase0.ExecutionData     `json:"execution_data"`
-	ExecutionDataVotes           []*phase0.ExecutionData   `json:"execution_data_votes"`
-	ETH1DepositIndex             uint64                    `json:"eth1_deposit_index"`
-	Validators                   []*phase0.Validator       `json:"validators"`
-	Balances                     []uint64                  `json:"balances"`
-	RANDAOMixes                  []string                  `json:"randao_mixes"`
-	Slashings                    []uint64                  `json:"slashings"`
-	PreviousEpochParticipation   []uint8                   `json:"previous_epoch_participation"`
-	CurrentEpochParticipation    []uint8                   `json:"current_epoch_participation"`
-	JustificationBits            string                    `json:"justification_bits"`
-	PreviousJustifiedCheckpoint  *phase0.Checkpoint        `json:"previous_justified_checkpoint"`
-	CurrentJustifiedCheckpoint   *phase0.Checkpoint        `json:"current_justified_checkpoint"`
-	FinalizedCheckpoint          *phase0.Checkpoint        `json:"finalized_checkpoint"`
-	InactivityScores             []uint64                  `json:"inactivity_scores"`
-	CurrentSyncCommittee         *altair.SyncCommittee     `json:"current_sync_committee"`
-	NextSyncCommittee            *altair.SyncCommittee     `json:"next_sync_committee"`
-	LatestExecutionPayloadHeader *ExecutionPayloadHeader   `json:"latest_execution_payload_header"`
-	NextWithdrawalIndex          uint64                    `json:"next_withdrawal_index"`
-	NextWithdrawalValidatorIndex uint64                    `json:"next_withdrawal_validator_index"`
-	HistoricalSummaries          []*HistoricalSummary      `json:"historical_summaries"`
+	GenesisTime                  uint64                  `json:"genesis_time"`
+	GenesisValidatorsRoot        string                  `json:"genesis_validators_root"`
+	Slot                         uint64                  `json:"slot"`
+	Fork                         *Fork                   `json:"fork"`
+	LatestBlockHeader            *BeaconBlockHeader      `json:"latest_block_header"`
+	BlockRoots                   []string                `json:"block_roots"`
+	StateRoots                   []string                `json:"state_roots"`
+	HistoricalRoots              []string                `json:"historical_roots"`
+	ExecutionData                *ExecutionData          `json:"execution_data"`
+	ExecutionDataVotes           []*ExecutionData        `json:"execution_data_votes"`
+	ETH1DepositIndex             uint64                  `json:"eth1_deposit_index"`
+	Validators                   []*Validator            `json:"validators"`
+	Balances                     []uint64                `json:"balances"`
+	RANDAOMixes                  []string                `json:"randao_mixes"`
+	Slashings                    []uint64                `json:"slashings"`
+	PreviousEpochParticipation   []uint8                 `json:"previous_epoch_participation"`
+	CurrentEpochParticipation    []uint8                 `json:"current_epoch_participation"`
+	JustificationBits            string                  `json:"justification_bits"`
+	PreviousJustifiedCheckpoint  *Checkpoint             `json:"previous_justified_checkpoint"`
+	CurrentJustifiedCheckpoint   *Checkpoint             `json:"current_justified_checkpoint"`
+	FinalizedCheckpoint          *Checkpoint             `json:"finalized_checkpoint"`
+	InactivityScores             []uint64                `json:"inactivity_scores"`
+	CurrentSyncCommittee         *SyncCommittee          `json:"current_sync_committee"`
+	NextSyncCommittee            *SyncCommittee          `json:"next_sync_committee"`
+	LatestExecutionPayloadHeader *ExecutionPayloadHeader `json:"latest_execution_payload_header"`
+	NextWithdrawalIndex          uint64                  `json:"next_withdrawal_index"`
+	NextWithdrawalValidatorIndex uint64                  `json:"next_withdrawal_validator_index"`
+	HistoricalSummaries          []*HistoricalSummary    `json:"historical_summaries"`
 }
 
 // MarshalYAML implements yaml.Marshaler.

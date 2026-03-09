@@ -16,10 +16,10 @@ package http
 import (
 	"context"
 
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // FarFutureEpoch provides the values for FAR_FUTURE_EPOCH of the chain.
-func (*Service) FarFutureEpoch(_ context.Context) (phase0.Epoch, error) {
-	return phase0.Epoch(0xffffffffffffffff), nil
+func (*Service) FarFutureEpoch(_ context.Context) (capella.Epoch, error) {
+	return capella.Epoch(0xffffffffffffffff), nil
 }

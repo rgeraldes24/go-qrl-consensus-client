@@ -30,7 +30,7 @@ import (
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 	"golang.org/x/sync/semaphore"
 )
 
@@ -52,7 +52,7 @@ type Service struct {
 	specMutex            sync.RWMutex
 	depositContract      *apiv1.DepositContract
 	depositContractMutex sync.RWMutex
-	forkSchedule         []*phase0.Fork
+	forkSchedule         []*capella.Fork
 	forkScheduleMutex    sync.RWMutex
 	nodeVersion          string
 	nodeVersionMutex     sync.RWMutex

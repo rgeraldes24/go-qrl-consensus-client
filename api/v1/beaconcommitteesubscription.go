@@ -19,17 +19,17 @@ import (
 	"strconv"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // BeaconCommitteeSubscription is the data required for a beacon committee subscription.
 type BeaconCommitteeSubscription struct {
 	// ValidatorIndex is the index of the validator making the subscription request.
-	ValidatorIndex phase0.ValidatorIndex
+	ValidatorIndex capella.ValidatorIndex
 	// Slot is the slot for which the validator is attesting.
-	Slot phase0.Slot
+	Slot capella.Slot
 	// CommitteeIndex is the index of the committee of which the validator is a member at the given slot.
-	CommitteeIndex phase0.CommitteeIndex
+	CommitteeIndex capella.CommitteeIndex
 	// CommitteesAtSlot is the number of committees at the given slot.
 	CommitteesAtSlot uint64
 	// IsAggregator is true if the validator that wishes to subscribe is required to aggregate attestations.
@@ -74,7 +74,7 @@ func (b *BeaconCommitteeSubscription) UnmarshalJSON(input []byte) error {
 		return errors.Wrap(err, "invalid value for validator index")
 	}
 
-	b.ValidatorIndex = phase0.ValidatorIndex(validatorIndex)
+	b.ValidatorIndex = capella.ValidatorIndex(validatorIndex)
 
 	if beaconCommitteeSubscriptionJSON.Slot == "" {
 		return errors.New("slot missing")
@@ -85,7 +85,7 @@ func (b *BeaconCommitteeSubscription) UnmarshalJSON(input []byte) error {
 		return errors.Wrap(err, "invalid value for slot")
 	}
 
-	b.Slot = phase0.Slot(slot)
+	b.Slot = capella.Slot(slot)
 
 	if beaconCommitteeSubscriptionJSON.CommitteeIndex == "" {
 		return errors.New("committee index missing")
@@ -96,7 +96,7 @@ func (b *BeaconCommitteeSubscription) UnmarshalJSON(input []byte) error {
 		return errors.Wrap(err, "invalid value for committee index")
 	}
 
-	b.CommitteeIndex = phase0.CommitteeIndex(committeeIndex)
+	b.CommitteeIndex = capella.CommitteeIndex(committeeIndex)
 
 	if beaconCommitteeSubscriptionJSON.CommitteesAtSlot == "" {
 		return errors.New("committees at slot missing")

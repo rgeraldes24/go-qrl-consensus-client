@@ -20,12 +20,12 @@ import (
 	"errors"
 
 	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // SubmitSyncCommitteeContributions submits sync committee contributions.
 func (s *Service) SubmitSyncCommitteeContributions(ctx context.Context,
-	contributionAndProofs []*altair.SignedContributionAndProof,
+	contributionAndProofs []*capella.SignedContributionAndProof,
 ) error {
 	if err := s.assertIsSynced(ctx); err != nil {
 		return err

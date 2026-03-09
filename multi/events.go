@@ -24,8 +24,7 @@ import (
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
 	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // Events feeds requested events with the given topics to the supplied handler.
@@ -169,7 +168,7 @@ func (h *activeHandler) chainReorgHandler(ctx context.Context, data *apiv1.Chain
 	h.opts.ChainReorgHandler(ctx, data)
 }
 
-func (h *activeHandler) contributionAndProofHandler(ctx context.Context, data *altair.SignedContributionAndProof) {
+func (h *activeHandler) contributionAndProofHandler(ctx context.Context, data *capella.SignedContributionAndProof) {
 	log := h.log.With().Str("address", h.address).Logger()
 	log.Trace().Msg("Chain reorg event received")
 
@@ -233,7 +232,7 @@ func (h *activeHandler) payloadAttributesHandler(ctx context.Context, data *apiv
 	h.opts.PayloadAttributesHandler(ctx, data)
 }
 
-func (h *activeHandler) proposerSlashingHandler(ctx context.Context, data *phase0.ProposerSlashing) {
+func (h *activeHandler) proposerSlashingHandler(ctx context.Context, data *capella.ProposerSlashing) {
 	log := h.log.With().Str("address", h.address).Logger()
 	log.Trace().Msg("Proposer slashing event received")
 
@@ -249,7 +248,7 @@ func (h *activeHandler) proposerSlashingHandler(ctx context.Context, data *phase
 	h.opts.ProposerSlashingHandler(ctx, data)
 }
 
-func (h *activeHandler) voluntaryExitHandler(ctx context.Context, data *phase0.SignedVoluntaryExit) {
+func (h *activeHandler) voluntaryExitHandler(ctx context.Context, data *capella.SignedVoluntaryExit) {
 	log := h.log.With().Str("address", h.address).Logger()
 	log.Trace().Msg("Voluntary exit event received")
 

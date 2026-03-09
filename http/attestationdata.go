@@ -21,14 +21,14 @@ import (
 
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // AttestationData obtains attestation data given the options.
 func (s *Service) AttestationData(ctx context.Context,
 	opts *api.AttestationDataOpts,
 ) (
-	*api.Response[*phase0.AttestationData],
+	*api.Response[*capella.AttestationData],
 	error,
 ) {
 	if err := s.assertIsSynced(ctx); err != nil {
@@ -59,10 +59,10 @@ func (s *Service) attestationDataFromJSON(ctx context.Context,
 	opts *api.AttestationDataOpts,
 	httpResponse *httpResponse,
 ) (
-	*api.Response[*phase0.AttestationData],
+	*api.Response[*capella.AttestationData],
 	error,
 ) {
-	data, metadata, err := decodeJSONResponse(bytes.NewReader(httpResponse.body), phase0.AttestationData{})
+	data, metadata, err := decodeJSONResponse(bytes.NewReader(httpResponse.body), capella.AttestationData{})
 	if err != nil {
 		return nil, err
 	}
@@ -71,13 +71,13 @@ func (s *Service) attestationDataFromJSON(ctx context.Context,
 		return nil, err
 	}
 
-	return &api.Response[*phase0.AttestationData]{
+	return &api.Response[*capella.AttestationData]{
 		Metadata: metadata,
 		Data:     &data,
 	}, nil
 }
 
-func (s *Service) verifyAttestationData(ctx context.Context, opts *api.AttestationDataOpts, data *phase0.AttestationData) error {
+func (s *Service) verifyAttestationData(ctx context.Context, opts *api.AttestationDataOpts, data *capella.AttestationData) error {
 	if data.Slot != opts.Slot {
 		return errors.Join(
 			fmt.Errorf("attestation data for slot %d; expected %d", data.Slot, opts.Slot),
@@ -106,7 +106,7 @@ func (s *Service) verifyAttestationData(ctx context.Context, opts *api.Attestati
 	return nil
 }
 
-func (s *Service) calculateElectraSlot(ctx context.Context) (phase0.Slot, error) {
+func (s *Service) calculateElectraSlot(ctx context.Context) (capella.Slot, error) {
 	response, err := s.Spec(ctx, &api.SpecOpts{})
 	if err != nil {
 		return 0, err
@@ -122,7 +122,7 @@ func (s *Service) calculateElectraSlot(ctx context.Context) (phase0.Slot, error)
 		return 0, ErrIncorrectType
 	}
 
-	electraSlot := phase0.Slot(slotsPerEpoch * electraEpoch)
+	electraSlot := capella.Slot(slotsPerEpoch * electraEpoch)
 
 	return electraSlot, nil
 }

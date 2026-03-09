@@ -23,16 +23,14 @@ import (
 
 	"github.com/goccy/go-yaml"
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/bellatrix"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // Withdrawal provides information about a withdrawal.
 type Withdrawal struct {
 	Index          WithdrawalIndex
-	ValidatorIndex phase0.ValidatorIndex
-	Address        bellatrix.ExecutionAddress `ssz-size:"20"`
-	Amount         phase0.Gwei
+	ValidatorIndex ValidatorIndex
+	Address        ExecutionAddress `ssz-size:"20"`
+	Amount         Gwei
 }
 
 // withdrawalJSON is an internal representation of the struct.
@@ -130,7 +128,7 @@ func (w *Withdrawal) unpack(data *withdrawalJSON) error {
 		return errors.Wrap(err, "invalid value for validator index")
 	}
 
-	w.ValidatorIndex = phase0.ValidatorIndex(validatorIndex)
+	w.ValidatorIndex = ValidatorIndex(validatorIndex)
 
 	if data.Address == "" {
 		return errors.New("address missing")
@@ -141,7 +139,7 @@ func (w *Withdrawal) unpack(data *withdrawalJSON) error {
 		return errors.Wrap(err, "invalid value for address")
 	}
 
-	if len(address) != bellatrix.ExecutionAddressLength {
+	if len(address) != ExecutionAddressLength {
 		return errors.New("incorrect length for address")
 	}
 
@@ -156,7 +154,7 @@ func (w *Withdrawal) unpack(data *withdrawalJSON) error {
 		return errors.Wrap(err, "invalid value for amount")
 	}
 
-	w.Amount = phase0.Gwei(amount)
+	w.Amount = Gwei(amount)
 
 	return nil
 }

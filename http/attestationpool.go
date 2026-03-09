@@ -23,7 +23,7 @@ import (
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // AttestationPool obtains the attestation pool for the given options.
@@ -102,7 +102,7 @@ func verifyAttestationPool(opts *api.AttestationPoolOpts, data []*spec.Versioned
 	return nil
 }
 
-func verifyPhase0Attestation(opts *api.AttestationPoolOpts, data *phase0.Attestation) error {
+func verifyPhase0Attestation(opts *api.AttestationPoolOpts, data *capella.Attestation) error {
 	if opts.Slot != nil && data.Data.Slot != *opts.Slot {
 		return errors.New("attestation data not for requested slot")
 	}

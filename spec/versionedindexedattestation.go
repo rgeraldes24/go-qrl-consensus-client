@@ -16,13 +16,13 @@ package spec
 import (
 	"errors"
 
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // VersionedIndexedAttestation contains a versioned indexed attestation.
 type VersionedIndexedAttestation struct {
 	Version DataVersion
-	Capella *phase0.IndexedAttestation
+	Capella *capella.IndexedAttestation
 }
 
 // IsEmpty returns true if there is no block.
@@ -45,7 +45,7 @@ func (v *VersionedIndexedAttestation) AttestingIndices() ([]uint64, error) {
 }
 
 // Data returns the data of the indexed attestation.
-func (v *VersionedIndexedAttestation) Data() (*phase0.AttestationData, error) {
+func (v *VersionedIndexedAttestation) Data() (*capella.AttestationData, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
@@ -59,16 +59,16 @@ func (v *VersionedIndexedAttestation) Data() (*phase0.AttestationData, error) {
 }
 
 // Signature returns the signature of the indexed attestation.
-func (v *VersionedIndexedAttestation) Signature() (phase0.BLSSignature, error) {
+func (v *VersionedIndexedAttestation) Signature() (capella.BLSSignature, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.BLSSignature{}, errors.New("no Capella indexed attestation")
+			return capella.BLSSignature{}, errors.New("no Capella indexed attestation")
 		}
 
 		return v.Capella.Signature, nil
 	default:
-		return phase0.BLSSignature{}, errors.New("unknown version")
+		return capella.BLSSignature{}, errors.New("unknown version")
 	}
 }
 

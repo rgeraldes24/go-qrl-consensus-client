@@ -16,7 +16,7 @@ package mock
 import (
 	"context"
 
-	spec "github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	spec "github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // VoluntaryExitDomain provides the voluntary exit domain.

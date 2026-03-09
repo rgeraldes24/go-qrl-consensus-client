@@ -18,8 +18,7 @@ import (
 
 	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
 	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // EventsOpts are the options for obtaining events.
@@ -71,7 +70,7 @@ type BlockGossipEventHandlerFunc func(context.Context, *apiv1.BlockGossipEvent)
 type ChainReorgEventHandlerFunc func(context.Context, *apiv1.ChainReorgEvent)
 
 // ContributionAndProofEventHandlerFunc is the handler for contribution_and_proof events.
-type ContributionAndProofEventHandlerFunc func(context.Context, *altair.SignedContributionAndProof)
+type ContributionAndProofEventHandlerFunc func(context.Context, *capella.SignedContributionAndProof)
 
 // FinalizedCheckpointEventHandlerFunc is the handler for finalized_checkpoint events.
 type FinalizedCheckpointEventHandlerFunc func(context.Context, *apiv1.FinalizedCheckpointEvent)
@@ -83,7 +82,7 @@ type HeadEventHandlerFunc func(context.Context, *apiv1.HeadEvent)
 type PayloadAttributesEventHandlerFunc func(context.Context, *apiv1.PayloadAttributesEvent)
 
 // ProposerSlashingEventHandlerFunc is the handler for proposer_slashing events.
-type ProposerSlashingEventHandlerFunc func(context.Context, *phase0.ProposerSlashing)
+type ProposerSlashingEventHandlerFunc func(context.Context, *capella.ProposerSlashing)
 
 // VoluntaryExitEventHandlerFunc is the handler for voluntary_exit events.
-type VoluntaryExitEventHandlerFunc func(context.Context, *phase0.SignedVoluntaryExit)
+type VoluntaryExitEventHandlerFunc func(context.Context, *capella.SignedVoluntaryExit)

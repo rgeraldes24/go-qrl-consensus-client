@@ -17,34 +17,34 @@ import (
 	"context"
 
 	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // ForkSchedule provides details of past and future changes in the chain's fork version.
 func (s *Service) ForkSchedule(ctx context.Context,
 	opts *api.ForkScheduleOpts,
 ) (
-	*api.Response[[]*phase0.Fork],
+	*api.Response[[]*capella.Fork],
 	error,
 ) {
 	if s.ForkScheduleFunc != nil {
 		return s.ForkScheduleFunc(ctx, opts)
 	}
 
-	data := []*phase0.Fork{
+	data := []*capella.Fork{
 		{
-			PreviousVersion: phase0.Version{0x01, 0x02, 0x03, 0x04},
-			CurrentVersion:  phase0.Version{0x01, 0x02, 0x03, 0x04},
+			PreviousVersion: capella.Version{0x01, 0x02, 0x03, 0x04},
+			CurrentVersion:  capella.Version{0x01, 0x02, 0x03, 0x04},
 			Epoch:           0,
 		},
 		{
-			PreviousVersion: phase0.Version{0x01, 0x02, 0x03, 0x04},
-			CurrentVersion:  phase0.Version{0x11, 0x12, 0x13, 0x14},
+			PreviousVersion: capella.Version{0x01, 0x02, 0x03, 0x04},
+			CurrentVersion:  capella.Version{0x11, 0x12, 0x13, 0x14},
 			Epoch:           1024,
 		},
 	}
 
-	return &api.Response[[]*phase0.Fork]{
+	return &api.Response[[]*capella.Fork]{
 		Data:     data,
 		Metadata: make(map[string]any),
 	}, nil

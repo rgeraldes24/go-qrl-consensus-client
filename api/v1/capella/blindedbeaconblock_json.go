@@ -21,7 +21,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // blindedBeaconBlockJSON is the spec representation of the struct.
@@ -64,7 +64,7 @@ func (b *BlindedBeaconBlock) unpack(data *blindedBeaconBlockJSON) error {
 		return errors.Wrap(err, "invalid value for slot")
 	}
 
-	b.Slot = phase0.Slot(slot)
+	b.Slot = capella.Slot(slot)
 
 	if data.ProposerIndex == "" {
 		return errors.New("proposer index missing")
@@ -75,7 +75,7 @@ func (b *BlindedBeaconBlock) unpack(data *blindedBeaconBlockJSON) error {
 		return errors.Wrap(err, "invalid value for proposer index")
 	}
 
-	b.ProposerIndex = phase0.ValidatorIndex(proposerIndex)
+	b.ProposerIndex = capella.ValidatorIndex(proposerIndex)
 
 	if data.ParentRoot == "" {
 		return errors.New("parent root missing")
@@ -86,7 +86,7 @@ func (b *BlindedBeaconBlock) unpack(data *blindedBeaconBlockJSON) error {
 		return errors.Wrap(err, "invalid value for parent root")
 	}
 
-	if len(parentRoot) != phase0.RootLength {
+	if len(parentRoot) != capella.RootLength {
 		return errors.New("incorrect length for parent root")
 	}
 
@@ -101,7 +101,7 @@ func (b *BlindedBeaconBlock) unpack(data *blindedBeaconBlockJSON) error {
 		return errors.Wrap(err, "invalid value for state root")
 	}
 
-	if len(stateRoot) != phase0.RootLength {
+	if len(stateRoot) != capella.RootLength {
 		return errors.New("incorrect length for state root")
 	}
 

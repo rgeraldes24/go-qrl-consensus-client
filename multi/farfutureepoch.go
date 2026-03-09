@@ -18,11 +18,11 @@ import (
 
 	"github.com/pkg/errors"
 	consensusclient "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // FarFutureEpoch provides the far future epoch of the chain.
-func (s *Service) FarFutureEpoch(ctx context.Context) (phase0.Epoch, error) {
+func (s *Service) FarFutureEpoch(ctx context.Context) (capella.Epoch, error) {
 	res, err := s.doCall(ctx, func(ctx context.Context, client consensusclient.Service) (any, error) {
 		epoch, err := client.(consensusclient.FarFutureEpochProvider).FarFutureEpoch(ctx)
 		if err != nil {
@@ -39,7 +39,7 @@ func (s *Service) FarFutureEpoch(ctx context.Context) (phase0.Epoch, error) {
 		return 0, err
 	}
 
-	response, isResponse := res.(phase0.Epoch)
+	response, isResponse := res.(capella.Epoch)
 	if !isResponse {
 		return 0, ErrIncorrectType
 	}

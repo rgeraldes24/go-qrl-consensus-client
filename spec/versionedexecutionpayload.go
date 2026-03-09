@@ -17,9 +17,7 @@ import (
 	"errors"
 
 	"github.com/holiman/uint256"
-	"github.com/theQRL/go-qrl-consensus-client/spec/bellatrix"
 	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // VersionedExecutionPayload contains a versioned execution payload.
@@ -34,58 +32,58 @@ func (v *VersionedExecutionPayload) IsEmpty() bool {
 }
 
 // ParentHash returns the parent hash of the execution payload.
-func (v *VersionedExecutionPayload) ParentHash() (phase0.Hash32, error) {
+func (v *VersionedExecutionPayload) ParentHash() (capella.Hash32, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.Hash32{}, errors.New("no capella execution payload")
+			return capella.Hash32{}, errors.New("no capella execution payload")
 		}
 
 		return v.Capella.ParentHash, nil
 	default:
-		return phase0.Hash32{}, errors.New("unknown version")
+		return capella.Hash32{}, errors.New("unknown version")
 	}
 }
 
 // FeeRecipient returns the fee recipient of the execution payload.
-func (v *VersionedExecutionPayload) FeeRecipient() (bellatrix.ExecutionAddress, error) {
+func (v *VersionedExecutionPayload) FeeRecipient() (capella.ExecutionAddress, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
-			return bellatrix.ExecutionAddress{}, errors.New("no capella execution payload")
+			return capella.ExecutionAddress{}, errors.New("no capella execution payload")
 		}
 
 		return v.Capella.FeeRecipient, nil
 	default:
-		return bellatrix.ExecutionAddress{}, errors.New("unknown version")
+		return capella.ExecutionAddress{}, errors.New("unknown version")
 	}
 }
 
 // StateRoot returns the state root of the execution payload.
-func (v *VersionedExecutionPayload) StateRoot() (phase0.Root, error) {
+func (v *VersionedExecutionPayload) StateRoot() (capella.Root, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.Root{}, errors.New("no capella execution payload")
+			return capella.Root{}, errors.New("no capella execution payload")
 		}
 
 		return v.Capella.StateRoot, nil
 	default:
-		return phase0.Root{}, errors.New("unknown version")
+		return capella.Root{}, errors.New("unknown version")
 	}
 }
 
 // ReceiptsRoot returns the receipts root of the execution payload.
-func (v *VersionedExecutionPayload) ReceiptsRoot() (phase0.Root, error) {
+func (v *VersionedExecutionPayload) ReceiptsRoot() (capella.Root, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.Root{}, errors.New("no capella execution payload")
+			return capella.Root{}, errors.New("no capella execution payload")
 		}
 
 		return v.Capella.ReceiptsRoot, nil
 	default:
-		return phase0.Root{}, errors.New("unknown version")
+		return capella.Root{}, errors.New("unknown version")
 	}
 }
 
@@ -202,21 +200,21 @@ func (v *VersionedExecutionPayload) BaseFeePerGas() (*uint256.Int, error) {
 }
 
 // BlockHash returns the block hash of the execution payload.
-func (v *VersionedExecutionPayload) BlockHash() (phase0.Hash32, error) {
+func (v *VersionedExecutionPayload) BlockHash() (capella.Hash32, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.Hash32{}, errors.New("no capella execution payload")
+			return capella.Hash32{}, errors.New("no capella execution payload")
 		}
 
 		return v.Capella.BlockHash, nil
 	default:
-		return phase0.Hash32{}, errors.New("unknown version")
+		return capella.Hash32{}, errors.New("unknown version")
 	}
 }
 
 // Transactions returns the transactions of the execution payload.
-func (v *VersionedExecutionPayload) Transactions() ([]bellatrix.Transaction, error) {
+func (v *VersionedExecutionPayload) Transactions() ([]capella.Transaction, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {

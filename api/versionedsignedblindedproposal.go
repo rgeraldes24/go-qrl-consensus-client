@@ -16,7 +16,7 @@ package api
 import (
 	apiv1capella "github.com/theQRL/go-qrl-consensus-client/api/v1/capella"
 	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // VersionedSignedBlindedProposal contains a versioned signed blinded proposal.
@@ -26,7 +26,7 @@ type VersionedSignedBlindedProposal struct {
 }
 
 // Slot returns the slot of the signed blinded proposal.
-func (v *VersionedSignedBlindedProposal) Slot() (phase0.Slot, error) {
+func (v *VersionedSignedBlindedProposal) Slot() (capella.Slot, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
@@ -65,63 +65,63 @@ func (v *VersionedSignedBlindedProposal) Attestations() ([]spec.VersionedAttesta
 }
 
 // Root returns the root of the blinded proposal.
-func (v *VersionedSignedBlindedProposal) Root() (phase0.Root, error) {
+func (v *VersionedSignedBlindedProposal) Root() (capella.Root, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.Capella.Message.HashTreeRoot()
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
 // BodyRoot returns the body root of the blinded proposal.
-func (v *VersionedSignedBlindedProposal) BodyRoot() (phase0.Root, error) {
+func (v *VersionedSignedBlindedProposal) BodyRoot() (capella.Root, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil ||
 			v.Capella.Message.Body == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.Capella.Message.Body.HashTreeRoot()
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
 // ParentRoot returns the parent root of the blinded proposal.
-func (v *VersionedSignedBlindedProposal) ParentRoot() (phase0.Root, error) {
+func (v *VersionedSignedBlindedProposal) ParentRoot() (capella.Root, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.Capella.Message.ParentRoot, nil
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
 // StateRoot returns the state root of the blinded proposal.
-func (v *VersionedSignedBlindedProposal) StateRoot() (phase0.Root, error) {
+func (v *VersionedSignedBlindedProposal) StateRoot() (capella.Root, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.Capella.Message.StateRoot, nil
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
@@ -150,7 +150,7 @@ func (v *VersionedSignedBlindedProposal) AttesterSlashings() ([]spec.VersionedAt
 }
 
 // ProposerSlashings returns the proposer slashings of the blinded proposal.
-func (v *VersionedSignedBlindedProposal) ProposerSlashings() ([]*phase0.ProposerSlashing, error) {
+func (v *VersionedSignedBlindedProposal) ProposerSlashings() ([]*capella.ProposerSlashing, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
@@ -166,7 +166,7 @@ func (v *VersionedSignedBlindedProposal) ProposerSlashings() ([]*phase0.Proposer
 }
 
 // ProposerIndex returns the proposer index of the blinded proposal.
-func (v *VersionedSignedBlindedProposal) ProposerIndex() (phase0.ValidatorIndex, error) {
+func (v *VersionedSignedBlindedProposal) ProposerIndex() (capella.ValidatorIndex, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
@@ -181,19 +181,19 @@ func (v *VersionedSignedBlindedProposal) ProposerIndex() (phase0.ValidatorIndex,
 }
 
 // ExecutionBlockHash returns the hash of the blinded proposal.
-func (v *VersionedSignedBlindedProposal) ExecutionBlockHash() (phase0.Hash32, error) {
+func (v *VersionedSignedBlindedProposal) ExecutionBlockHash() (capella.Hash32, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil ||
 			v.Capella.Message.Body == nil ||
 			v.Capella.Message.Body.ExecutionPayloadHeader == nil {
-			return phase0.Hash32{}, ErrDataMissing
+			return capella.Hash32{}, ErrDataMissing
 		}
 
 		return v.Capella.Message.Body.ExecutionPayloadHeader.BlockHash, nil
 	default:
-		return phase0.Hash32{}, ErrUnsupportedVersion
+		return capella.Hash32{}, ErrUnsupportedVersion
 	}
 }
 
@@ -215,15 +215,15 @@ func (v *VersionedSignedBlindedProposal) ExecutionBlockNumber() (uint64, error) 
 }
 
 // Signature returns the signature of the blinded proposal.
-func (v *VersionedSignedBlindedProposal) Signature() (phase0.BLSSignature, error) {
+func (v *VersionedSignedBlindedProposal) Signature() (capella.BLSSignature, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.BLSSignature{}, ErrDataMissing
+			return capella.BLSSignature{}, ErrDataMissing
 		}
 
 		return v.Capella.Signature, nil
 	default:
-		return phase0.BLSSignature{}, ErrUnsupportedVersion
+		return capella.BLSSignature{}, ErrUnsupportedVersion
 	}
 }

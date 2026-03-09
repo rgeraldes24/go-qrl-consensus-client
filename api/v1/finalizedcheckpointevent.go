@@ -21,14 +21,14 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // FinalizedCheckpointEvent is the data for the finalized checkpoint event.
 type FinalizedCheckpointEvent struct {
-	Block phase0.Root
-	State phase0.Root
-	Epoch phase0.Epoch
+	Block capella.Root
+	State capella.Root
+	Epoch capella.Epoch
 }
 
 // finalizedCheckpointEventJSON is the spec representation of the struct.
@@ -95,7 +95,7 @@ func (e *FinalizedCheckpointEvent) UnmarshalJSON(input []byte) error {
 		return errors.Wrap(err, "invalid value for epoch")
 	}
 
-	e.Epoch = phase0.Epoch(epoch)
+	e.Epoch = capella.Epoch(epoch)
 
 	return nil
 }

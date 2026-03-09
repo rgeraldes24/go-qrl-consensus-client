@@ -18,8 +18,7 @@ import (
 
 	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
 	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/bellatrix"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // VersionedValidatorRegistration contains a versioned ValidatorRegistrationV1.
@@ -34,16 +33,16 @@ func (v *VersionedValidatorRegistration) IsEmpty() bool {
 }
 
 // FeeRecipient returns the fee recipient of the validator registration.
-func (v *VersionedValidatorRegistration) FeeRecipient() (bellatrix.ExecutionAddress, error) {
+func (v *VersionedValidatorRegistration) FeeRecipient() (capella.ExecutionAddress, error) {
 	switch v.Version {
 	case spec.BuilderVersionV1:
 		if v.V1 == nil {
-			return bellatrix.ExecutionAddress{}, ErrDataMissing
+			return capella.ExecutionAddress{}, ErrDataMissing
 		}
 
 		return v.V1.FeeRecipient, nil
 	default:
-		return bellatrix.ExecutionAddress{}, ErrUnsupportedVersion
+		return capella.ExecutionAddress{}, ErrUnsupportedVersion
 	}
 }
 
@@ -76,29 +75,29 @@ func (v *VersionedValidatorRegistration) Timestamp() (time.Time, error) {
 }
 
 // PubKey returns the public key of the validator registration.
-func (v *VersionedValidatorRegistration) PubKey() (phase0.BLSPubKey, error) {
+func (v *VersionedValidatorRegistration) PubKey() (capella.BLSPubKey, error) {
 	switch v.Version {
 	case spec.BuilderVersionV1:
 		if v.V1 == nil {
-			return phase0.BLSPubKey{}, ErrDataMissing
+			return capella.BLSPubKey{}, ErrDataMissing
 		}
 
 		return v.V1.Pubkey, nil
 	default:
-		return phase0.BLSPubKey{}, ErrUnsupportedVersion
+		return capella.BLSPubKey{}, ErrUnsupportedVersion
 	}
 }
 
 // Root returns the root of the validator registration.
-func (v *VersionedValidatorRegistration) Root() (phase0.Root, error) {
+func (v *VersionedValidatorRegistration) Root() (capella.Root, error) {
 	switch v.Version {
 	case spec.BuilderVersionV1:
 		if v.V1 == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.V1.HashTreeRoot()
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }

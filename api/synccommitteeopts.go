@@ -13,7 +13,7 @@
 
 package api
 
-import "github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+import "github.com/theQRL/go-qrl-consensus-client/spec/capella"
 
 // SyncCommitteeOpts are the options for obtaining sync committees.
 type SyncCommitteeOpts struct {
@@ -24,5 +24,5 @@ type SyncCommitteeOpts struct {
 	State string
 	// Epoch is the epoch for which the data is obtained.
 	// This is optional; if not supplied it will obtain the data at the epoch relating to the state.
-	Epoch *phase0.Epoch
+	Epoch *capella.Epoch
 }

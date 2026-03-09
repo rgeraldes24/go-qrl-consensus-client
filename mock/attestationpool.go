@@ -18,7 +18,7 @@ import (
 
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // AttestationPool fetches the attestation pool for the given slot.
@@ -31,11 +31,11 @@ func (*Service) AttestationPool(_ context.Context,
 	data := make([]*spec.VersionedAttestation, 5)
 	for i := range 5 {
 		data[i] = &spec.VersionedAttestation{
-			Version: spec.DataVersionPhase0,
-			Phase0: &phase0.Attestation{
-				Data: &phase0.AttestationData{
-					Source: &phase0.Checkpoint{},
-					Target: &phase0.Checkpoint{},
+			Version: spec.DataVersionCapella,
+			Capella: &capella.Attestation{
+				Data: &capella.AttestationData{
+					Source: &capella.Checkpoint{},
+					Target: &capella.Checkpoint{},
 				},
 			},
 		}

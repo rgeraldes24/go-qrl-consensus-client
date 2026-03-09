@@ -17,7 +17,6 @@ import (
 	"errors"
 
 	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // VersionedBeaconBlock contains a versioned beacon block.
@@ -32,7 +31,7 @@ func (v *VersionedBeaconBlock) IsEmpty() bool {
 }
 
 // Slot returns the slot of the beacon block.
-func (v *VersionedBeaconBlock) Slot() (phase0.Slot, error) {
+func (v *VersionedBeaconBlock) Slot() (capella.Slot, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
@@ -46,20 +45,20 @@ func (v *VersionedBeaconBlock) Slot() (phase0.Slot, error) {
 }
 
 // RandaoReveal returns the RANDAO reveal of the beacon block.
-func (v *VersionedBeaconBlock) RandaoReveal() (phase0.BLSSignature, error) {
+func (v *VersionedBeaconBlock) RandaoReveal() (capella.BLSSignature, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.BLSSignature{}, errors.New("no capella block")
+			return capella.BLSSignature{}, errors.New("no capella block")
 		}
 
 		if v.Capella.Body == nil {
-			return phase0.BLSSignature{}, errors.New("no capella block body")
+			return capella.BLSSignature{}, errors.New("no capella block body")
 		}
 
 		return v.Capella.Body.RANDAOReveal, nil
 	default:
-		return phase0.BLSSignature{}, errors.New("unknown version")
+		return capella.BLSSignature{}, errors.New("unknown version")
 	}
 }
 
@@ -82,7 +81,7 @@ func (v *VersionedBeaconBlock) Graffiti() ([32]byte, error) {
 }
 
 // ProposerIndex returns the proposer index of the beacon block.
-func (v *VersionedBeaconBlock) ProposerIndex() (phase0.ValidatorIndex, error) {
+func (v *VersionedBeaconBlock) ProposerIndex() (capella.ValidatorIndex, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
@@ -96,62 +95,62 @@ func (v *VersionedBeaconBlock) ProposerIndex() (phase0.ValidatorIndex, error) {
 }
 
 // Root returns the root of the beacon block.
-func (v *VersionedBeaconBlock) Root() (phase0.Root, error) {
+func (v *VersionedBeaconBlock) Root() (capella.Root, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.Root{}, errors.New("no capella block")
+			return capella.Root{}, errors.New("no capella block")
 		}
 
 		return v.Capella.HashTreeRoot()
 	default:
-		return phase0.Root{}, errors.New("unknown version")
+		return capella.Root{}, errors.New("unknown version")
 	}
 }
 
 // BodyRoot returns the body root of the beacon block.
-func (v *VersionedBeaconBlock) BodyRoot() (phase0.Root, error) {
+func (v *VersionedBeaconBlock) BodyRoot() (capella.Root, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.Root{}, errors.New("no capella block")
+			return capella.Root{}, errors.New("no capella block")
 		}
 
 		if v.Capella.Body == nil {
-			return phase0.Root{}, errors.New("no capella block body")
+			return capella.Root{}, errors.New("no capella block body")
 		}
 
 		return v.Capella.Body.HashTreeRoot()
 	default:
-		return phase0.Root{}, errors.New("unknown version")
+		return capella.Root{}, errors.New("unknown version")
 	}
 }
 
 // ParentRoot returns the parent root of the beacon block.
-func (v *VersionedBeaconBlock) ParentRoot() (phase0.Root, error) {
+func (v *VersionedBeaconBlock) ParentRoot() (capella.Root, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.Root{}, errors.New("no capella block")
+			return capella.Root{}, errors.New("no capella block")
 		}
 
 		return v.Capella.ParentRoot, nil
 	default:
-		return phase0.Root{}, errors.New("unknown version")
+		return capella.Root{}, errors.New("unknown version")
 	}
 }
 
 // StateRoot returns the state root of the beacon block.
-func (v *VersionedBeaconBlock) StateRoot() (phase0.Root, error) {
+func (v *VersionedBeaconBlock) StateRoot() (capella.Root, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.Root{}, errors.New("no capella block")
+			return capella.Root{}, errors.New("no capella block")
 		}
 
 		return v.Capella.StateRoot, nil
 	default:
-		return phase0.Root{}, errors.New("unknown version")
+		return capella.Root{}, errors.New("unknown version")
 	}
 }
 
@@ -200,7 +199,7 @@ func (v *VersionedBeaconBlock) AttesterSlashings() ([]VersionedAttesterSlashing,
 }
 
 // ProposerSlashings returns the proposer slashings of the beacon block.
-func (v *VersionedBeaconBlock) ProposerSlashings() ([]*phase0.ProposerSlashing, error) {
+func (v *VersionedBeaconBlock) ProposerSlashings() ([]*capella.ProposerSlashing, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil || v.Capella.Body == nil {

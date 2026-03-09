@@ -13,16 +13,14 @@
 
 package api
 
-import (
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
-)
+import "github.com/theQRL/go-qrl-consensus-client/spec/capella"
 
 // AttestationDataOpts are the options for obtaining attestation data.
 type AttestationDataOpts struct {
 	Common CommonOpts
 
 	// Slot is the slot for which the data is obtained.
-	Slot phase0.Slot
+	Slot capella.Slot
 	// CommitteeIndex is the committee index for which the data is obtained.
-	CommitteeIndex phase0.CommitteeIndex
+	CommitteeIndex capella.CommitteeIndex
 }

@@ -5,7 +5,6 @@ package capella
 
 import (
 	ssz "github.com/ferranbt/fastssz"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // MarshalSSZ ssz marshals the Withdrawal object
@@ -44,13 +43,13 @@ func (w *Withdrawal) UnmarshalSSZ(buf []byte) error {
 	w.Index = WithdrawalIndex(ssz.UnmarshallUint64(buf[0:8]))
 
 	// Field (1) 'ValidatorIndex'
-	w.ValidatorIndex = phase0.ValidatorIndex(ssz.UnmarshallUint64(buf[8:16]))
+	w.ValidatorIndex = ValidatorIndex(ssz.UnmarshallUint64(buf[8:16]))
 
 	// Field (2) 'Address'
 	copy(w.Address[:], buf[16:36])
 
 	// Field (3) 'Amount'
-	w.Amount = phase0.Gwei(ssz.UnmarshallUint64(buf[36:44]))
+	w.Amount = Gwei(ssz.UnmarshallUint64(buf[36:44]))
 
 	return err
 }

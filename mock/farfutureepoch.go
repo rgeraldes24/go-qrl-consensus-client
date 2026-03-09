@@ -16,7 +16,7 @@ package mock
 import (
 	"context"
 
-	spec "github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	spec "github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // FarFutureEpoch provides the values for FAR_FUTURE_EPOCH of the chain.

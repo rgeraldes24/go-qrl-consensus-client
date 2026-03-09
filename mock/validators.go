@@ -18,22 +18,22 @@ import (
 
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // Validators provides the validators, with their balance and status, for a given state.
 func (s *Service) Validators(ctx context.Context,
 	opts *api.ValidatorsOpts,
 ) (
-	*api.Response[map[phase0.ValidatorIndex]*apiv1.Validator],
+	*api.Response[map[capella.ValidatorIndex]*apiv1.Validator],
 	error,
 ) {
 	if s.ValidatorsFunc != nil {
 		return s.ValidatorsFunc(ctx, opts)
 	}
 
-	return &api.Response[map[phase0.ValidatorIndex]*apiv1.Validator]{
-		Data:     map[phase0.ValidatorIndex]*apiv1.Validator{},
+	return &api.Response[map[capella.ValidatorIndex]*apiv1.Validator]{
+		Data:     map[capella.ValidatorIndex]*apiv1.Validator{},
 		Metadata: make(map[string]any),
 	}, nil
 }

@@ -18,14 +18,14 @@ import (
 
 	consensusclient "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // AttestationData fetches the attestation data for the given slot and committee index.
 func (s *Service) AttestationData(ctx context.Context,
 	opts *api.AttestationDataOpts,
 ) (
-	*api.Response[*phase0.AttestationData],
+	*api.Response[*capella.AttestationData],
 	error,
 ) {
 	res, err := s.doCall(ctx, func(ctx context.Context, client consensusclient.Service) (any, error) {
@@ -40,7 +40,7 @@ func (s *Service) AttestationData(ctx context.Context,
 		return nil, err
 	}
 
-	response, isResponse := res.(*api.Response[*phase0.AttestationData])
+	response, isResponse := res.(*api.Response[*capella.AttestationData])
 	if !isResponse {
 		return nil, ErrIncorrectType
 	}

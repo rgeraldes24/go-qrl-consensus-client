@@ -18,14 +18,14 @@ import (
 
 	consensusclient "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // Fork fetches fork information for the given state.
 func (s *Service) Fork(ctx context.Context,
 	opts *api.ForkOpts,
 ) (
-	*api.Response[*phase0.Fork],
+	*api.Response[*capella.Fork],
 	error,
 ) {
 	res, err := s.doCall(ctx, func(ctx context.Context, client consensusclient.Service) (any, error) {
@@ -40,7 +40,7 @@ func (s *Service) Fork(ctx context.Context,
 		return nil, err
 	}
 
-	response, isResponse := res.(*api.Response[*phase0.Fork])
+	response, isResponse := res.(*api.Response[*capella.Fork])
 	if !isResponse {
 		return nil, ErrIncorrectType
 	}

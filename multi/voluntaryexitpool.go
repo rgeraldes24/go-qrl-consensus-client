@@ -18,14 +18,14 @@ import (
 
 	consensusclient "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // VoluntaryExitPool obtains the voluntary exit pool.
 func (s *Service) VoluntaryExitPool(ctx context.Context,
 	opts *api.VoluntaryExitPoolOpts,
 ) (
-	*api.Response[[]*phase0.SignedVoluntaryExit],
+	*api.Response[[]*capella.SignedVoluntaryExit],
 	error,
 ) {
 	res, err := s.doCall(ctx, func(ctx context.Context, client consensusclient.Service) (any, error) {
@@ -40,7 +40,7 @@ func (s *Service) VoluntaryExitPool(ctx context.Context,
 		return nil, err
 	}
 
-	response, isResponse := res.(*api.Response[[]*phase0.SignedVoluntaryExit])
+	response, isResponse := res.(*api.Response[[]*capella.SignedVoluntaryExit])
 	if !isResponse {
 		return nil, ErrIncorrectType
 	}

@@ -19,13 +19,13 @@ import (
 	"strconv"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // ValidatorLiveness represents the observed liveness state of a validator.
 type ValidatorLiveness struct {
 	// Index is the validator index.
-	Index phase0.ValidatorIndex
+	Index capella.ValidatorIndex
 	// IsLive indicates whether the validator is live in the given epoch.
 	IsLive bool
 }
@@ -51,13 +51,13 @@ func (v *ValidatorLiveness) UnmarshalJSON(input []byte) error {
 		return errors.Wrap(err, "invalid JSON")
 	}
 
-	// Convert Index from string to phase0.ValidatorIndex
+	// Convert Index from string to capella.ValidatorIndex
 	index, err := strconv.ParseUint(validatorLivenessJSON.Index, 10, 64)
 	if err != nil {
 		return errors.Wrap(err, "invalid value for index")
 	}
 
-	v.Index = phase0.ValidatorIndex(index)
+	v.Index = capella.ValidatorIndex(index)
 	v.IsLive = validatorLivenessJSON.IsLive
 
 	return nil

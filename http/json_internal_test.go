@@ -5,15 +5,15 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 func TestDecodeJSONStruct(t *testing.T) {
 	input := []byte(`{"execution_optimistic":false,"finalized":true,"data":{"previous_version":"0x00000001","current_version":"0x00000002","epoch":"3"}}`)
-	resType := phase0.Fork{}
-	expectedData := phase0.Fork{
-		PreviousVersion: phase0.Version{0x00, 0x00, 0x00, 0x01},
-		CurrentVersion:  phase0.Version{0x00, 0x00, 0x00, 0x02},
+	resType := capella.Fork{}
+	expectedData := capella.Fork{
+		PreviousVersion: capella.Version{0x00, 0x00, 0x00, 0x01},
+		CurrentVersion:  capella.Version{0x00, 0x00, 0x00, 0x02},
 		Epoch:           3,
 	}
 	expectedMetadata := map[string]any{
@@ -29,16 +29,16 @@ func TestDecodeJSONStruct(t *testing.T) {
 
 func TestDecodeJSONArray(t *testing.T) {
 	input := []byte(`{"execution_optimistic":false,"finalized":true,"data":[{"previous_version":"0x00000001","current_version":"0x00000002","epoch":"3"},{"previous_version":"0x00000002","current_version":"0x00000003","epoch":"4"}]}`)
-	resType := []phase0.Fork{}
-	expectedData := []phase0.Fork{
+	resType := []capella.Fork{}
+	expectedData := []capella.Fork{
 		{
-			PreviousVersion: phase0.Version{0x00, 0x00, 0x00, 0x01},
-			CurrentVersion:  phase0.Version{0x00, 0x00, 0x00, 0x02},
+			PreviousVersion: capella.Version{0x00, 0x00, 0x00, 0x01},
+			CurrentVersion:  capella.Version{0x00, 0x00, 0x00, 0x02},
 			Epoch:           3,
 		},
 		{
-			PreviousVersion: phase0.Version{0x00, 0x00, 0x00, 0x02},
-			CurrentVersion:  phase0.Version{0x00, 0x00, 0x00, 0x03},
+			PreviousVersion: capella.Version{0x00, 0x00, 0x00, 0x02},
+			CurrentVersion:  capella.Version{0x00, 0x00, 0x00, 0x03},
 			Epoch:           4,
 		},
 	}

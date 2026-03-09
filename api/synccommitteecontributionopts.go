@@ -13,16 +13,16 @@
 
 package api
 
-import "github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+import "github.com/theQRL/go-qrl-consensus-client/spec/capella"
 
 // SyncCommitteeContributionOpts are the options for obtaining sync committee contributions.
 type SyncCommitteeContributionOpts struct {
 	Common CommonOpts
 
 	// Slot is the slot for which the data is obtained.
-	Slot phase0.Slot
+	Slot capella.Slot
 	// SubcommitteeIndex is the index of the sync subcommittee for which the data is obtained.
 	SubcommitteeIndex uint64
 	// BeaconBlockRoot is the root of the beacon block for which the data is obtained.
-	BeaconBlockRoot phase0.Root
+	BeaconBlockRoot capella.Root
 }

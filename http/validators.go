@@ -23,7 +23,7 @@ import (
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 )
@@ -37,7 +37,7 @@ type validatorsBody struct {
 func (s *Service) Validators(ctx context.Context,
 	opts *api.ValidatorsOpts,
 ) (
-	*api.Response[map[phase0.ValidatorIndex]*apiv1.Validator],
+	*api.Response[map[capella.ValidatorIndex]*apiv1.Validator],
 	error,
 ) {
 	ctx, span := otel.Tracer("attestantio.go-eth2-client.http").Start(ctx, "Validators")
@@ -97,12 +97,12 @@ func (s *Service) Validators(ctx context.Context,
 	}
 
 	// Data is returned as an array but we want it as a map.
-	mapData := make(map[phase0.ValidatorIndex]*apiv1.Validator)
+	mapData := make(map[capella.ValidatorIndex]*apiv1.Validator)
 	for _, validator := range data {
 		mapData[validator.Index] = validator
 	}
 
-	return &api.Response[map[phase0.ValidatorIndex]*apiv1.Validator]{
+	return &api.Response[map[capella.ValidatorIndex]*apiv1.Validator]{
 		Data:     mapData,
 		Metadata: metadata,
 	}, nil
@@ -114,7 +114,7 @@ func (s *Service) Validators(ctx context.Context,
 func (s *Service) validatorsFromState(ctx context.Context,
 	opts *api.ValidatorsOpts,
 ) (
-	*api.Response[map[phase0.ValidatorIndex]*apiv1.Validator],
+	*api.Response[map[capella.ValidatorIndex]*apiv1.Validator],
 	error,
 ) {
 	ctx, span := otel.Tracer("attestantio.go-eth2-client.http").Start(ctx, "validatorsFromState")
@@ -149,7 +149,7 @@ func (s *Service) validatorsFromState(ctx context.Context,
 		return nil, err
 	}
 
-	epoch := phase0.Epoch(uint64(slot) / slotsPerEpoch)
+	epoch := capella.Epoch(uint64(slot) / slotsPerEpoch)
 
 	farFutureEpoch, err := s.FarFutureEpoch(ctx)
 	if err != nil {
@@ -161,9 +161,9 @@ func (s *Service) validatorsFromState(ctx context.Context,
 		validatorStates[validatorState] = struct{}{}
 	}
 
-	res := make(map[phase0.ValidatorIndex]*apiv1.Validator, len(validators))
+	res := make(map[capella.ValidatorIndex]*apiv1.Validator, len(validators))
 	for i, validator := range validators {
-		index := phase0.ValidatorIndex(i)
+		index := capella.ValidatorIndex(i)
 
 		state := apiv1.ValidatorToState(validator, &balances[i], epoch, farFutureEpoch)
 		if len(validatorStates) > 0 {
@@ -181,7 +181,7 @@ func (s *Service) validatorsFromState(ctx context.Context,
 		}
 	}
 
-	return &api.Response[map[phase0.ValidatorIndex]*apiv1.Validator]{
+	return &api.Response[map[capella.ValidatorIndex]*apiv1.Validator]{
 		Data:     res,
 		Metadata: stateResponse.Metadata,
 	}, nil

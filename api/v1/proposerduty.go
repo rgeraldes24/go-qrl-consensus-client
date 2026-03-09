@@ -21,14 +21,14 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // ProposerDuty represents a duty of a validator to propose a slot.
 type ProposerDuty struct {
-	PubKey         phase0.BLSPubKey
-	Slot           phase0.Slot
-	ValidatorIndex phase0.ValidatorIndex
+	PubKey         capella.BLSPubKey
+	Slot           capella.Slot
+	ValidatorIndex capella.ValidatorIndex
 }
 
 // proposerDutyJSON is the standard API representation of the struct.
@@ -80,7 +80,7 @@ func (p *ProposerDuty) UnmarshalJSON(input []byte) error {
 		return errors.Wrap(err, "invalid value for slot")
 	}
 
-	p.Slot = phase0.Slot(slot)
+	p.Slot = capella.Slot(slot)
 
 	if proposerDutyJSON.ValidatorIndex == "" {
 		return errors.New("validator index missing")
@@ -91,7 +91,7 @@ func (p *ProposerDuty) UnmarshalJSON(input []byte) error {
 		return errors.Wrap(err, "invalid value for validator index")
 	}
 
-	p.ValidatorIndex = phase0.ValidatorIndex(validatorIndex)
+	p.ValidatorIndex = capella.ValidatorIndex(validatorIndex)
 
 	return nil
 }

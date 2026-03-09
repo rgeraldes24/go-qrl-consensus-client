@@ -17,12 +17,12 @@ import (
 	"context"
 
 	consensusclient "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // SubmitSyncCommitteeContributions submits sync committee contributions.
 func (s *Service) SubmitSyncCommitteeContributions(ctx context.Context,
-	contributionAndProofs []*altair.SignedContributionAndProof,
+	contributionAndProofs []*capella.SignedContributionAndProof,
 ) error {
 	_, err := s.doCall(ctx, func(ctx context.Context, client consensusclient.Service) (any, error) {
 		err := client.(consensusclient.SyncCommitteeContributionsSubmitter).SubmitSyncCommitteeContributions(ctx,

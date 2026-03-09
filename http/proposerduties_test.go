@@ -24,7 +24,7 @@ import (
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	"github.com/theQRL/go-qrl-consensus-client/http"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 func TestProposerDuties(t *testing.T) {
@@ -49,7 +49,7 @@ func TestProposerDuties(t *testing.T) {
 	tests := []struct {
 		name             string
 		opts             *api.ProposerDutiesOpts
-		validatorIndices []phase0.ValidatorIndex
+		validatorIndices []capella.ValidatorIndex
 		expected         int
 		err              string
 	}{
@@ -60,7 +60,7 @@ func TestProposerDuties(t *testing.T) {
 		},
 		{
 			name:     "Current",
-			opts:     &api.ProposerDutiesOpts{Epoch: phase0.Epoch(uint64(time.Since(genesisResponse.Data.GenesisTime).Seconds()) / (uint64(slotDuration.Seconds()) * slotsPerEpoch))},
+			opts:     &api.ProposerDutiesOpts{Epoch: capella.Epoch(uint64(time.Since(genesisResponse.Data.GenesisTime).Seconds()) / (uint64(slotDuration.Seconds()) * slotsPerEpoch))},
 			expected: int(slotsPerEpoch),
 		},
 	}

@@ -17,7 +17,7 @@ import (
 	"context"
 
 	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // ValidatorBalances provides the validator balances for a given state.
@@ -27,15 +27,15 @@ import (
 func (s *Service) ValidatorBalances(ctx context.Context,
 	opts *api.ValidatorBalancesOpts,
 ) (
-	*api.Response[map[phase0.ValidatorIndex]phase0.Gwei],
+	*api.Response[map[capella.ValidatorIndex]capella.Gwei],
 	error,
 ) {
 	if s.ValidatorBalancesFunc != nil {
 		return s.ValidatorBalancesFunc(ctx, opts)
 	}
 
-	return &api.Response[map[phase0.ValidatorIndex]phase0.Gwei]{
-		Data:     map[phase0.ValidatorIndex]phase0.Gwei{},
+	return &api.Response[map[capella.ValidatorIndex]capella.Gwei]{
+		Data:     map[capella.ValidatorIndex]capella.Gwei{},
 		Metadata: make(map[string]any),
 	}, nil
 }

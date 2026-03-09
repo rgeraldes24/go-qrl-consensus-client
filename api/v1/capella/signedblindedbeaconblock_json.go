@@ -20,7 +20,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // signedBlindedBeaconBlockJSON is the spec representation of the struct.
@@ -62,7 +62,7 @@ func (s *SignedBlindedBeaconBlock) unpack(data *signedBlindedBeaconBlockJSON) er
 		return errors.Wrap(err, "invalid value for signature")
 	}
 
-	if len(signature) != phase0.SignatureLength {
+	if len(signature) != capella.SignatureLength {
 		return fmt.Errorf("incorrect length %d for signature", len(signature))
 	}
 

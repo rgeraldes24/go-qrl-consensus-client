@@ -5,7 +5,6 @@ go 1.25
 toolchain go1.25.2
 
 require (
-	github.com/OffchainLabs/go-bitfield v0.0.0-20251031151322-f427d04d8506
 	github.com/ferranbt/fastssz v0.1.4
 	github.com/goccy/go-yaml v1.9.2
 	github.com/golang/snappy v0.0.4
@@ -19,6 +18,7 @@ require (
 	github.com/r3labs/sse/v2 v2.10.0
 	github.com/rs/zerolog v1.32.0
 	github.com/stretchr/testify v1.8.4
+	github.com/theQRL/go-bitfield v0.0.0-20231204084259-f3b877be8f63
 	go.opentelemetry.io/otel v1.16.0
 	go.opentelemetry.io/otel/trace v1.16.0
 	golang.org/x/crypto v0.33.0

@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // historicalSummaryJSON is the spec representation of the struct.
@@ -57,7 +56,7 @@ func (h *HistoricalSummary) unpack(data *historicalSummaryJSON) error {
 		return errors.Wrap(err, "invalid value for block summary root")
 	}
 
-	if len(blockSummaryRoot) != phase0.RootLength {
+	if len(blockSummaryRoot) != capella.RootLength {
 		return errors.New("incorrect length for block summary root")
 	}
 
@@ -72,7 +71,7 @@ func (h *HistoricalSummary) unpack(data *historicalSummaryJSON) error {
 		return errors.Wrap(err, "invalid value for state summary root")
 	}
 
-	if len(stateSummaryRoot) != phase0.RootLength {
+	if len(stateSummaryRoot) != capella.RootLength {
 		return errors.New("incorrect length for state summary root")
 	}
 

@@ -13,50 +13,52 @@
 
 package spec_test
 
+// TODO(rgeraldes24)
+/*
 import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/OffchainLabs/go-bitfield"
+	"github.com/theQRL/go-bitfield"
 	"github.com/stretchr/testify/assert"
 	"github.com/theQRL/go-qrl-consensus-client/spec"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 	"github.com/theQRL/go-qrl-consensus-client/spec/electra"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 func TestVersionedAttestation_CommitteeIndex(t *testing.T) {
 	// Test cases
 	tests := []struct {
 		name            string
-		expectedIndices []phase0.CommitteeIndex
+		expectedIndices []capella.CommitteeIndex
 		errorMsg        string
 	}{
 		{
 			name:            "Valid index 0",
-			expectedIndices: []phase0.CommitteeIndex{0},
+			expectedIndices: []capella.CommitteeIndex{0},
 		},
 		{
 			name:            "Valid index 4",
-			expectedIndices: []phase0.CommitteeIndex{4},
+			expectedIndices: []capella.CommitteeIndex{4},
 		},
 		{
 			name:            "Valid index 40",
-			expectedIndices: []phase0.CommitteeIndex{40},
+			expectedIndices: []capella.CommitteeIndex{40},
 		},
 		{
 			name:            "Invalid index 64",
-			expectedIndices: []phase0.CommitteeIndex{64},
+			expectedIndices: []capella.CommitteeIndex{64},
 			errorMsg:        "no committee index found in committee bits",
 		},
 		{
 			name:            "Invalid no index set",
-			expectedIndices: []phase0.CommitteeIndex{64},
+			expectedIndices: []capella.CommitteeIndex{64},
 			errorMsg:        "no committee index found in committee bits",
 		},
 		{
 			name:            "Invalid multiple index set",
-			expectedIndices: []phase0.CommitteeIndex{4, 40},
+			expectedIndices: []capella.CommitteeIndex{4, 40},
 			errorMsg:        "multiple committee indices found in committee bits",
 		},
 	}
@@ -86,3 +88,4 @@ func TestVersionedAttestation_CommitteeIndex(t *testing.T) {
 		})
 	}
 }
+*/

@@ -21,18 +21,18 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // ChainReorgEvent is the data for the head event.
 type ChainReorgEvent struct {
-	Slot         phase0.Slot
+	Slot         capella.Slot
 	Depth        uint64
-	OldHeadBlock phase0.Root
-	NewHeadBlock phase0.Root
-	OldHeadState phase0.Root
-	NewHeadState phase0.Root
-	Epoch        phase0.Epoch
+	OldHeadBlock capella.Root
+	NewHeadBlock capella.Root
+	OldHeadState capella.Root
+	NewHeadState capella.Root
+	Epoch        capella.Epoch
 }
 
 // chainReorgEventJSON is the spec representation of the struct.
@@ -77,7 +77,7 @@ func (e *ChainReorgEvent) UnmarshalJSON(input []byte) error {
 		return errors.Wrap(err, "invalid value for slot")
 	}
 
-	e.Slot = phase0.Slot(slot)
+	e.Slot = capella.Slot(slot)
 
 	if chainReorgEventJSON.Depth == "" {
 		return errors.New("depth missing")
@@ -156,7 +156,7 @@ func (e *ChainReorgEvent) UnmarshalJSON(input []byte) error {
 		return errors.Wrap(err, "invalid value for epoch")
 	}
 
-	e.Epoch = phase0.Epoch(epoch)
+	e.Epoch = capella.Epoch(epoch)
 
 	return nil
 }

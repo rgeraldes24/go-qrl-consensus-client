@@ -13,16 +13,18 @@
 
 package api
 
-import "github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+import (
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+)
 
 // AggregateAttestationOpts are the options for obtaining aggregate attestations.
 type AggregateAttestationOpts struct {
 	Common CommonOpts
 
 	// Slot is the slot for which the data is obtained.
-	Slot phase0.Slot
+	Slot capella.Slot
 	// AttestationDataRoot is the root for which the data is obtained.
-	AttestationDataRoot phase0.Root
+	AttestationDataRoot capella.Root
 	// CommitteeIndex is the committee index the attestation data belongs to.
-	CommitteeIndex phase0.CommitteeIndex
+	CommitteeIndex capella.CommitteeIndex
 }

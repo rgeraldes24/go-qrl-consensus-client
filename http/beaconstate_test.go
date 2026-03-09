@@ -24,7 +24,7 @@ import (
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	"github.com/theQRL/go-qrl-consensus-client/http"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 func TestBeaconState(t *testing.T) {
@@ -34,7 +34,7 @@ func TestBeaconState(t *testing.T) {
 	tests := []struct {
 		name     string
 		opts     *api.BeaconStateOpts
-		expected *phase0.BeaconState
+		expected *capella.BeaconState
 		err      string
 		errCode  int
 	}{

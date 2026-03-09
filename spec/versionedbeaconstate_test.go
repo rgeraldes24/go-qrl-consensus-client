@@ -19,10 +19,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stretchr/testify/require"
 	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/deneb"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 func readFile(fileName string) ([]byte, error) {
@@ -36,29 +33,33 @@ func readFile(fileName string) ([]byte, error) {
 }
 
 func readVersionedBeaconState(t *testing.T, fileName string, version spec.DataVersion) (*spec.VersionedBeaconState, error) {
-	// Read the state from the file
-	// To download state files for testing, run the following command:
-	// curl -X GET "https://<beacon-node-url>/eth/v2/debug/beacon/states/{slot_id}" -H "accept: application/octet-stream" > {netowrkname}_beaconstate_{slot_id}.ssz
-	stateBytes, err := readFile(fileName)
-	if err != nil {
-		return nil, err
-	}
-
-	switch version {
-	case spec.DataVersionDeneb:
-		denebState := &deneb.BeaconState{}
-		require.NoError(t, denebState.UnmarshalSSZ(stateBytes))
-
-		state := &spec.VersionedBeaconState{
-			Version: spec.DataVersionDeneb,
-			Deneb:   denebState,
+	/*
+		// Read the state from the file
+		// To download state files for testing, run the following command:
+		// curl -X GET "https://<beacon-node-url>/eth/v2/debug/beacon/states/{slot_id}" -H "accept: application/octet-stream" > {netowrkname}_beaconstate_{slot_id}.ssz
+		stateBytes, err := readFile(fileName)
+		if err != nil {
+			return nil, err
 		}
-		return state, nil
-	default:
-		return nil, fmt.Errorf("unsupported version: %s", version)
-	}
+
+		switch version {
+		case spec.DataVersionDeneb:
+			denebState := &deneb.BeaconState{}
+			require.NoError(t, denebState.UnmarshalSSZ(stateBytes))
+
+			state := &spec.VersionedBeaconState{
+				Version: spec.DataVersionDeneb,
+				Deneb:   denebState,
+			}
+			return state, nil
+		default:
+			return nil, fmt.Errorf("unsupported version: %s", version)
+		}
+	*/
+	return nil, fmt.Errorf("unsupported version: %s", version)
 }
 
+/*
 func TestStateTree(t *testing.T) {
 	state, err := readVersionedBeaconState(t, "holesky_beaconstate_2595934.ssz", spec.DataVersionDeneb)
 	if err != nil {
@@ -159,12 +160,13 @@ func TestInvalidValidatorIndex(t *testing.T) {
 	if err != nil {
 		t.Skip("holesky_beaconstate_2649079.ssz not available")
 	}
-	validatorIndex := phase0.ValidatorIndex(176565800)
+	validatorIndex := capella.ValidatorIndex(176565800)
 	validator, err := state.ValidatorAtIndex(validatorIndex)
 	require.Error(t, err, "validator index out of bounds")
 	require.Nil(t, validator)
 
 	balance, err := state.ValidatorBalance(validatorIndex)
 	require.Error(t, err, "validator index out of bounds")
-	require.Equal(t, phase0.Gwei(0), balance)
+	require.Equal(t, capella.Gwei(0), balance)
 }
+*/

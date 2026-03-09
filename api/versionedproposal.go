@@ -18,9 +18,7 @@ import (
 
 	apiv1capella "github.com/theQRL/go-qrl-consensus-client/api/v1/capella"
 	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/bellatrix"
 	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // VersionedProposal contains a versioned proposal.
@@ -40,9 +38,9 @@ func (v *VersionedProposal) IsEmpty() bool {
 }
 
 // BodyRoot returns the body root of the proposal.
-func (v *VersionedProposal) BodyRoot() (phase0.Root, error) {
+func (v *VersionedProposal) BodyRoot() (capella.Root, error) {
 	if !v.bodyPresent() {
-		return phase0.Root{}, ErrDataMissing
+		return capella.Root{}, ErrDataMissing
 	}
 
 	switch v.Version {
@@ -53,14 +51,14 @@ func (v *VersionedProposal) BodyRoot() (phase0.Root, error) {
 
 		return v.Capella.Body.HashTreeRoot()
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
 // ParentRoot returns the parent root of the proposal.
-func (v *VersionedProposal) ParentRoot() (phase0.Root, error) {
+func (v *VersionedProposal) ParentRoot() (capella.Root, error) {
 	if !v.proposalPresent() {
-		return phase0.Root{}, ErrDataMissing
+		return capella.Root{}, ErrDataMissing
 	}
 
 	switch v.Version {
@@ -71,12 +69,12 @@ func (v *VersionedProposal) ParentRoot() (phase0.Root, error) {
 
 		return v.Capella.ParentRoot, nil
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
 // ProposerIndex returns the proposer index of the proposal.
-func (v *VersionedProposal) ProposerIndex() (phase0.ValidatorIndex, error) {
+func (v *VersionedProposal) ProposerIndex() (capella.ValidatorIndex, error) {
 	if !v.proposalPresent() {
 		return 0, ErrDataMissing
 	}
@@ -94,9 +92,9 @@ func (v *VersionedProposal) ProposerIndex() (phase0.ValidatorIndex, error) {
 }
 
 // Root returns the root of the proposal.
-func (v *VersionedProposal) Root() (phase0.Root, error) {
+func (v *VersionedProposal) Root() (capella.Root, error) {
 	if !v.proposalPresent() {
-		return phase0.Root{}, ErrDataMissing
+		return capella.Root{}, ErrDataMissing
 	}
 
 	switch v.Version {
@@ -107,12 +105,12 @@ func (v *VersionedProposal) Root() (phase0.Root, error) {
 
 		return v.Capella.HashTreeRoot()
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
 // Slot returns the slot of the proposal.
-func (v *VersionedProposal) Slot() (phase0.Slot, error) {
+func (v *VersionedProposal) Slot() (capella.Slot, error) {
 	if !v.proposalPresent() {
 		return 0, ErrDataMissing
 	}
@@ -130,9 +128,9 @@ func (v *VersionedProposal) Slot() (phase0.Slot, error) {
 }
 
 // StateRoot returns the state root of the proposal.
-func (v *VersionedProposal) StateRoot() (phase0.Root, error) {
+func (v *VersionedProposal) StateRoot() (capella.Root, error) {
 	if !v.proposalPresent() {
-		return phase0.Root{}, ErrDataMissing
+		return capella.Root{}, ErrDataMissing
 	}
 
 	switch v.Version {
@@ -143,7 +141,7 @@ func (v *VersionedProposal) StateRoot() (phase0.Root, error) {
 
 		return v.Capella.StateRoot, nil
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
@@ -200,9 +198,9 @@ func (v *VersionedProposal) Graffiti() ([32]byte, error) {
 }
 
 // RandaoReveal returns the RANDAO reveal of the proposal.
-func (v *VersionedProposal) RandaoReveal() (phase0.BLSSignature, error) {
+func (v *VersionedProposal) RandaoReveal() (capella.BLSSignature, error) {
 	if !v.bodyPresent() {
-		return phase0.BLSSignature{}, ErrDataMissing
+		return capella.BLSSignature{}, ErrDataMissing
 	}
 
 	switch v.Version {
@@ -213,12 +211,14 @@ func (v *VersionedProposal) RandaoReveal() (phase0.BLSSignature, error) {
 
 		return v.Capella.Body.RANDAOReveal, nil
 	default:
-		return phase0.BLSSignature{}, ErrUnsupportedVersion
+		return capella.BLSSignature{}, ErrUnsupportedVersion
 	}
 }
 
+// TODO(rgeraldes24)
+/*
 // Transactions returns the transactions of the proposal.
-func (v *VersionedProposal) Transactions() ([]bellatrix.Transaction, error) {
+func (v *VersionedProposal) Transactions() ([]capella.Transaction, error) {
 	if !v.payloadPresent() {
 		return nil, ErrDataMissing
 	}
@@ -234,11 +234,12 @@ func (v *VersionedProposal) Transactions() ([]bellatrix.Transaction, error) {
 		return nil, ErrUnsupportedVersion
 	}
 }
+*/
 
 // FeeRecipient returns the fee recipient of the proposal.
-func (v *VersionedProposal) FeeRecipient() (bellatrix.ExecutionAddress, error) {
+func (v *VersionedProposal) FeeRecipient() (capella.ExecutionAddress, error) {
 	if !v.payloadPresent() {
-		return bellatrix.ExecutionAddress{}, ErrDataMissing
+		return capella.ExecutionAddress{}, ErrDataMissing
 	}
 
 	switch v.Version {
@@ -249,7 +250,7 @@ func (v *VersionedProposal) FeeRecipient() (bellatrix.ExecutionAddress, error) {
 
 		return v.Capella.Body.ExecutionPayload.FeeRecipient, nil
 	default:
-		return bellatrix.ExecutionAddress{}, ErrUnsupportedVersion
+		return capella.ExecutionAddress{}, ErrUnsupportedVersion
 	}
 }
 

@@ -5,7 +5,6 @@ package api
 
 import (
 	ssz "github.com/ferranbt/fastssz"
-	apiv1bellatrix "github.com/theQRL/go-qrl-consensus-client/api/v1/bellatrix"
 	apiv1capella "github.com/theQRL/go-qrl-consensus-client/api/v1/capella"
 	"github.com/theQRL/go-qrl-consensus-client/spec"
 )
@@ -22,13 +21,6 @@ func (v *VersionedSignedBlindedBeaconBlock) MarshalSSZTo(buf []byte) (dst []byte
 
 	// Field (0) 'Version'
 	dst = ssz.MarshalUint64(dst, uint64(v.Version))
-
-	// Offset (1) 'Bellatrix'
-	dst = ssz.WriteOffset(dst, offset)
-	if v.Bellatrix == nil {
-		v.Bellatrix = new(apiv1bellatrix.SignedBlindedBeaconBlock)
-	}
-	offset += v.Bellatrix.SizeSSZ()
 
 	// Offset (2) 'Capella'
 	dst = ssz.WriteOffset(dst, offset)
@@ -54,7 +46,7 @@ func (v *VersionedSignedBlindedBeaconBlock) UnmarshalSSZ(buf []byte) error {
 	}
 
 	tail := buf
-	var o1, o2, o3, o4, o5 uint64
+	var o1, o2, o3 uint64
 
 	// Field (0) 'Version'
 	v.Version = spec.DataVersion(ssz.UnmarshallUint64(buf[0:8]))

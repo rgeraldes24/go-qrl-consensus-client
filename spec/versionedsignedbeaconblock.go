@@ -16,10 +16,7 @@ package spec
 import (
 	"errors"
 
-	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
-	"github.com/theQRL/go-qrl-consensus-client/spec/bellatrix"
 	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // VersionedSignedBeaconBlock contains a versioned signed beacon block.
@@ -29,7 +26,7 @@ type VersionedSignedBeaconBlock struct {
 }
 
 // Slot returns the slot of the signed beacon block.
-func (v *VersionedSignedBeaconBlock) Slot() (phase0.Slot, error) {
+func (v *VersionedSignedBeaconBlock) Slot() (capella.Slot, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil || v.Capella.Message == nil {
@@ -43,7 +40,7 @@ func (v *VersionedSignedBeaconBlock) Slot() (phase0.Slot, error) {
 }
 
 // ProposerIndex returns the proposer index of the beacon block.
-func (v *VersionedSignedBeaconBlock) ProposerIndex() (phase0.ValidatorIndex, error) {
+func (v *VersionedSignedBeaconBlock) ProposerIndex() (capella.ValidatorIndex, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil || v.Capella.Message == nil {
@@ -57,19 +54,19 @@ func (v *VersionedSignedBeaconBlock) ProposerIndex() (phase0.ValidatorIndex, err
 }
 
 // ExecutionBlockHash returns the block hash of the beacon block.
-func (v *VersionedSignedBeaconBlock) ExecutionBlockHash() (phase0.Hash32, error) {
+func (v *VersionedSignedBeaconBlock) ExecutionBlockHash() (capella.Hash32, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil ||
 			v.Capella.Message.Body == nil ||
 			v.Capella.Message.Body.ExecutionPayload == nil {
-			return phase0.Hash32{}, errors.New("no capella block")
+			return capella.Hash32{}, errors.New("no capella block")
 		}
 
 		return v.Capella.Message.Body.ExecutionPayload.BlockHash, nil
 	default:
-		return phase0.Hash32{}, errors.New("unknown version")
+		return capella.Hash32{}, errors.New("unknown version")
 	}
 }
 
@@ -91,7 +88,7 @@ func (v *VersionedSignedBeaconBlock) ExecutionBlockNumber() (uint64, error) {
 }
 
 // ExecutionTransactions returns the execution payload transactions for the block.
-func (v *VersionedSignedBeaconBlock) ExecutionTransactions() ([]bellatrix.Transaction, error) {
+func (v *VersionedSignedBeaconBlock) ExecutionTransactions() ([]capella.Transaction, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil ||
@@ -146,77 +143,77 @@ func (v *VersionedSignedBeaconBlock) Attestations() ([]*VersionedAttestation, er
 }
 
 // Root returns the root of the beacon block.
-func (v *VersionedSignedBeaconBlock) Root() (phase0.Root, error) {
+func (v *VersionedSignedBeaconBlock) Root() (capella.Root, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil || v.Capella.Message == nil {
-			return phase0.Root{}, errors.New("no capella block")
+			return capella.Root{}, errors.New("no capella block")
 		}
 
 		return v.Capella.Message.HashTreeRoot()
 	default:
-		return phase0.Root{}, errors.New("unknown version")
+		return capella.Root{}, errors.New("unknown version")
 	}
 }
 
 // BodyRoot returns the body root of the beacon block.
-func (v *VersionedSignedBeaconBlock) BodyRoot() (phase0.Root, error) {
+func (v *VersionedSignedBeaconBlock) BodyRoot() (capella.Root, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil || v.Capella.Message == nil || v.Capella.Message.Body == nil {
-			return phase0.Root{}, errors.New("no capella block")
+			return capella.Root{}, errors.New("no capella block")
 		}
 
 		return v.Capella.Message.Body.HashTreeRoot()
 	default:
-		return phase0.Root{}, errors.New("unknown version")
+		return capella.Root{}, errors.New("unknown version")
 	}
 }
 
 // ParentRoot returns the parent root of the beacon block.
-func (v *VersionedSignedBeaconBlock) ParentRoot() (phase0.Root, error) {
+func (v *VersionedSignedBeaconBlock) ParentRoot() (capella.Root, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil || v.Capella.Message == nil {
-			return phase0.Root{}, errors.New("no capella block")
+			return capella.Root{}, errors.New("no capella block")
 		}
 
 		return v.Capella.Message.ParentRoot, nil
 	default:
-		return phase0.Root{}, errors.New("unknown version")
+		return capella.Root{}, errors.New("unknown version")
 	}
 }
 
 // StateRoot returns the state root of the beacon block.
-func (v *VersionedSignedBeaconBlock) StateRoot() (phase0.Root, error) {
+func (v *VersionedSignedBeaconBlock) StateRoot() (capella.Root, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil || v.Capella.Message == nil {
-			return phase0.Root{}, errors.New("no capella block")
+			return capella.Root{}, errors.New("no capella block")
 		}
 
 		return v.Capella.Message.StateRoot, nil
 	default:
-		return phase0.Root{}, errors.New("unknown version")
+		return capella.Root{}, errors.New("unknown version")
 	}
 }
 
 // RandaoReveal returns the randao reveal of the beacon block.
-func (v *VersionedSignedBeaconBlock) RandaoReveal() (phase0.BLSSignature, error) {
+func (v *VersionedSignedBeaconBlock) RandaoReveal() (capella.BLSSignature, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil || v.Capella.Message == nil || v.Capella.Message.Body == nil {
-			return phase0.BLSSignature{}, errors.New("no capella block")
+			return capella.BLSSignature{}, errors.New("no capella block")
 		}
 
 		return v.Capella.Message.Body.RANDAOReveal, nil
 	default:
-		return phase0.BLSSignature{}, errors.New("unknown version")
+		return capella.BLSSignature{}, errors.New("unknown version")
 	}
 }
 
 // ExecutionData returns the eth1 data of the beacon block.
-func (v *VersionedSignedBeaconBlock) ExecutionData() (*phase0.ExecutionData, error) {
+func (v *VersionedSignedBeaconBlock) ExecutionData() (*capella.ExecutionData, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil || v.Capella.Message == nil || v.Capella.Message.Body == nil {
@@ -230,7 +227,7 @@ func (v *VersionedSignedBeaconBlock) ExecutionData() (*phase0.ExecutionData, err
 }
 
 // Deposits returns the deposits of the beacon block.
-func (v *VersionedSignedBeaconBlock) Deposits() ([]*phase0.Deposit, error) {
+func (v *VersionedSignedBeaconBlock) Deposits() ([]*capella.Deposit, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil || v.Capella.Message == nil || v.Capella.Message.Body == nil {
@@ -244,7 +241,7 @@ func (v *VersionedSignedBeaconBlock) Deposits() ([]*phase0.Deposit, error) {
 }
 
 // VoluntaryExits returns the voluntary exits of the beacon block.
-func (v *VersionedSignedBeaconBlock) VoluntaryExits() ([]*phase0.SignedVoluntaryExit, error) {
+func (v *VersionedSignedBeaconBlock) VoluntaryExits() ([]*capella.SignedVoluntaryExit, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil || v.Capella.Message == nil || v.Capella.Message.Body == nil {
@@ -282,7 +279,7 @@ func (v *VersionedSignedBeaconBlock) AttesterSlashings() ([]VersionedAttesterSla
 }
 
 // ProposerSlashings returns the proposer slashings of the beacon block.
-func (v *VersionedSignedBeaconBlock) ProposerSlashings() ([]*phase0.ProposerSlashing, error) {
+func (v *VersionedSignedBeaconBlock) ProposerSlashings() ([]*capella.ProposerSlashing, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil || v.Capella.Message == nil || v.Capella.Message.Body == nil {
@@ -296,7 +293,7 @@ func (v *VersionedSignedBeaconBlock) ProposerSlashings() ([]*phase0.ProposerSlas
 }
 
 // SyncAggregate returns the sync aggregate of the beacon block.
-func (v *VersionedSignedBeaconBlock) SyncAggregate() (*altair.SyncAggregate, error) {
+func (v *VersionedSignedBeaconBlock) SyncAggregate() (*capella.SyncAggregate, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil || v.Capella.Message == nil || v.Capella.Message.Body == nil {

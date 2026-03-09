@@ -16,17 +16,17 @@ package spec
 import (
 	"errors"
 
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // VersionedAggregateAndProof contains a versioned aggregate and proof.
 type VersionedAggregateAndProof struct {
 	Version DataVersion
-	Capella *phase0.AggregateAndProof
+	Capella *capella.AggregateAndProof
 }
 
 // AggregatorIndex returns the aggregator index of the aggregate.
-func (v *VersionedAggregateAndProof) AggregatorIndex() (phase0.ValidatorIndex, error) {
+func (v *VersionedAggregateAndProof) AggregatorIndex() (capella.ValidatorIndex, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
@@ -73,15 +73,15 @@ func (v *VersionedAggregateAndProof) String() string {
 }
 
 // SelectionProof returns the selection proof of the aggregate.
-func (v *VersionedAggregateAndProof) SelectionProof() (phase0.BLSSignature, error) {
+func (v *VersionedAggregateAndProof) SelectionProof() (capella.BLSSignature, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.BLSSignature{}, errors.New("no capella aggregate and proof")
+			return capella.BLSSignature{}, errors.New("no capella aggregate and proof")
 		}
 
 		return v.Capella.SelectionProof, nil
 	default:
-		return phase0.BLSSignature{}, errors.New("unknown version")
+		return capella.BLSSignature{}, errors.New("unknown version")
 	}
 }

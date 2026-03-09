@@ -25,11 +25,11 @@ import (
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	"github.com/theQRL/go-qrl-consensus-client/http"
 	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
-func slotptr(slot uint64) *phase0.Slot {
-	res := phase0.Slot(slot)
+func slotptr(slot uint64) *capella.Slot {
+	res := capella.Slot(slot)
 	return &res
 }
 

@@ -18,22 +18,20 @@ import (
 	"fmt"
 
 	"github.com/goccy/go-yaml"
-	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
 	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // blindedBeaconBlockBodyYAML is the spec representation of the struct.
 type blindedBeaconBlockBodyYAML struct {
 	RANDAOReveal           string                          `yaml:"randao_reveal"`
-	ExecutionData          *phase0.ExecutionData           `yaml:"execution_data"`
+	ExecutionData          *capella.ExecutionData          `yaml:"execution_data"`
 	Graffiti               string                          `yaml:"graffiti"`
-	ProposerSlashings      []*phase0.ProposerSlashing      `yaml:"proposer_slashings"`
-	AttesterSlashings      []*phase0.AttesterSlashing      `yaml:"attester_slashings"`
-	Attestations           []*phase0.Attestation           `yaml:"attestations"`
-	Deposits               []*phase0.Deposit               `yaml:"deposits"`
-	VoluntaryExits         []*phase0.SignedVoluntaryExit   `yaml:"voluntary_exits"`
-	SyncAggregate          *altair.SyncAggregate           `yaml:"sync_aggregate"`
+	ProposerSlashings      []*capella.ProposerSlashing     `yaml:"proposer_slashings"`
+	AttesterSlashings      []*capella.AttesterSlashing     `yaml:"attester_slashings"`
+	Attestations           []*capella.Attestation          `yaml:"attestations"`
+	Deposits               []*capella.Deposit              `yaml:"deposits"`
+	VoluntaryExits         []*capella.SignedVoluntaryExit  `yaml:"voluntary_exits"`
+	SyncAggregate          *capella.SyncAggregate          `yaml:"sync_aggregate"`
 	ExecutionPayloadHeader *capella.ExecutionPayloadHeader `yaml:"execution_payload_header"`
 }
 

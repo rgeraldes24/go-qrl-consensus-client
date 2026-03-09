@@ -13,7 +13,7 @@
 
 package api
 
-import "github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+import "github.com/theQRL/go-qrl-consensus-client/spec/capella"
 
 // AttestationPoolOpts are the options for obtaining the attestation pool.
 type AttestationPoolOpts struct {
@@ -21,9 +21,9 @@ type AttestationPoolOpts struct {
 
 	// Slot is the slot for which the data is obtained.  If not present then
 	// data for all slots will be obtained.
-	Slot *phase0.Slot
+	Slot *capella.Slot
 
 	// CommitteeIndex is the committee index for which the data is obtained.
 	// If not present then data for all committee indices will be obtained.
-	CommitteeIndex *phase0.CommitteeIndex
+	CommitteeIndex *capella.CommitteeIndex
 }

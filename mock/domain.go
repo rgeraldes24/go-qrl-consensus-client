@@ -19,15 +19,15 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // Domain provides a domain for a given domain type at a given epoch.
-func (s *Service) Domain(ctx context.Context, domainType phase0.DomainType, epoch phase0.Epoch) (phase0.Domain, error) {
+func (s *Service) Domain(ctx context.Context, domainType capella.DomainType, epoch capella.Epoch) (capella.Domain, error) {
 	// Obtain the fork for the epoch.
 	fork, err := s.forkAtEpoch(ctx, epoch)
 	if err != nil {
-		return phase0.Domain{}, errors.Wrap(err, "failed to obtain fork")
+		return capella.Domain{}, errors.Wrap(err, "failed to obtain fork")
 	}
 
 	return s.calculateDomain(ctx, domainType, epoch, fork)
@@ -37,23 +37,23 @@ func (s *Service) Domain(ctx context.Context, domainType phase0.DomainType, epoc
 // N.B. this is not always the same as the domain at epoch 0.  It is possible
 // for a chain's fork schedule to have multiple forks at genesis.  In this situation,
 // GenesisDomain() will return the first, and Domain() will return the last.
-func (s *Service) GenesisDomain(ctx context.Context, domainType phase0.DomainType) (phase0.Domain, error) {
+func (s *Service) GenesisDomain(ctx context.Context, domainType capella.DomainType) (capella.Domain, error) {
 	// Obtain the fork for genesis .
 	fork, err := s.forkAtGenesis(ctx)
 	if err != nil {
-		return phase0.Domain{}, errors.Wrap(err, "failed to obtain fork")
+		return capella.Domain{}, errors.Wrap(err, "failed to obtain fork")
 	}
 
 	return s.calculateDomain(ctx, domainType, 0, fork)
 }
 
 func (s *Service) calculateDomain(ctx context.Context,
-	domainType phase0.DomainType,
-	epoch phase0.Epoch,
-	fork *phase0.Fork,
-) (phase0.Domain, error) {
+	domainType capella.DomainType,
+	epoch capella.Epoch,
+	fork *capella.Fork,
+) (capella.Domain, error) {
 	// Calculate the domain.
-	var forkVersion phase0.Version
+	var forkVersion capella.Version
 	if epoch < fork.Epoch {
 		forkVersion = fork.PreviousVersion
 	} else {
@@ -61,10 +61,10 @@ func (s *Service) calculateDomain(ctx context.Context,
 	}
 
 	if len(forkVersion) != 4 {
-		return phase0.Domain{}, errors.New("fork version is invalid")
+		return capella.Domain{}, errors.New("fork version is invalid")
 	}
 
-	forkData := &phase0.ForkData{
+	forkData := &capella.ForkData{
 		CurrentVersion: forkVersion,
 	}
 
@@ -72,7 +72,7 @@ func (s *Service) calculateDomain(ctx context.Context,
 		// Use the chain's genesis validators root for non-application domain types.
 		genesisResponse, err := s.Genesis(ctx, &api.GenesisOpts{})
 		if err != nil {
-			return phase0.Domain{}, errors.Wrap(err, "failed to obtain genesis")
+			return capella.Domain{}, errors.Wrap(err, "failed to obtain genesis")
 		}
 
 		forkData.GenesisValidatorsRoot = genesisResponse.Data.GenesisValidatorsRoot
@@ -80,10 +80,10 @@ func (s *Service) calculateDomain(ctx context.Context,
 
 	root, err := forkData.HashTreeRoot()
 	if err != nil {
-		return phase0.Domain{}, errors.Wrap(err, "failed to calculate signature domain")
+		return capella.Domain{}, errors.Wrap(err, "failed to calculate signature domain")
 	}
 
-	var domain phase0.Domain
+	var domain capella.Domain
 	copy(domain[:], domainType[:])
 	copy(domain[4:], root[:])
 
@@ -91,7 +91,7 @@ func (s *Service) calculateDomain(ctx context.Context,
 }
 
 // forkAtEpoch works through the fork schedule to obtain the current fork.
-func (s *Service) forkAtEpoch(ctx context.Context, epoch phase0.Epoch) (*phase0.Fork, error) {
+func (s *Service) forkAtEpoch(ctx context.Context, epoch capella.Epoch) (*capella.Fork, error) {
 	response, err := s.ForkSchedule(ctx, &api.ForkScheduleOpts{})
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to obtain fork schedule")
@@ -114,7 +114,7 @@ func (s *Service) forkAtEpoch(ctx context.Context, epoch phase0.Epoch) (*phase0.
 }
 
 // forkAtGenesis returns the genesis fork.
-func (s *Service) forkAtGenesis(ctx context.Context) (*phase0.Fork, error) {
+func (s *Service) forkAtGenesis(ctx context.Context) (*capella.Fork, error) {
 	response, err := s.ForkSchedule(ctx, &api.ForkScheduleOpts{})
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to obtain fork schedule")

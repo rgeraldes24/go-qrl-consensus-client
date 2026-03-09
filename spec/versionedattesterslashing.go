@@ -16,13 +16,13 @@ package spec
 import (
 	"errors"
 
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // VersionedAttesterSlashing contains a versioned attestation.
 type VersionedAttesterSlashing struct {
 	Version DataVersion
-	Capella *phase0.AttesterSlashing
+	Capella *capella.AttesterSlashing
 }
 
 // IsEmpty returns true if there is no block.

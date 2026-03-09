@@ -16,17 +16,17 @@ package spec
 import (
 	"errors"
 
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // VersionedSignedAggregateAndProof contains a versioned signed aggregate and proof.
 type VersionedSignedAggregateAndProof struct {
 	Version DataVersion
-	Capella *phase0.SignedAggregateAndProof
+	Capella *capella.SignedAggregateAndProof
 }
 
 // AggregatorIndex returns the aggregator index of the aggregate.
-func (v *VersionedSignedAggregateAndProof) AggregatorIndex() (phase0.ValidatorIndex, error) {
+func (v *VersionedSignedAggregateAndProof) AggregatorIndex() (capella.ValidatorIndex, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
@@ -45,35 +45,35 @@ func (v *VersionedSignedAggregateAndProof) IsEmpty() bool {
 }
 
 // SelectionProof returns the selection proof of the signed aggregate.
-func (v *VersionedSignedAggregateAndProof) SelectionProof() (phase0.BLSSignature, error) {
+func (v *VersionedSignedAggregateAndProof) SelectionProof() (capella.BLSSignature, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.BLSSignature{}, errors.New("no capella signed aggregate and proof")
+			return capella.BLSSignature{}, errors.New("no capella signed aggregate and proof")
 		}
 
 		return v.Capella.Message.SelectionProof, nil
 	default:
-		return phase0.BLSSignature{}, errors.New("unknown version")
+		return capella.BLSSignature{}, errors.New("unknown version")
 	}
 }
 
 // Signature returns the signature of the signed aggregate and proof.
-func (v *VersionedSignedAggregateAndProof) Signature() (phase0.BLSSignature, error) {
+func (v *VersionedSignedAggregateAndProof) Signature() (capella.BLSSignature, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.BLSSignature{}, errors.New("no capella signed aggregate and proof")
+			return capella.BLSSignature{}, errors.New("no capella signed aggregate and proof")
 		}
 
 		return v.Capella.Signature, nil
 	default:
-		return phase0.BLSSignature{}, errors.New("unknown version")
+		return capella.BLSSignature{}, errors.New("unknown version")
 	}
 }
 
 // Slot returns the slot of the signed aggregate and proof.
-func (v *VersionedSignedAggregateAndProof) Slot() (phase0.Slot, error) {
+func (v *VersionedSignedAggregateAndProof) Slot() (capella.Slot, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {

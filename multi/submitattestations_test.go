@@ -19,13 +19,13 @@ import (
 
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	"github.com/theQRL/go-qrl-consensus-client/spec"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
 	consensusclient "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/mock"
 	"github.com/theQRL/go-qrl-consensus-client/multi"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 	"github.com/theQRL/go-qrl-consensus-client/testclients"
 )
 
@@ -54,7 +54,7 @@ func TestSubmitAttestations(t *testing.T) {
 	require.NoError(t, err)
 
 	versionedAttestations := []*spec.VersionedAttestation{
-		{Version: spec.DataVersionPhase0, Phase0: &phase0.Attestation{}},
+		{Version: spec.DataVersionCapella, Capella: &capella.Attestation{}},
 	}
 	opts := &api.SubmitAttestationsOpts{
 		Attestations: versionedAttestations,

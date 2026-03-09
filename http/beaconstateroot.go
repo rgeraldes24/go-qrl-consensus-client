@@ -21,15 +21,15 @@ import (
 
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 type beaconStateRootJSON struct {
-	Root phase0.Root `json:"root"`
+	Root capella.Root `json:"root"`
 }
 
 // BeaconStateRoot fetches the beacon state root given a set of options.
-func (s *Service) BeaconStateRoot(ctx context.Context, opts *api.BeaconStateRootOpts) (*api.Response[*phase0.Root], error) {
+func (s *Service) BeaconStateRoot(ctx context.Context, opts *api.BeaconStateRootOpts) (*api.Response[*capella.Root], error) {
 	if err := s.assertIsActive(ctx); err != nil {
 		return nil, err
 	}
@@ -54,7 +54,7 @@ func (s *Service) BeaconStateRoot(ctx context.Context, opts *api.BeaconStateRoot
 		return nil, err
 	}
 
-	return &api.Response[*phase0.Root]{
+	return &api.Response[*capella.Root]{
 		Data:     &data.Root,
 		Metadata: metadata,
 	}, nil

@@ -22,10 +22,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	api "github.com/theQRL/go-qrl-consensus-client/api/v1"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
-func gweiPtr(input phase0.Gwei) *phase0.Gwei {
+func gweiPtr(input capella.Gwei) *capella.Gwei {
 	return &input
 }
 
@@ -143,12 +143,12 @@ func TestValidatorStateJSON(t *testing.T) {
 }
 
 func TestValidatorToState(t *testing.T) {
-	farFutureEpoch := phase0.Epoch(99999)
-	currentEpoch := phase0.Epoch(100)
+	farFutureEpoch := capella.Epoch(99999)
+	currentEpoch := capella.Epoch(100)
 	tests := []struct {
 		name      string
-		validator *phase0.Validator
-		balance   *phase0.Gwei
+		validator *capella.Validator
+		balance   *capella.Gwei
 		state     api.ValidatorState
 	}{
 		{
@@ -157,7 +157,7 @@ func TestValidatorToState(t *testing.T) {
 		},
 		{
 			name: "PendingInitialized",
-			validator: &phase0.Validator{
+			validator: &capella.Validator{
 				ActivationEligibilityEpoch: farFutureEpoch,
 				ActivationEpoch:            farFutureEpoch,
 				ExitEpoch:                  farFutureEpoch,
@@ -167,7 +167,7 @@ func TestValidatorToState(t *testing.T) {
 		},
 		{
 			name: "PendingQueued",
-			validator: &phase0.Validator{
+			validator: &capella.Validator{
 				ActivationEligibilityEpoch: currentEpoch + 10,
 				ActivationEpoch:            farFutureEpoch,
 				ExitEpoch:                  farFutureEpoch,
@@ -177,7 +177,7 @@ func TestValidatorToState(t *testing.T) {
 		},
 		{
 			name: "PendingQueued",
-			validator: &phase0.Validator{
+			validator: &capella.Validator{
 				ActivationEligibilityEpoch: currentEpoch - 50,
 				ActivationEpoch:            currentEpoch + 10,
 				ExitEpoch:                  farFutureEpoch,
@@ -187,7 +187,7 @@ func TestValidatorToState(t *testing.T) {
 		},
 		{
 			name: "ActiveOngoingNext",
-			validator: &phase0.Validator{
+			validator: &capella.Validator{
 				ActivationEligibilityEpoch: currentEpoch - 50,
 				ActivationEpoch:            currentEpoch + 1,
 				ExitEpoch:                  farFutureEpoch,
@@ -197,7 +197,7 @@ func TestValidatorToState(t *testing.T) {
 		},
 		{
 			name: "ActiveOngoingThis",
-			validator: &phase0.Validator{
+			validator: &capella.Validator{
 				ActivationEligibilityEpoch: currentEpoch - 50,
 				ActivationEpoch:            currentEpoch,
 				ExitEpoch:                  farFutureEpoch,
@@ -207,7 +207,7 @@ func TestValidatorToState(t *testing.T) {
 		},
 		{
 			name: "ActiveOngoing",
-			validator: &phase0.Validator{
+			validator: &capella.Validator{
 				ActivationEligibilityEpoch: currentEpoch - 50,
 				ActivationEpoch:            currentEpoch - 40,
 				ExitEpoch:                  farFutureEpoch,
@@ -217,7 +217,7 @@ func TestValidatorToState(t *testing.T) {
 		},
 		{
 			name: "ActiveExiting",
-			validator: &phase0.Validator{
+			validator: &capella.Validator{
 				ActivationEligibilityEpoch: currentEpoch - 50,
 				ActivationEpoch:            currentEpoch - 40,
 				ExitEpoch:                  currentEpoch + 10,
@@ -227,7 +227,7 @@ func TestValidatorToState(t *testing.T) {
 		},
 		{
 			name: "ActiveSlashed",
-			validator: &phase0.Validator{
+			validator: &capella.Validator{
 				ActivationEligibilityEpoch: currentEpoch - 50,
 				ActivationEpoch:            currentEpoch - 40,
 				ExitEpoch:                  currentEpoch + 10,
@@ -238,7 +238,7 @@ func TestValidatorToState(t *testing.T) {
 		},
 		{
 			name: "ExitedNext",
-			validator: &phase0.Validator{
+			validator: &capella.Validator{
 				ActivationEligibilityEpoch: currentEpoch - 50,
 				ActivationEpoch:            currentEpoch - 40,
 				ExitEpoch:                  currentEpoch + 1,
@@ -248,7 +248,7 @@ func TestValidatorToState(t *testing.T) {
 		},
 		{
 			name: "ExitedThis",
-			validator: &phase0.Validator{
+			validator: &capella.Validator{
 				ActivationEligibilityEpoch: currentEpoch - 50,
 				ActivationEpoch:            currentEpoch - 40,
 				ExitEpoch:                  currentEpoch,
@@ -258,7 +258,7 @@ func TestValidatorToState(t *testing.T) {
 		},
 		{
 			name: "ExitedUnslashed",
-			validator: &phase0.Validator{
+			validator: &capella.Validator{
 				ActivationEligibilityEpoch: currentEpoch - 50,
 				ActivationEpoch:            currentEpoch - 40,
 				ExitEpoch:                  currentEpoch - 30,
@@ -268,7 +268,7 @@ func TestValidatorToState(t *testing.T) {
 		},
 		{
 			name: "ExitedSlashedNext",
-			validator: &phase0.Validator{
+			validator: &capella.Validator{
 				ActivationEligibilityEpoch: currentEpoch - 50,
 				ActivationEpoch:            currentEpoch - 40,
 				ExitEpoch:                  currentEpoch + 1,
@@ -279,7 +279,7 @@ func TestValidatorToState(t *testing.T) {
 		},
 		{
 			name: "ExitedSlashedThis",
-			validator: &phase0.Validator{
+			validator: &capella.Validator{
 				ActivationEligibilityEpoch: currentEpoch - 50,
 				ActivationEpoch:            currentEpoch - 40,
 				ExitEpoch:                  currentEpoch,
@@ -290,7 +290,7 @@ func TestValidatorToState(t *testing.T) {
 		},
 		{
 			name: "ExitedSlashed",
-			validator: &phase0.Validator{
+			validator: &capella.Validator{
 				ActivationEligibilityEpoch: currentEpoch - 50,
 				ActivationEpoch:            currentEpoch - 40,
 				ExitEpoch:                  currentEpoch - 30,
@@ -301,7 +301,7 @@ func TestValidatorToState(t *testing.T) {
 		},
 		{
 			name: "WithdrawalPossible",
-			validator: &phase0.Validator{
+			validator: &capella.Validator{
 				ActivationEligibilityEpoch: currentEpoch - 50,
 				ActivationEpoch:            currentEpoch - 40,
 				ExitEpoch:                  currentEpoch - 30,
@@ -312,7 +312,7 @@ func TestValidatorToState(t *testing.T) {
 		},
 		{
 			name: "WithdrawalPossibleSlashed",
-			validator: &phase0.Validator{
+			validator: &capella.Validator{
 				ActivationEligibilityEpoch: currentEpoch - 50,
 				ActivationEpoch:            currentEpoch - 40,
 				ExitEpoch:                  currentEpoch - 30,
@@ -324,7 +324,7 @@ func TestValidatorToState(t *testing.T) {
 		},
 		{
 			name: "WithdrawalPossibleBalance",
-			validator: &phase0.Validator{
+			validator: &capella.Validator{
 				ActivationEligibilityEpoch: currentEpoch - 50,
 				ActivationEpoch:            currentEpoch - 40,
 				ExitEpoch:                  currentEpoch - 30,
@@ -336,7 +336,7 @@ func TestValidatorToState(t *testing.T) {
 		},
 		{
 			name: "WithdrawalDone",
-			validator: &phase0.Validator{
+			validator: &capella.Validator{
 				ActivationEligibilityEpoch: currentEpoch - 50,
 				ActivationEpoch:            currentEpoch - 40,
 				ExitEpoch:                  currentEpoch - 30,
@@ -348,7 +348,7 @@ func TestValidatorToState(t *testing.T) {
 		},
 		{
 			name: "WithdrawalDoneNoBalance",
-			validator: &phase0.Validator{
+			validator: &capella.Validator{
 				ActivationEligibilityEpoch: currentEpoch - 50,
 				ActivationEpoch:            currentEpoch - 40,
 				ExitEpoch:                  currentEpoch - 30,

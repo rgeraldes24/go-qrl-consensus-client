@@ -21,16 +21,15 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/bellatrix"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // ProposalPreparation is the data required for proposal preparation.
 type ProposalPreparation struct {
 	// ValidatorIndex is the index of the validator making the proposal request.
-	ValidatorIndex phase0.ValidatorIndex
+	ValidatorIndex capella.ValidatorIndex
 	// FeeRecipient is the execution address to be used with preparing blocks.
-	FeeRecipient bellatrix.ExecutionAddress `ssz-size:"20"`
+	FeeRecipient capella.ExecutionAddress `ssz-size:"20"`
 }
 
 // proposalPreparationJSON is the spec representation of the struct.
@@ -65,7 +64,7 @@ func (p *ProposalPreparation) UnmarshalJSON(input []byte) error {
 		return errors.Wrap(err, "invalid value for validator index")
 	}
 
-	p.ValidatorIndex = phase0.ValidatorIndex(validatorIndex)
+	p.ValidatorIndex = capella.ValidatorIndex(validatorIndex)
 
 	if data.FeeRecipient == "" {
 		return errors.New("fee recipient is missing")

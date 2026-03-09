@@ -22,50 +22,48 @@ import (
 
 	"github.com/goccy/go-yaml"
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // BeaconBlockBody represents the body of a beacon block.
 type BeaconBlockBody struct {
-	RANDAOReveal      phase0.BLSSignature `ssz-size:"96"`
-	ExecutionData     *phase0.ExecutionData
-	Graffiti          [32]byte                      `ssz-size:"32"`
-	ProposerSlashings []*phase0.ProposerSlashing    `dynssz-max:"MAX_PROPOSER_SLASHINGS" ssz-max:"16"`
-	AttesterSlashings []*phase0.AttesterSlashing    `dynssz-max:"MAX_ATTESTER_SLASHINGS" ssz-max:"2"`
-	Attestations      []*phase0.Attestation         `dynssz-max:"MAX_ATTESTATIONS"       ssz-max:"128"`
-	Deposits          []*phase0.Deposit             `dynssz-max:"MAX_DEPOSITS"           ssz-max:"16"`
-	VoluntaryExits    []*phase0.SignedVoluntaryExit `dynssz-max:"MAX_VOLUNTARY_EXITS"    ssz-max:"16"`
-	SyncAggregate     *altair.SyncAggregate
+	RANDAOReveal      BLSSignature `ssz-size:"96"`
+	ExecutionData     *ExecutionData
+	Graffiti          [32]byte               `ssz-size:"32"`
+	ProposerSlashings []*ProposerSlashing    `dynssz-max:"MAX_PROPOSER_SLASHINGS" ssz-max:"16"`
+	AttesterSlashings []*AttesterSlashing    `dynssz-max:"MAX_ATTESTER_SLASHINGS" ssz-max:"2"`
+	Attestations      []*Attestation         `dynssz-max:"MAX_ATTESTATIONS"       ssz-max:"128"`
+	Deposits          []*Deposit             `dynssz-max:"MAX_DEPOSITS"           ssz-max:"16"`
+	VoluntaryExits    []*SignedVoluntaryExit `dynssz-max:"MAX_VOLUNTARY_EXITS"    ssz-max:"16"`
+	SyncAggregate     *SyncAggregate
 	ExecutionPayload  *ExecutionPayload
 }
 
 // beaconBlockBodyJSON is the spec representation of the struct.
 type beaconBlockBodyJSON struct {
-	RANDAOReveal      string                        `json:"randao_reveal"`
-	ExecutionData     *phase0.ExecutionData         `json:"execution_data"`
-	Graffiti          string                        `json:"graffiti"`
-	ProposerSlashings []*phase0.ProposerSlashing    `json:"proposer_slashings"`
-	AttesterSlashings []*phase0.AttesterSlashing    `json:"attester_slashings"`
-	Attestations      []*phase0.Attestation         `json:"attestations"`
-	Deposits          []*phase0.Deposit             `json:"deposits"`
-	VoluntaryExits    []*phase0.SignedVoluntaryExit `json:"voluntary_exits"`
-	SyncAggregate     *altair.SyncAggregate         `json:"sync_aggregate"`
-	ExecutionPayload  *ExecutionPayload             `json:"execution_payload"`
+	RANDAOReveal      string                 `json:"randao_reveal"`
+	ExecutionData     *ExecutionData         `json:"execution_data"`
+	Graffiti          string                 `json:"graffiti"`
+	ProposerSlashings []*ProposerSlashing    `json:"proposer_slashings"`
+	AttesterSlashings []*AttesterSlashing    `json:"attester_slashings"`
+	Attestations      []*Attestation         `json:"attestations"`
+	Deposits          []*Deposit             `json:"deposits"`
+	VoluntaryExits    []*SignedVoluntaryExit `json:"voluntary_exits"`
+	SyncAggregate     *SyncAggregate         `json:"sync_aggregate"`
+	ExecutionPayload  *ExecutionPayload      `json:"execution_payload"`
 }
 
 // beaconBlockBodyYAML is the spec representation of the struct.
 type beaconBlockBodyYAML struct {
-	RANDAOReveal      string                        `yaml:"randao_reveal"`
-	ExecutionData     *phase0.ExecutionData         `yaml:"execution_data"`
-	Graffiti          string                        `yaml:"graffiti"`
-	ProposerSlashings []*phase0.ProposerSlashing    `yaml:"proposer_slashings"`
-	AttesterSlashings []*phase0.AttesterSlashing    `yaml:"attester_slashings"`
-	Attestations      []*phase0.Attestation         `yaml:"attestations"`
-	Deposits          []*phase0.Deposit             `yaml:"deposits"`
-	VoluntaryExits    []*phase0.SignedVoluntaryExit `yaml:"voluntary_exits"`
-	SyncAggregate     *altair.SyncAggregate         `yaml:"sync_aggregate"`
-	ExecutionPayload  *ExecutionPayload             `yaml:"execution_payload"`
+	RANDAOReveal      string                 `yaml:"randao_reveal"`
+	ExecutionData     *ExecutionData         `yaml:"execution_data"`
+	Graffiti          string                 `yaml:"graffiti"`
+	ProposerSlashings []*ProposerSlashing    `yaml:"proposer_slashings"`
+	AttesterSlashings []*AttesterSlashing    `yaml:"attester_slashings"`
+	Attestations      []*Attestation         `yaml:"attestations"`
+	Deposits          []*Deposit             `yaml:"deposits"`
+	VoluntaryExits    []*SignedVoluntaryExit `yaml:"voluntary_exits"`
+	SyncAggregate     *SyncAggregate         `yaml:"sync_aggregate"`
+	ExecutionPayload  *ExecutionPayload      `yaml:"execution_payload"`
 }
 
 // MarshalJSON implements json.Marshaler.
@@ -146,7 +144,7 @@ func (b *BeaconBlockBody) unpack(data *beaconBlockBodyJSON) error {
 		return errors.Wrap(err, "invalid value for RANDAO reveal")
 	}
 
-	if len(randaoReveal) != phase0.SignatureLength {
+	if len(randaoReveal) != SignatureLength {
 		return errors.New("incorrect length for RANDAO reveal")
 	}
 
@@ -166,7 +164,7 @@ func (b *BeaconBlockBody) unpack(data *beaconBlockBodyJSON) error {
 		return errors.Wrap(err, "invalid value for graffiti")
 	}
 
-	if len(graffiti) != phase0.GraffitiLength {
+	if len(graffiti) != GraffitiLength {
 		return errors.New("incorrect length for graffiti")
 	}
 

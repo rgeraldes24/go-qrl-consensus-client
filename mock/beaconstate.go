@@ -18,7 +18,7 @@ import (
 
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // BeaconState fetches a beacon state given a state ID.
@@ -33,13 +33,13 @@ func (s *Service) BeaconState(ctx context.Context,
 	}
 
 	data := &spec.VersionedBeaconState{
-		Version: spec.DataVersionPhase0,
-		Phase0: &phase0.BeaconState{
-			LatestBlockHeader:           &phase0.BeaconBlockHeader{},
-			ExecutionData:               &phase0.ExecutionData{},
-			PreviousJustifiedCheckpoint: &phase0.Checkpoint{},
-			CurrentJustifiedCheckpoint:  &phase0.Checkpoint{},
-			FinalizedCheckpoint:         &phase0.Checkpoint{},
+		Version: spec.DataVersionCapella,
+		Capella: &capella.BeaconState{
+			LatestBlockHeader:           &capella.BeaconBlockHeader{},
+			ExecutionData:               &capella.ExecutionData{},
+			PreviousJustifiedCheckpoint: &capella.Checkpoint{},
+			CurrentJustifiedCheckpoint:  &capella.Checkpoint{},
+			FinalizedCheckpoint:         &capella.Checkpoint{},
 		},
 	}
 

@@ -22,14 +22,14 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // Genesis provides information about the genesis of a chain.
 type Genesis struct {
 	GenesisTime           time.Time
-	GenesisValidatorsRoot phase0.Root
-	GenesisForkVersion    phase0.Version
+	GenesisValidatorsRoot capella.Root
+	GenesisForkVersion    capella.Version
 }
 
 // genesisJSON is the spec representation of the struct.

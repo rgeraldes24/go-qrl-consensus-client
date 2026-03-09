@@ -17,8 +17,7 @@ import (
 	"encoding/json"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/electra"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // attestationIdentificationJSON contains fields that allow us to identify the attestation variant.
@@ -34,15 +33,10 @@ func (v *VersionedAttestation) UnmarshalJSON(input []byte) error {
 	}
 
 	switch {
-	case id.CommitteeBits != nil:
-		v.Version = DataVersionElectra
-		v.Electra = &electra.Attestation{}
-
-		return v.Electra.UnmarshalJSON(input)
 	default:
-		v.Version = DataVersionPhase0
-		v.Phase0 = &phase0.Attestation{}
+		v.Version = DataVersionCapella
+		v.Capella = &capella.Attestation{}
 
-		return v.Phase0.UnmarshalJSON(input)
+		return v.Capella.UnmarshalJSON(input)
 	}
 }

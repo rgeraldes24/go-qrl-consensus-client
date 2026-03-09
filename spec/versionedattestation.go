@@ -17,15 +17,15 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/OffchainLabs/go-bitfield"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	bitfield "github.com/theQRL/go-bitfield"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // VersionedAttestation contains a versioned attestation.
 type VersionedAttestation struct {
 	Version        DataVersion
-	ValidatorIndex *phase0.ValidatorIndex
-	Capella        *phase0.Attestation
+	ValidatorIndex *capella.ValidatorIndex
+	Capella        *capella.Attestation
 }
 
 // IsEmpty returns true if there is no block.
@@ -48,7 +48,7 @@ func (v *VersionedAttestation) AggregationBits() (bitfield.Bitlist, error) {
 }
 
 // Data returns the data of the attestation.
-func (v *VersionedAttestation) Data() (*phase0.AttestationData, error) {
+func (v *VersionedAttestation) Data() (*capella.AttestationData, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
@@ -72,7 +72,7 @@ func (v *VersionedAttestation) CommitteeBits() (bitfield.Bitvector64, error) {
 }
 
 // CommitteeIndex returns the index if only one bit is set, otherwise error.
-func (v *VersionedAttestation) CommitteeIndex() (phase0.CommitteeIndex, error) {
+func (v *VersionedAttestation) CommitteeIndex() (capella.CommitteeIndex, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
@@ -99,16 +99,16 @@ func (v *VersionedAttestation) HashTreeRoot() ([32]byte, error) {
 }
 
 // Signature returns the signature of the attestation.
-func (v *VersionedAttestation) Signature() (phase0.BLSSignature, error) {
+func (v *VersionedAttestation) Signature() (capella.BLSSignature, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.BLSSignature{}, errors.New("no Capella attestation")
+			return capella.BLSSignature{}, errors.New("no Capella attestation")
 		}
 
 		return v.Capella.Signature, nil
 	default:
-		return phase0.BLSSignature{}, errors.New("unknown version")
+		return capella.BLSSignature{}, errors.New("unknown version")
 	}
 }
 

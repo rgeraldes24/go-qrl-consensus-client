@@ -22,7 +22,7 @@ import (
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	"github.com/theQRL/go-qrl-consensus-client/http"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 func TestSpec(t *testing.T) {
@@ -50,7 +50,7 @@ func TestSpec(t *testing.T) {
 			// Check an integer type.
 			require.IsType(t, response.Data["BASE_REWARD_FACTOR"], uint64(0))
 			// Check a byte array type.
-			require.IsType(t, response.Data["DOMAIN_DEPOSIT"], phase0.DomainType{})
+			require.IsType(t, response.Data["DOMAIN_DEPOSIT"], capella.DomainType{})
 		})
 	}
 }

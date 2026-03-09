@@ -21,18 +21,18 @@ import (
 
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 type voluntaryExitPoolJSON struct {
-	Data []*phase0.SignedVoluntaryExit `json:"data"`
+	Data []*capella.SignedVoluntaryExit `json:"data"`
 }
 
 // VoluntaryExitPool obtains the voluntary exit pool.
 func (s *Service) VoluntaryExitPool(ctx context.Context,
 	opts *api.VoluntaryExitPoolOpts,
 ) (
-	*api.Response[[]*phase0.SignedVoluntaryExit],
+	*api.Response[[]*capella.SignedVoluntaryExit],
 	error,
 ) {
 	if err := s.assertIsActive(ctx); err != nil {
@@ -60,7 +60,7 @@ func (s *Service) VoluntaryExitPool(ctx context.Context,
 		return nil, errors.New("voluntary exit pool not returned")
 	}
 
-	return &api.Response[[]*phase0.SignedVoluntaryExit]{
+	return &api.Response[[]*capella.SignedVoluntaryExit]{
 		Data:     voluntaryExitPoolJSON.Data,
 		Metadata: make(map[string]any),
 	}, nil

@@ -24,16 +24,15 @@ import (
 
 	"github.com/goccy/go-yaml"
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/bellatrix"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // ValidatorRegistration represents a ValidatorRegistrationV1.
 type ValidatorRegistration struct {
-	FeeRecipient bellatrix.ExecutionAddress `ssz-size:"20"`
+	FeeRecipient capella.ExecutionAddress `ssz-size:"20"`
 	GasLimit     uint64
 	Timestamp    time.Time
-	Pubkey       phase0.BLSPubKey `ssz-size:"48"`
+	Pubkey       capella.BLSPubKey `ssz-size:"48"`
 }
 
 // validatorRegistrationJSON is the spec representation of the struct.

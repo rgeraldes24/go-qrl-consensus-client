@@ -22,10 +22,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/bellatrix"
 	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
-	"github.com/theQRL/go-qrl-consensus-client/spec/electra"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // PayloadAttributesEvent represents the data of a payload_attributes event.
@@ -39,33 +36,17 @@ type PayloadAttributesEvent struct {
 // PayloadAttributesData represents the data of a payload_attributes event.
 type PayloadAttributesData struct {
 	// ProposerIndex is the index of the proposer.
-	ProposerIndex phase0.ValidatorIndex
+	ProposerIndex capella.ValidatorIndex
 	// ProposalSlot is the slot of the proposal.
-	ProposalSlot phase0.Slot
+	ProposalSlot capella.Slot
 	// ParentBlockNumber is the number of the parent block.
 	ParentBlockNumber uint64
 	// ParentBlockRoot is the root of the parent block.
-	ParentBlockRoot phase0.Root
+	ParentBlockRoot capella.Root
 	// ParentBlockHash is the hash of the parent block.
-	ParentBlockHash phase0.Hash32
-	// V1 is the v1 payload attributes.
-	V1 *PayloadAttributesV1
+	ParentBlockHash capella.Hash32
 	// V2 is the v2 payload attributes.
 	V2 *PayloadAttributesV2
-	// V3 is the v3 payload attributes.
-	V3 *PayloadAttributesV3
-	// V4 is the v4 payload attributes.
-	V4 *PayloadAttributesV4
-}
-
-// PayloadAttributesV1 represents the payload attributes.
-type PayloadAttributesV1 struct {
-	// Timestamp is the timestamp of the payload.
-	Timestamp uint64
-	// PrevRandao is the previous randao.
-	PrevRandao [32]byte
-	// SuggestedFeeRecipient is the suggested fee recipient.
-	SuggestedFeeRecipient bellatrix.ExecutionAddress
 }
 
 // PayloadAttributesV2 represents the payload attributes v2.
@@ -75,43 +56,9 @@ type PayloadAttributesV2 struct {
 	// PrevRandao is the previous randao.
 	PrevRandao [32]byte
 	// SuggestedFeeRecipient is the suggested fee recipient.
-	SuggestedFeeRecipient bellatrix.ExecutionAddress
+	SuggestedFeeRecipient capella.ExecutionAddress
 	// Withdrawals is the list of withdrawals.
 	Withdrawals []*capella.Withdrawal
-}
-
-// PayloadAttributesV3 represents the payload attributes v3.
-type PayloadAttributesV3 struct {
-	// Timestamp is the timestamp of the payload.
-	Timestamp uint64
-	// PrevRandao is the previous randao.
-	PrevRandao [32]byte
-	// SuggestedFeeRecipient is the suggested fee recipient.
-	SuggestedFeeRecipient bellatrix.ExecutionAddress
-	// Withdrawals is the list of withdrawals.
-	Withdrawals []*capella.Withdrawal
-	// ParentBeaconBlockRoot is the parent beacon block root.
-	ParentBeaconBlockRoot phase0.Root
-}
-
-// PayloadAttributesV4 represents the payload attributes v4.
-type PayloadAttributesV4 struct {
-	// Timestamp is the timestamp of the payload.
-	Timestamp uint64
-	// PrevRandao is the previous randao.
-	PrevRandao [32]byte
-	// SuggestedFeeRecipient is the suggested fee recipient.
-	SuggestedFeeRecipient bellatrix.ExecutionAddress
-	// Withdrawals is the list of withdrawals.
-	Withdrawals []*capella.Withdrawal
-	// ParentBeaconBlockRoot is the parent beacon block root.
-	ParentBeaconBlockRoot phase0.Root
-	// DepositRequests is the list of deposit receipts.
-	DepositRequests []*electra.DepositRequest
-	// WithdrawalRequests is the list of withdrawal requests.
-	WithdrawalRequests []*electra.WithdrawalRequest
-	// ConsolidationRequests is the list of consolidation requests.
-	ConsolidationRequests []*electra.ConsolidationRequest
 }
 
 // payloadAttributesEventJSON is the spec representation of the event.
@@ -143,82 +90,6 @@ type payloadAttributesV2JSON struct {
 	PrevRandao            string                `json:"prev_randao"`
 	SuggestedFeeRecipient string                `json:"suggested_fee_recipient"`
 	Withdrawals           []*capella.Withdrawal `json:"withdrawals"`
-}
-
-// payloadAttributesV3JSON is the spec representation of the payload attributes v3.
-type payloadAttributesV3JSON struct {
-	Timestamp             string                `json:"timestamp"`
-	PrevRandao            string                `json:"prev_randao"`
-	SuggestedFeeRecipient string                `json:"suggested_fee_recipient"`
-	Withdrawals           []*capella.Withdrawal `json:"withdrawals"`
-	ParentBeaconBlockRoot string                `json:"parent_beacon_block_root"`
-}
-
-// payloadAttributesV4JSON is the spec representation of the payload attributes v4.
-type payloadAttributesV4JSON struct {
-	Timestamp             string                          `json:"timestamp"`
-	PrevRandao            string                          `json:"prev_randao"`
-	SuggestedFeeRecipient string                          `json:"suggested_fee_recipient"`
-	Withdrawals           []*capella.Withdrawal           `json:"withdrawals"`
-	ParentBeaconBlockRoot string                          `json:"parent_beacon_block_root"`
-	DepositRequests       []*electra.DepositRequest       `json:"deposit_requests"`
-	WithdrawalRequests    []*electra.WithdrawalRequest    `json:"withdrawal_requests"`
-	ConsolidationRequests []*electra.ConsolidationRequest `json:"consolidation_requests"`
-}
-
-// UnmarshalJSON implements json.Unmarshaler.
-func (p *PayloadAttributesV1) UnmarshalJSON(input []byte) error {
-	var payloadAttributes payloadAttributesV1JSON
-	if err := json.Unmarshal(input, &payloadAttributes); err != nil {
-		return errors.Wrap(err, "invalid JSON")
-	}
-
-	return p.unpack(&payloadAttributes)
-}
-
-func (p *PayloadAttributesV1) unpack(data *payloadAttributesV1JSON) error {
-	var err error
-
-	if data.Timestamp == "" {
-		return errors.New("payload attributes timestamp missing")
-	}
-
-	p.Timestamp, err = strconv.ParseUint(data.Timestamp, 10, 64)
-	if err != nil {
-		return errors.Wrap(err, "invalid value for payload attributes timestamp")
-	}
-
-	if data.PrevRandao == "" {
-		return errors.New("payload attributes prev randao missing")
-	}
-
-	prevRandao, err := hex.DecodeString(strings.TrimPrefix(data.PrevRandao, "0x"))
-	if err != nil {
-		return errors.Wrap(err, "invalid value for payload attributes prev randao")
-	}
-
-	if len(prevRandao) != 32 {
-		return errors.New("incorrect length for payload attributes prev randao")
-	}
-
-	copy(p.PrevRandao[:], prevRandao)
-
-	if data.SuggestedFeeRecipient == "" {
-		return errors.New("payload attributes suggested fee recipient missing")
-	}
-
-	feeRecipient, err := hex.DecodeString(strings.TrimPrefix(data.SuggestedFeeRecipient, "0x"))
-	if err != nil {
-		return errors.Wrap(err, "invalid value for payload attributes suggested fee recipient")
-	}
-
-	if len(feeRecipient) != bellatrix.FeeRecipientLength {
-		return errors.New("incorrect length for payload attributes suggested fee recipient")
-	}
-
-	copy(p.SuggestedFeeRecipient[:], feeRecipient)
-
-	return nil
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
@@ -267,7 +138,7 @@ func (p *PayloadAttributesV2) unpack(data *payloadAttributesV2JSON) error {
 		return errors.Wrap(err, "invalid value for payload attributes suggested fee recipient")
 	}
 
-	if len(feeRecipient) != bellatrix.FeeRecipientLength {
+	if len(feeRecipient) != capella.FeeRecipientLength {
 		return errors.New("incorrect length for payload attributes suggested fee recipient")
 	}
 
@@ -284,206 +155,6 @@ func (p *PayloadAttributesV2) unpack(data *payloadAttributesV2JSON) error {
 	}
 
 	p.Withdrawals = data.Withdrawals
-
-	return nil
-}
-
-// UnmarshalJSON implements json.Unmarshaler.
-func (p *PayloadAttributesV3) UnmarshalJSON(input []byte) error {
-	var payloadAttributes payloadAttributesV3JSON
-	if err := json.Unmarshal(input, &payloadAttributes); err != nil {
-		return errors.Wrap(err, "invalid JSON")
-	}
-
-	return p.unpack(&payloadAttributes)
-}
-
-func (p *PayloadAttributesV3) unpack(data *payloadAttributesV3JSON) error {
-	var err error
-
-	if data.Timestamp == "" {
-		return errors.New("payload attributes timestamp missing")
-	}
-
-	p.Timestamp, err = strconv.ParseUint(data.Timestamp, 10, 64)
-	if err != nil {
-		return errors.Wrap(err, "invalid value for payload attributes timestamp")
-	}
-
-	if data.PrevRandao == "" {
-		return errors.New("payload attributes prev randao missing")
-	}
-
-	prevRandao, err := hex.DecodeString(strings.TrimPrefix(data.PrevRandao, "0x"))
-	if err != nil {
-		return errors.Wrap(err, "invalid value for payload attributes prev randao")
-	}
-
-	if len(prevRandao) != 32 {
-		return errors.New("incorrect length for payload attributes prev randao")
-	}
-
-	copy(p.PrevRandao[:], prevRandao)
-
-	if data.SuggestedFeeRecipient == "" {
-		return errors.New("payload attributes suggested fee recipient missing")
-	}
-
-	feeRecipient, err := hex.DecodeString(strings.TrimPrefix(data.SuggestedFeeRecipient, "0x"))
-	if err != nil {
-		return errors.Wrap(err, "invalid value for payload attributes suggested fee recipient")
-	}
-
-	if len(feeRecipient) != bellatrix.FeeRecipientLength {
-		return errors.New("incorrect length for payload attributes suggested fee recipient")
-	}
-
-	copy(p.SuggestedFeeRecipient[:], feeRecipient)
-
-	if data.Withdrawals == nil {
-		return errors.New("payload attributes withdrawals missing")
-	}
-
-	for i := range data.Withdrawals {
-		if data.Withdrawals[i] == nil {
-			return fmt.Errorf("withdrawals entry %d missing", i)
-		}
-	}
-
-	p.Withdrawals = data.Withdrawals
-
-	if data.ParentBeaconBlockRoot == "" {
-		return errors.New("payload attributes parent beacon block root missing")
-	}
-
-	parentBeaconBlockRoot, err := hex.DecodeString(strings.TrimPrefix(data.ParentBeaconBlockRoot, "0x"))
-	if err != nil {
-		return errors.Wrap(err, "invalid value for payload attributes parent beacon block root")
-	}
-
-	if len(parentBeaconBlockRoot) != phase0.RootLength {
-		return errors.New("incorrect length for payload attributes parent beacon block root")
-	}
-
-	copy(p.ParentBeaconBlockRoot[:], parentBeaconBlockRoot)
-
-	return nil
-}
-
-// UnmarshalJSON implements json.Unmarshaler.
-func (p *PayloadAttributesV4) UnmarshalJSON(input []byte) error {
-	var payloadAttributes payloadAttributesV4JSON
-	if err := json.Unmarshal(input, &payloadAttributes); err != nil {
-		return errors.Wrap(err, "invalid JSON")
-	}
-
-	return p.unpack(&payloadAttributes)
-}
-
-func (p *PayloadAttributesV4) unpack(data *payloadAttributesV4JSON) error {
-	var err error
-
-	if data.Timestamp == "" {
-		return errors.New("payload attributes timestamp missing")
-	}
-
-	p.Timestamp, err = strconv.ParseUint(data.Timestamp, 10, 64)
-	if err != nil {
-		return errors.Wrap(err, "invalid value for payload attributes timestamp")
-	}
-
-	if data.PrevRandao == "" {
-		return errors.New("payload attributes prev randao missing")
-	}
-
-	prevRandao, err := hex.DecodeString(strings.TrimPrefix(data.PrevRandao, "0x"))
-	if err != nil {
-		return errors.Wrap(err, "invalid value for payload attributes prev randao")
-	}
-
-	if len(prevRandao) != 32 {
-		return errors.New("incorrect length for payload attributes prev randao")
-	}
-
-	copy(p.PrevRandao[:], prevRandao)
-
-	if data.SuggestedFeeRecipient == "" {
-		return errors.New("payload attributes suggested fee recipient missing")
-	}
-
-	feeRecipient, err := hex.DecodeString(strings.TrimPrefix(data.SuggestedFeeRecipient, "0x"))
-	if err != nil {
-		return errors.Wrap(err, "invalid value for payload attributes suggested fee recipient")
-	}
-
-	if len(feeRecipient) != bellatrix.FeeRecipientLength {
-		return errors.New("incorrect length for payload attributes suggested fee recipient")
-	}
-
-	copy(p.SuggestedFeeRecipient[:], feeRecipient)
-
-	if data.Withdrawals == nil {
-		return errors.New("payload attributes withdrawals missing")
-	}
-
-	for i := range data.Withdrawals {
-		if data.Withdrawals[i] == nil {
-			return fmt.Errorf("withdrawals entry %d missing", i)
-		}
-	}
-
-	p.Withdrawals = data.Withdrawals
-
-	if data.ParentBeaconBlockRoot == "" {
-		return errors.New("payload attributes parent beacon block root missing")
-	}
-
-	parentBeaconBlockRoot, err := hex.DecodeString(strings.TrimPrefix(data.ParentBeaconBlockRoot, "0x"))
-	if err != nil {
-		return errors.Wrap(err, "invalid value for payload attributes parent beacon block root")
-	}
-
-	if len(parentBeaconBlockRoot) != phase0.RootLength {
-		return errors.New("incorrect length for payload attributes parent beacon block root")
-	}
-
-	copy(p.ParentBeaconBlockRoot[:], parentBeaconBlockRoot)
-
-	if data.DepositRequests == nil {
-		return errors.New("payload attributes deposit requests missing")
-	}
-
-	for i := range data.DepositRequests {
-		if data.DepositRequests[i] == nil {
-			return fmt.Errorf("deposit requests entry %d missing", i)
-		}
-	}
-
-	p.DepositRequests = data.DepositRequests
-
-	if data.WithdrawalRequests == nil {
-		return errors.New("payload attributes withdraw requests missing")
-	}
-
-	for i := range data.WithdrawalRequests {
-		if data.WithdrawalRequests[i] == nil {
-			return fmt.Errorf("withdraw requests entry %d missing", i)
-		}
-	}
-
-	p.WithdrawalRequests = data.WithdrawalRequests
-
-	if data.ConsolidationRequests == nil {
-		return errors.New("payload attributes consolidation requests missing")
-	}
-
-	for i := range data.ConsolidationRequests {
-		if data.ConsolidationRequests[i] == nil {
-			return fmt.Errorf("consolidation requests entry %d missing", i)
-		}
-	}
-
-	p.ConsolidationRequests = data.ConsolidationRequests
 
 	return nil
 }
@@ -567,7 +238,7 @@ func (e *PayloadAttributesEvent) unpack(data *payloadAttributesEventJSON) error 
 		return errors.Wrap(err, "invalid value for proposer index")
 	}
 
-	e.Data.ProposerIndex = phase0.ValidatorIndex(proposerIndex)
+	e.Data.ProposerIndex = capella.ValidatorIndex(proposerIndex)
 
 	if data.Data.ProposalSlot == "" {
 		return errors.New("proposal slot missing")
@@ -578,7 +249,7 @@ func (e *PayloadAttributesEvent) unpack(data *payloadAttributesEventJSON) error 
 		return errors.Wrap(err, "invalid value for proposal slot")
 	}
 
-	e.Data.ProposalSlot = phase0.Slot(proposalSlot)
+	e.Data.ProposalSlot = capella.Slot(proposalSlot)
 
 	if data.Data.ParentBlockNumber == "" {
 		return errors.New("parent block number missing")
@@ -600,7 +271,7 @@ func (e *PayloadAttributesEvent) unpack(data *payloadAttributesEventJSON) error 
 		return errors.Wrap(err, "invalid value for parent block root")
 	}
 
-	if len(parentBlockRoot) != phase0.RootLength {
+	if len(parentBlockRoot) != capella.RootLength {
 		return errors.New("incorrect length for parent block root")
 	}
 
@@ -615,7 +286,7 @@ func (e *PayloadAttributesEvent) unpack(data *payloadAttributesEventJSON) error 
 		return errors.Wrap(err, "invalid value for parent block hash")
 	}
 
-	if len(parentBlockHash) != phase0.Hash32Length {
+	if len(parentBlockHash) != capella.Hash32Length {
 		return errors.New("incorrect length for parent block hash")
 	}
 

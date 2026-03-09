@@ -26,7 +26,7 @@ import (
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
 	"github.com/theQRL/go-qrl-consensus-client/http"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 func TestValidatorLiveness(t *testing.T) {
@@ -61,16 +61,16 @@ func TestValidatorLiveness(t *testing.T) {
 		{
 			name: "NoValidatorIndices",
 			opts: &api.ValidatorLivenessOpts{
-				Epoch:   phase0.Epoch(time.Since(genesisResponse.Data.GenesisTime).Seconds()) / phase0.Epoch(slotDuration.Seconds()) / phase0.Epoch(slotsPerEpoch),
-				Indices: []phase0.ValidatorIndex{},
+				Epoch:   capella.Epoch(time.Since(genesisResponse.Data.GenesisTime).Seconds()) / capella.Epoch(slotDuration.Seconds()) / capella.Epoch(slotsPerEpoch),
+				Indices: []capella.ValidatorIndex{},
 			},
 			err: "no validator indices specified",
 		},
 		{
 			name: "Good",
 			opts: &api.ValidatorLivenessOpts{
-				Epoch:   phase0.Epoch(time.Since(genesisResponse.Data.GenesisTime).Seconds()) / phase0.Epoch(slotDuration.Seconds()) / phase0.Epoch(slotsPerEpoch),
-				Indices: []phase0.ValidatorIndex{0, 1},
+				Epoch:   capella.Epoch(time.Since(genesisResponse.Data.GenesisTime).Seconds()) / capella.Epoch(slotDuration.Seconds()) / capella.Epoch(slotsPerEpoch),
+				Indices: []capella.ValidatorIndex{0, 1},
 			},
 		},
 	}

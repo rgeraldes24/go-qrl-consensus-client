@@ -20,22 +20,20 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
 	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // blindedBeaconBlockBodyJSON is the spec representation of the struct.
 type blindedBeaconBlockBodyJSON struct {
 	RANDAOReveal           string                          `json:"randao_reveal"`
-	ExecutionData          *phase0.ExecutionData           `json:"execution_data"`
+	ExecutionData          *capella.ExecutionData          `json:"execution_data"`
 	Graffiti               string                          `json:"graffiti"`
-	ProposerSlashings      []*phase0.ProposerSlashing      `json:"proposer_slashings"`
-	AttesterSlashings      []*phase0.AttesterSlashing      `json:"attester_slashings"`
-	Attestations           []*phase0.Attestation           `json:"attestations"`
-	Deposits               []*phase0.Deposit               `json:"deposits"`
-	VoluntaryExits         []*phase0.SignedVoluntaryExit   `json:"voluntary_exits"`
-	SyncAggregate          *altair.SyncAggregate           `json:"sync_aggregate"`
+	ProposerSlashings      []*capella.ProposerSlashing     `json:"proposer_slashings"`
+	AttesterSlashings      []*capella.AttesterSlashing     `json:"attester_slashings"`
+	Attestations           []*capella.Attestation          `json:"attestations"`
+	Deposits               []*capella.Deposit              `json:"deposits"`
+	VoluntaryExits         []*capella.SignedVoluntaryExit  `json:"voluntary_exits"`
+	SyncAggregate          *capella.SyncAggregate          `json:"sync_aggregate"`
 	ExecutionPayloadHeader *capella.ExecutionPayloadHeader `json:"execution_payload_header"`
 }
 
@@ -75,7 +73,7 @@ func (b *BlindedBeaconBlockBody) unpack(data *blindedBeaconBlockBodyJSON) error 
 		return errors.Wrap(err, "invalid value for RANDAO reveal")
 	}
 
-	if len(randaoReveal) != phase0.SignatureLength {
+	if len(randaoReveal) != capella.SignatureLength {
 		return errors.New("incorrect length for RANDAO reveal")
 	}
 
@@ -95,7 +93,7 @@ func (b *BlindedBeaconBlockBody) unpack(data *blindedBeaconBlockBodyJSON) error 
 		return errors.Wrap(err, "invalid value for graffiti")
 	}
 
-	if len(graffiti) != phase0.GraffitiLength {
+	if len(graffiti) != capella.GraffitiLength {
 		return errors.New("incorrect length for graffiti")
 	}
 

@@ -18,7 +18,7 @@ import (
 
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // AggregateAttestation fetches the aggregate attestation for the given options.
@@ -34,11 +34,11 @@ func (s *Service) AggregateAttestation(ctx context.Context,
 
 	return &api.Response[*spec.VersionedAttestation]{
 		Data: &spec.VersionedAttestation{
-			Version: spec.DataVersionPhase0,
-			Phase0: &phase0.Attestation{
-				Data: &phase0.AttestationData{
-					Source: &phase0.Checkpoint{},
-					Target: &phase0.Checkpoint{},
+			Version: spec.DataVersionCapella,
+			Capella: &capella.Attestation{
+				Data: &capella.AttestationData{
+					Source: &capella.Checkpoint{},
+					Target: &capella.Checkpoint{},
 				},
 			},
 		},

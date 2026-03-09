@@ -22,7 +22,7 @@ import (
 	"github.com/stretchr/testify/require"
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/http"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 func TestDomain(t *testing.T) {
@@ -31,8 +31,8 @@ func TestDomain(t *testing.T) {
 
 	tests := []struct {
 		name   string
-		epoch  phase0.Epoch
-		domain phase0.DomainType
+		epoch  capella.Epoch
+		domain capella.DomainType
 	}{
 		{
 			name:   "Good",

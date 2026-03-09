@@ -23,7 +23,7 @@ import (
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	"github.com/theQRL/go-qrl-consensus-client/http"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 func TestSyncCommitteeDuties(t *testing.T) {
@@ -52,7 +52,7 @@ func TestSyncCommitteeDuties(t *testing.T) {
 			name: "Current",
 			opts: &api.SyncCommitteeDutiesOpts{
 				Epoch: 0,
-				Indices: []phase0.ValidatorIndex{
+				Indices: []capella.ValidatorIndex{
 					0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
 					16, 17, 18, 29, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
 					32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
@@ -69,7 +69,7 @@ func TestSyncCommitteeDuties(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			if test.opts.Epoch == 0 {
-				test.opts.Epoch = phase0.Epoch(uint64(time.Since(genesisResponse.Data.GenesisTime).Seconds()) / (uint64(slotDuration.Seconds()) * slotsPerEpoch))
+				test.opts.Epoch = capella.Epoch(uint64(time.Since(genesisResponse.Data.GenesisTime).Seconds()) / (uint64(slotDuration.Seconds()) * slotsPerEpoch))
 			}
 			response, err := service.(client.SyncCommitteeDutiesProvider).SyncCommitteeDuties(ctx, test.opts)
 			require.NoError(t, err)

@@ -19,10 +19,10 @@ import (
 	"errors"
 	"fmt"
 
-	client "github.com/attestantio/go-eth2-client"
-	"github.com/attestantio/go-eth2-client/api"
-	"github.com/attestantio/go-eth2-client/spec"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
+	client "github.com/theQRL/go-qrl-consensus-client"
+	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-consensus-client/spec"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // AggregateAttestation fetches the aggregate attestation for the given options.
@@ -103,7 +103,7 @@ func decodeAggregateAttestation(httpResponse *httpResponse) (*spec.VersionedAtte
 	}
 	switch httpResponse.consensusVersion {
 	case spec.DataVersionCapella:
-		phase0Data, phase0Metadata, decodeErr := decodeJSONResponse(bytes.NewReader(httpResponse.body), &phase0.Attestation{})
+		phase0Data, phase0Metadata, decodeErr := decodeJSONResponse(bytes.NewReader(httpResponse.body), &capella.Attestation{})
 		metadata = phase0Metadata
 		data.Capella = phase0Data
 

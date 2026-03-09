@@ -21,7 +21,7 @@ import (
 	"time"
 
 	"github.com/rs/zerolog"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // timeout for tests.
@@ -36,48 +36,48 @@ func TestMain(m *testing.M) {
 }
 
 // mustParseRoot is used for testing.
-func mustParseRoot(input string) *phase0.Root {
+func mustParseRoot(input string) *capella.Root {
 	root, err := hex.DecodeString(strings.TrimPrefix(input, "0x"))
 	if err != nil {
 		panic("invalid root")
 	}
-	if len(root) != phase0.RootLength {
+	if len(root) != capella.RootLength {
 		panic("invalid length root")
 	}
 
-	var res phase0.Root
+	var res capella.Root
 	copy(res[:], root)
 
 	return &res
 }
 
 // mustParseSignature is used for testing.
-func mustParseSignature(input string) *phase0.BLSSignature {
+func mustParseSignature(input string) *capella.BLSSignature {
 	sig, err := hex.DecodeString(strings.TrimPrefix(input, "0x"))
 	if err != nil {
 		panic("invalid signature")
 	}
-	if len(sig) != phase0.SignatureLength {
+	if len(sig) != capella.SignatureLength {
 		panic("invalid length signature")
 	}
 
-	var res phase0.BLSSignature
+	var res capella.BLSSignature
 	copy(res[:], sig)
 
 	return &res
 }
 
 // mustParsePubKey is used for testing.
-func mustParsePubKey(input string) *phase0.BLSPubKey {
+func mustParsePubKey(input string) *capella.BLSPubKey {
 	pubKey, err := hex.DecodeString(strings.TrimPrefix(input, "0x"))
 	if err != nil {
 		panic("invalid public key")
 	}
-	if len(pubKey) != phase0.PublicKeyLength {
+	if len(pubKey) != capella.PublicKeyLength {
 		panic("invalid length public key")
 	}
 
-	var res phase0.BLSPubKey
+	var res capella.BLSPubKey
 	copy(res[:], pubKey)
 
 	return &res

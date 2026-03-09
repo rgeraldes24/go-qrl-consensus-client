@@ -21,12 +21,12 @@ import (
 	"strings"
 
 	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // SlotFromStateID parses the state ID and returns the relevant slot.
-func (*Service) SlotFromStateID(_ context.Context, stateID string) (phase0.Slot, error) {
-	var slot phase0.Slot
+func (*Service) SlotFromStateID(_ context.Context, stateID string) (capella.Slot, error) {
+	var slot capella.Slot
 
 	switch {
 	case stateID == "genesis":
@@ -46,15 +46,15 @@ func (*Service) SlotFromStateID(_ context.Context, stateID string) (phase0.Slot,
 			return 0, errors.Join(fmt.Errorf("failed to parse state %s as a slot", stateID), err)
 		}
 
-		slot = phase0.Slot(tmp)
+		slot = capella.Slot(tmp)
 	}
 
 	return slot, nil
 }
 
 // EpochFromStateID parses the state ID and returns the relevant epoch.
-func (s *Service) EpochFromStateID(ctx context.Context, stateID string) (phase0.Epoch, error) {
-	var epoch phase0.Epoch
+func (s *Service) EpochFromStateID(ctx context.Context, stateID string) (capella.Epoch, error) {
+	var epoch capella.Epoch
 
 	switch {
 	case stateID == "genesis":
@@ -89,7 +89,7 @@ func (s *Service) EpochFromStateID(ctx context.Context, stateID string) (phase0.
 			return 0, errors.Join(errors.New("failed to obtain slots per epoch"), err)
 		}
 
-		epoch = phase0.Epoch(tmp / slotsPerEpoch)
+		epoch = capella.Epoch(tmp / slotsPerEpoch)
 	}
 
 	return epoch, nil

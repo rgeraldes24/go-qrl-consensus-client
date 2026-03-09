@@ -19,14 +19,14 @@ import (
 
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // ForkSchedule provides details of past and future changes in the chain's fork version.
 func (s *Service) ForkSchedule(ctx context.Context,
 	opts *api.ForkScheduleOpts,
 ) (
-	*api.Response[[]*phase0.Fork],
+	*api.Response[[]*capella.Fork],
 	error,
 ) {
 	if err := s.assertIsActive(ctx); err != nil {
@@ -42,7 +42,7 @@ func (s *Service) ForkSchedule(ctx context.Context,
 	if s.forkSchedule != nil {
 		defer s.forkScheduleMutex.RUnlock()
 
-		return &api.Response[[]*phase0.Fork]{
+		return &api.Response[[]*capella.Fork]{
 			Data:     s.forkSchedule,
 			Metadata: make(map[string]any),
 		}, nil
@@ -55,7 +55,7 @@ func (s *Service) ForkSchedule(ctx context.Context,
 
 	if s.forkSchedule != nil {
 		// Someone else fetched this whilst we were waiting for the lock.
-		return &api.Response[[]*phase0.Fork]{
+		return &api.Response[[]*capella.Fork]{
 			Data:     s.forkSchedule,
 			Metadata: make(map[string]any),
 		}, nil
@@ -69,14 +69,14 @@ func (s *Service) ForkSchedule(ctx context.Context,
 		return nil, err
 	}
 
-	data, metadata, err := decodeJSONResponse(bytes.NewReader(httpResponse.body), []*phase0.Fork{})
+	data, metadata, err := decodeJSONResponse(bytes.NewReader(httpResponse.body), []*capella.Fork{})
 	if err != nil {
 		return nil, err
 	}
 
 	s.forkSchedule = data
 
-	return &api.Response[[]*phase0.Fork]{
+	return &api.Response[[]*capella.Fork]{
 		Data:     s.forkSchedule,
 		Metadata: metadata,
 	}, nil

@@ -21,13 +21,13 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // BlockGossipEvent is the data for the block gossip event.
 type BlockGossipEvent struct {
-	Slot  phase0.Slot
-	Block phase0.Root
+	Slot  capella.Slot
+	Block capella.Root
 }
 
 // blockGossipEventJSON is the spec representation of the struct.
@@ -62,7 +62,7 @@ func (e *BlockGossipEvent) UnmarshalJSON(input []byte) error {
 		return errors.Wrap(err, "invalid value for slot")
 	}
 
-	e.Slot = phase0.Slot(slot)
+	e.Slot = capella.Slot(slot)
 
 	if data.Block == "" {
 		return errors.New("block missing")

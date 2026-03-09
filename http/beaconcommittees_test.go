@@ -23,19 +23,19 @@ import (
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	"github.com/theQRL/go-qrl-consensus-client/http"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 func TestBeaconCommittees(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	epoch := phase0.Epoch(0)
+	epoch := capella.Epoch(0)
 
 	tests := []struct {
 		name     string
 		opts     *api.BeaconCommitteesOpts
-		expected *phase0.Attestation
+		expected *capella.Attestation
 		err      string
 		errCode  int
 	}{

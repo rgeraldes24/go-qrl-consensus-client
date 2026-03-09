@@ -21,7 +21,7 @@ import (
 	"github.com/stretchr/testify/require"
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/http"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 func TestSubmitVoluntaryExit(t *testing.T) {
@@ -30,16 +30,16 @@ func TestSubmitVoluntaryExit(t *testing.T) {
 
 	tests := []struct {
 		name string
-		exit *phase0.SignedVoluntaryExit
+		exit *capella.SignedVoluntaryExit
 	}{
 		{
 			name: "InvalidSignature",
-			exit: &phase0.SignedVoluntaryExit{
-				Message: &phase0.VoluntaryExit{
+			exit: &capella.SignedVoluntaryExit{
+				Message: &capella.VoluntaryExit{
 					ValidatorIndex: 12345,
 					Epoch:          2,
 				},
-				Signature: phase0.BLSSignature{},
+				Signature: capella.BLSSignature{},
 			},
 		},
 	}

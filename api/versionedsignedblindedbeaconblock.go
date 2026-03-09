@@ -16,7 +16,7 @@ package api
 import (
 	apiv1capella "github.com/theQRL/go-qrl-consensus-client/api/v1/capella"
 	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // VersionedSignedBlindedBeaconBlock contains a versioned signed blinded beacon block.
@@ -26,7 +26,7 @@ type VersionedSignedBlindedBeaconBlock struct {
 }
 
 // Slot returns the slot of the signed beacon block.
-func (v *VersionedSignedBlindedBeaconBlock) Slot() (phase0.Slot, error) {
+func (v *VersionedSignedBlindedBeaconBlock) Slot() (capella.Slot, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
@@ -65,63 +65,63 @@ func (v *VersionedSignedBlindedBeaconBlock) Attestations() ([]spec.VersionedAtte
 }
 
 // Root returns the root of the beacon block.
-func (v *VersionedSignedBlindedBeaconBlock) Root() (phase0.Root, error) {
+func (v *VersionedSignedBlindedBeaconBlock) Root() (capella.Root, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.Capella.Message.HashTreeRoot()
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
 // BodyRoot returns the body root of the beacon block.
-func (v *VersionedSignedBlindedBeaconBlock) BodyRoot() (phase0.Root, error) {
+func (v *VersionedSignedBlindedBeaconBlock) BodyRoot() (capella.Root, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil ||
 			v.Capella.Message.Body == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.Capella.Message.Body.HashTreeRoot()
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
 // ParentRoot returns the parent root of the beacon block.
-func (v *VersionedSignedBlindedBeaconBlock) ParentRoot() (phase0.Root, error) {
+func (v *VersionedSignedBlindedBeaconBlock) ParentRoot() (capella.Root, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.Capella.Message.ParentRoot, nil
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
 // StateRoot returns the state root of the beacon block.
-func (v *VersionedSignedBlindedBeaconBlock) StateRoot() (phase0.Root, error) {
+func (v *VersionedSignedBlindedBeaconBlock) StateRoot() (capella.Root, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil {
-			return phase0.Root{}, ErrDataMissing
+			return capella.Root{}, ErrDataMissing
 		}
 
 		return v.Capella.Message.StateRoot, nil
 	default:
-		return phase0.Root{}, ErrUnsupportedVersion
+		return capella.Root{}, ErrUnsupportedVersion
 	}
 }
 
@@ -150,7 +150,7 @@ func (v *VersionedSignedBlindedBeaconBlock) AttesterSlashings() ([]spec.Versione
 }
 
 // ProposerSlashings returns the proposer slashings of the beacon block.
-func (v *VersionedSignedBlindedBeaconBlock) ProposerSlashings() ([]*phase0.ProposerSlashing, error) {
+func (v *VersionedSignedBlindedBeaconBlock) ProposerSlashings() ([]*capella.ProposerSlashing, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
@@ -166,7 +166,7 @@ func (v *VersionedSignedBlindedBeaconBlock) ProposerSlashings() ([]*phase0.Propo
 }
 
 // ProposerIndex returns the proposer index of the beacon block.
-func (v *VersionedSignedBlindedBeaconBlock) ProposerIndex() (phase0.ValidatorIndex, error) {
+func (v *VersionedSignedBlindedBeaconBlock) ProposerIndex() (capella.ValidatorIndex, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
@@ -181,36 +181,36 @@ func (v *VersionedSignedBlindedBeaconBlock) ProposerIndex() (phase0.ValidatorInd
 }
 
 // ExecutionParentHash returns the parent hash of the beacon block.
-func (v *VersionedSignedBlindedBeaconBlock) ExecutionParentHash() (phase0.Hash32, error) {
+func (v *VersionedSignedBlindedBeaconBlock) ExecutionParentHash() (capella.Hash32, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil ||
 			v.Capella.Message.Body == nil ||
 			v.Capella.Message.Body.ExecutionPayloadHeader == nil {
-			return phase0.Hash32{}, ErrDataMissing
+			return capella.Hash32{}, ErrDataMissing
 		}
 
 		return v.Capella.Message.Body.ExecutionPayloadHeader.ParentHash, nil
 	default:
-		return phase0.Hash32{}, ErrUnsupportedVersion
+		return capella.Hash32{}, ErrUnsupportedVersion
 	}
 }
 
 // ExecutionBlockHash returns the hash of the beacon block.
-func (v *VersionedSignedBlindedBeaconBlock) ExecutionBlockHash() (phase0.Hash32, error) {
+func (v *VersionedSignedBlindedBeaconBlock) ExecutionBlockHash() (capella.Hash32, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil ||
 			v.Capella.Message == nil ||
 			v.Capella.Message.Body == nil ||
 			v.Capella.Message.Body.ExecutionPayloadHeader == nil {
-			return phase0.Hash32{}, ErrDataMissing
+			return capella.Hash32{}, ErrDataMissing
 		}
 
 		return v.Capella.Message.Body.ExecutionPayloadHeader.BlockHash, nil
 	default:
-		return phase0.Hash32{}, ErrUnsupportedVersion
+		return capella.Hash32{}, ErrUnsupportedVersion
 	}
 }
 
@@ -232,15 +232,15 @@ func (v *VersionedSignedBlindedBeaconBlock) ExecutionBlockNumber() (uint64, erro
 }
 
 // Signature returns the signature of the beacon block.
-func (v *VersionedSignedBlindedBeaconBlock) Signature() (phase0.BLSSignature, error) {
+func (v *VersionedSignedBlindedBeaconBlock) Signature() (capella.BLSSignature, error) {
 	switch v.Version {
 	case spec.DataVersionCapella:
 		if v.Capella == nil {
-			return phase0.BLSSignature{}, ErrDataMissing
+			return capella.BLSSignature{}, ErrDataMissing
 		}
 
 		return v.Capella.Signature, nil
 	default:
-		return phase0.BLSSignature{}, ErrUnsupportedVersion
+		return capella.BLSSignature{}, ErrUnsupportedVersion
 	}
 }

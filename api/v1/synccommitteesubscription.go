@@ -19,17 +19,17 @@ import (
 	"strconv"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // SyncCommitteeSubscription is the data required for a sync committee subscription.
 type SyncCommitteeSubscription struct {
 	// ValidatorIndex is the index of the validator making the subscription request.
-	ValidatorIndex phase0.ValidatorIndex
+	ValidatorIndex capella.ValidatorIndex
 	// SyncCommitteeIndices are the indices of the sync committees of which the validator is a member.
-	SyncCommitteeIndices []phase0.CommitteeIndex
+	SyncCommitteeIndices []capella.CommitteeIndex
 	// UntilEpoch is the epoch at which the subscription no longer applies.
-	UntilEpoch phase0.Epoch
+	UntilEpoch capella.Epoch
 }
 
 // syncCommitteeSubscriptionJSON is the spec representation of the struct.
@@ -71,20 +71,20 @@ func (s *SyncCommitteeSubscription) UnmarshalJSON(input []byte) error {
 		return errors.Wrap(err, "invalid value for validator index")
 	}
 
-	s.ValidatorIndex = phase0.ValidatorIndex(validatorIndex)
+	s.ValidatorIndex = capella.ValidatorIndex(validatorIndex)
 
 	if len(syncCommitteeSubscriptionJSON.SyncCommitteeIndices) == 0 {
 		return errors.New("sync committee indices missing")
 	}
 
-	s.SyncCommitteeIndices = make([]phase0.CommitteeIndex, len(syncCommitteeSubscriptionJSON.SyncCommitteeIndices))
+	s.SyncCommitteeIndices = make([]capella.CommitteeIndex, len(syncCommitteeSubscriptionJSON.SyncCommitteeIndices))
 	for i, committeeIndex := range syncCommitteeSubscriptionJSON.SyncCommitteeIndices {
 		syncCommitteeIndex, err := strconv.ParseUint(committeeIndex, 10, 64)
 		if err != nil {
 			return errors.Wrap(err, "invalid value for sync committee index")
 		}
 
-		s.SyncCommitteeIndices[i] = phase0.CommitteeIndex(syncCommitteeIndex)
+		s.SyncCommitteeIndices[i] = capella.CommitteeIndex(syncCommitteeIndex)
 	}
 
 	if syncCommitteeSubscriptionJSON.UntilEpoch == "" {
@@ -96,7 +96,7 @@ func (s *SyncCommitteeSubscription) UnmarshalJSON(input []byte) error {
 		return errors.Wrap(err, "invalid value for until epoch")
 	}
 
-	s.UntilEpoch = phase0.Epoch(untilEpoch)
+	s.UntilEpoch = capella.Epoch(untilEpoch)
 
 	return nil
 }

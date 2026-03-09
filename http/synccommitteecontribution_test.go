@@ -24,7 +24,7 @@ import (
 	client "github.com/theQRL/go-qrl-consensus-client"
 	"github.com/theQRL/go-qrl-consensus-client/api"
 	"github.com/theQRL/go-qrl-consensus-client/http"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 func TestSyncCommitteeContribution(t *testing.T) {
@@ -59,7 +59,7 @@ func TestSyncCommitteeContribution(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			if test.opts.Slot == 0 {
-				test.opts.Slot = phase0.Slot(uint64(time.Since(genesisResponse.Data.GenesisTime).Seconds()) / uint64(slotDuration.Seconds()))
+				test.opts.Slot = capella.Slot(uint64(time.Since(genesisResponse.Data.GenesisTime).Seconds()) / uint64(slotDuration.Seconds()))
 			}
 			rootResponse, err := service.(client.BeaconBlockRootProvider).BeaconBlockRoot(ctx, &api.BeaconBlockRootOpts{Block: "head"})
 			require.NoError(t, err)

@@ -19,13 +19,13 @@ import (
 	"strconv"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // ValidatorBalance contains the balance of a validator.
 type ValidatorBalance struct {
-	Index   phase0.ValidatorIndex
-	Balance phase0.Gwei
+	Index   capella.ValidatorIndex
+	Balance capella.Gwei
 }
 
 // validatorBalanceJSON is the spec representation of the struct.
@@ -60,7 +60,7 @@ func (v *ValidatorBalance) UnmarshalJSON(input []byte) error {
 		return errors.Wrap(err, "invalid value for index")
 	}
 
-	v.Index = phase0.ValidatorIndex(index)
+	v.Index = capella.ValidatorIndex(index)
 
 	if validatorBalanceJSON.Balance == "" {
 		return errors.New("balance missing")
@@ -71,7 +71,7 @@ func (v *ValidatorBalance) UnmarshalJSON(input []byte) error {
 		return errors.Wrap(err, "invalid value for balance")
 	}
 
-	v.Balance = phase0.Gwei(balance)
+	v.Balance = capella.Gwei(balance)
 
 	return nil
 }

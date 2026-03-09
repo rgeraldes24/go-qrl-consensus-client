@@ -15,7 +15,7 @@ package api
 
 import (
 	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
+	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
 )
 
 // ValidatorsOpts are the options for obtaining validators.
@@ -27,10 +27,10 @@ type ValidatorsOpts struct {
 	State string
 	// Indices is a list of validator indices to restrict the returned values.
 	// If no indices are supplied then no filter will be applied.
-	Indices []phase0.ValidatorIndex
+	Indices []capella.ValidatorIndex
 	// PubKeys is a list of validator public keys to restrict the returned values.
 	// If no public keys are supplied then no filter will be applied.
-	PubKeys []phase0.BLSPubKey
+	PubKeys []capella.BLSPubKey
 	// ValidatorStates is a list of validator states to restrict the returned values.
 	// If no validator states are supplied then no filter will be applied.
 	ValidatorStates []apiv1.ValidatorState

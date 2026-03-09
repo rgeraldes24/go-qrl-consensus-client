@@ -25,9 +25,7 @@ import (
 	"github.com/golang/snappy"
 	clone "github.com/huandu/go-clone/generic"
 	require "github.com/stretchr/testify/require"
-	"github.com/theQRL/go-qrl-consensus-client/spec/altair"
 	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
-	"github.com/theQRL/go-qrl-consensus-client/spec/phase0"
 )
 
 // TestConsensusSpec tests the types against the Ethereum consensus spec tests.
@@ -42,19 +40,19 @@ func TestConsensusSpec(t *testing.T) {
 	}{
 		{
 			name: "AggregateAndProof",
-			s:    &phase0.AggregateAndProof{},
+			s:    &capella.AggregateAndProof{},
 		},
 		{
 			name: "Attestation",
-			s:    &phase0.Attestation{},
+			s:    &capella.Attestation{},
 		},
 		{
 			name: "AttestationData",
-			s:    &phase0.AttestationData{},
+			s:    &capella.AttestationData{},
 		},
 		{
 			name: "AttesterSlashing",
-			s:    &phase0.AttesterSlashing{},
+			s:    &capella.AttesterSlashing{},
 		},
 		{
 			name: "BeaconBlock",
@@ -66,7 +64,7 @@ func TestConsensusSpec(t *testing.T) {
 		},
 		{
 			name: "BeaconBlockHeader",
-			s:    &phase0.BeaconBlockHeader{},
+			s:    &capella.BeaconBlockHeader{},
 		},
 		{
 			name: "BeaconState",
@@ -74,27 +72,27 @@ func TestConsensusSpec(t *testing.T) {
 		},
 		{
 			name: "Checkpoint",
-			s:    &phase0.Checkpoint{},
+			s:    &capella.Checkpoint{},
 		},
 		{
 			name: "ContributionAndProof",
-			s:    &altair.ContributionAndProof{},
+			s:    &capella.ContributionAndProof{},
 		},
 		{
 			name: "Deposit",
-			s:    &phase0.Deposit{},
+			s:    &capella.Deposit{},
 		},
 		{
 			name: "DepositData",
-			s:    &phase0.DepositData{},
+			s:    &capella.DepositData{},
 		},
 		{
 			name: "DepositMessage",
-			s:    &phase0.DepositMessage{},
+			s:    &capella.DepositMessage{},
 		},
 		{
 			name: "ExecutionData",
-			s:    &phase0.ExecutionData{},
+			s:    &capella.ExecutionData{},
 		},
 		{
 			name: "ExecutionPayload",
@@ -106,11 +104,11 @@ func TestConsensusSpec(t *testing.T) {
 		},
 		{
 			name: "Fork",
-			s:    &phase0.Fork{},
+			s:    &capella.Fork{},
 		},
 		{
 			name: "ForkData",
-			s:    &phase0.ForkData{},
+			s:    &capella.ForkData{},
 		},
 		{
 			name: "HistoricalSummary",
@@ -118,19 +116,19 @@ func TestConsensusSpec(t *testing.T) {
 		},
 		{
 			name: "IndexedAttestation",
-			s:    &phase0.IndexedAttestation{},
+			s:    &capella.IndexedAttestation{},
 		},
 		{
 			name: "PendingAttestation",
-			s:    &phase0.PendingAttestation{},
+			s:    &capella.PendingAttestation{},
 		},
 		{
 			name: "ProposerSlashing",
-			s:    &phase0.ProposerSlashing{},
+			s:    &capella.ProposerSlashing{},
 		},
 		{
 			name: "SignedAggregateAndProof",
-			s:    &phase0.SignedAggregateAndProof{},
+			s:    &capella.SignedAggregateAndProof{},
 		},
 		{
 			name: "SignedBeaconBlock",
@@ -138,35 +136,35 @@ func TestConsensusSpec(t *testing.T) {
 		},
 		{
 			name: "SignedBeaconBlockHeader",
-			s:    &phase0.SignedBeaconBlockHeader{},
+			s:    &capella.SignedBeaconBlockHeader{},
 		},
 		{
 			name: "SignedContributionAndProof",
-			s:    &altair.SignedContributionAndProof{},
+			s:    &capella.SignedContributionAndProof{},
 		},
 		{
 			name: "SignedVoluntaryExit",
-			s:    &phase0.SignedVoluntaryExit{},
+			s:    &capella.SignedVoluntaryExit{},
 		},
 		{
 			name: "SyncAggregate",
-			s:    &altair.SyncAggregate{},
+			s:    &capella.SyncAggregate{},
 		},
 		{
 			name: "SyncCommitteeContribution",
-			s:    &altair.SyncCommitteeContribution{},
+			s:    &capella.SyncCommitteeContribution{},
 		},
 		{
 			name: "SyncCommitteeMessage",
-			s:    &altair.SyncCommitteeMessage{},
+			s:    &capella.SyncCommitteeMessage{},
 		},
 		{
 			name: "Validator",
-			s:    &phase0.Validator{},
+			s:    &capella.Validator{},
 		},
 		{
 			name: "VoluntaryExit",
-			s:    &phase0.VoluntaryExit{},
+			s:    &capella.VoluntaryExit{},
 		},
 		{
 			name: "Withdrawal",
