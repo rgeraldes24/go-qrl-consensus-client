@@ -21,7 +21,7 @@ import (
 	"time"
 
 	"github.com/rs/zerolog"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // timeout for tests.

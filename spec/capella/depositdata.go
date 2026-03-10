@@ -25,7 +25,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// DepositData provides information about a deposit made on Ethereum 1.
+// DepositData provides information about a deposit made on QRL.
 type DepositData struct {
 	PublicKey             MLDSA87PubKey `ssz-size:"2592"`
 	WithdrawalCredentials []byte        `ssz-size:"32"`

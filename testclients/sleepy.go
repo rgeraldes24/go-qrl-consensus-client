@@ -20,14 +20,14 @@ import (
 	"math/rand"
 	"time"
 
-	consensusclient "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
-	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	consensusclient "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
-// Sleepy is an Ethereum 2 client that sleeps for a random amount of time within a
+// Sleepy is a QRL beacon client that sleeps for a random amount of time within a
 // set of bounds before continuing.
 type Sleepy struct {
 	minSleep time.Duration
@@ -35,7 +35,7 @@ type Sleepy struct {
 	next     consensusclient.Service
 }
 
-// NewSleepy creates a new Ethereum 2 client that sleeps for random amount of time
+// NewSleepy creates a new QRL beacon client that sleeps for random amount of time
 // within a set of bounds between minSleep and maxSleep before continuing.
 func NewSleepy(_ context.Context,
 	minSleep time.Duration,

@@ -16,7 +16,7 @@ package mock
 import (
 	"context"
 
-	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/api"
 )
 
 // SubmitAggregateAttestations submits aggregate attestations.

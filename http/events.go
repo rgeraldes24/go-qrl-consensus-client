@@ -27,11 +27,11 @@ import (
 
 	"github.com/r3labs/sse/v2"
 	"github.com/rs/zerolog"
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
-	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // Events feeds requested events with the given topics to the supplied handler.
@@ -56,7 +56,7 @@ func (s *Service) Events(ctx context.Context, opts *api.EventsOpts) error {
 		return err
 	}
 
-	endpoint := "/eth/v1/events"
+	endpoint := "/qrl/v1/events"
 	query := "topics=" + strings.Join(opts.Topics, "&topics=")
 	callURL := urlForCall(s.base, endpoint, query)
 	log.Trace().Str("url", callURL.String()).Msg("GET request to events stream")

@@ -16,12 +16,12 @@ package multi
 import (
 	"context"
 
-	consensusclient "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
+	consensusclient "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
 )
 
-// DepositContract provides details of the Ethereum 1 deposit contract for the chain.
+// DepositContract provides details of the QRL deposit contract for the chain.
 func (s *Service) DepositContract(ctx context.Context,
 	opts *api.DepositContractOpts,
 ) (

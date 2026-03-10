@@ -21,9 +21,9 @@ import (
 	"strings"
 	"time"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // Spec provides the spec information of the chain.
@@ -66,7 +66,7 @@ func (s *Service) Spec(ctx context.Context,
 	}
 
 	// Up to us to fetch the information.
-	endpoint := "/eth/v1/config/spec"
+	endpoint := "/qrl/v1/config/spec"
 
 	httpResponse, err := s.get(ctx, endpoint, "", &opts.Common, false)
 	if err != nil {

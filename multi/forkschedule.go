@@ -16,9 +16,9 @@ package multi
 import (
 	"context"
 
-	consensusclient "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	consensusclient "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // ForkSchedule provides details of past and future changes in the chain's fork version.

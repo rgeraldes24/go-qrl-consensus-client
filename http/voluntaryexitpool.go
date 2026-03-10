@@ -19,9 +19,9 @@ import (
 	"encoding/json"
 	"errors"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 type voluntaryExitPoolJSON struct {
@@ -43,7 +43,7 @@ func (s *Service) VoluntaryExitPool(ctx context.Context,
 		return nil, client.ErrNoOptions
 	}
 
-	endpoint := "/eth/v1/beacon/pool/voluntary_exits"
+	endpoint := "/qrl/v1/beacon/pool/voluntary_exits"
 
 	httpResponse, err := s.get(ctx, endpoint, "", &opts.Common, false)
 	if err != nil {

@@ -20,10 +20,10 @@ import (
 	"errors"
 	"fmt"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 )
@@ -40,7 +40,7 @@ func (s *Service) Validators(ctx context.Context,
 	*api.Response[map[capella.ValidatorIndex]*apiv1.Validator],
 	error,
 ) {
-	ctx, span := otel.Tracer("attestantio.go-eth2-client.http").Start(ctx, "Validators")
+	ctx, span := otel.Tracer("theQRL.go-qrl-beacon-client.http").Start(ctx, "Validators")
 	defer span.End()
 
 	if err := s.assertIsActive(ctx); err != nil {
@@ -62,7 +62,7 @@ func (s *Service) Validators(ctx context.Context,
 		return s.validatorsFromState(ctx, opts)
 	}
 
-	endpoint := fmt.Sprintf("/eth/v1/beacon/states/%s/validators", opts.State)
+	endpoint := fmt.Sprintf("/qrl/v1/beacon/states/%s/validators", opts.State)
 	query := ""
 
 	body := &validatorsBody{
@@ -117,7 +117,7 @@ func (s *Service) validatorsFromState(ctx context.Context,
 	*api.Response[map[capella.ValidatorIndex]*apiv1.Validator],
 	error,
 ) {
-	ctx, span := otel.Tracer("attestantio.go-eth2-client.http").Start(ctx, "validatorsFromState")
+	ctx, span := otel.Tracer("theQRL.go-qrl-beacon-client.http").Start(ctx, "validatorsFromState")
 	defer span.End()
 
 	stateResponse, err := s.BeaconState(ctx, &api.BeaconStateOpts{State: opts.State, Common: opts.Common})

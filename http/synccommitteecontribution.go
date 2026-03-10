@@ -19,9 +19,9 @@ import (
 	"errors"
 	"fmt"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // SyncCommitteeContribution provides a sync committee contribution.
@@ -43,7 +43,7 @@ func (s *Service) SyncCommitteeContribution(ctx context.Context,
 		return nil, errors.Join(errors.New("no beacon block root specified"), client.ErrInvalidOptions)
 	}
 
-	endpoint := "/eth/v1/validator/sync_committee_contribution"
+	endpoint := "/qrl/v1/validator/sync_committee_contribution"
 	query := fmt.Sprintf("slot=%d&subcommittee_index=%d&beacon_block_root=%#x",
 		opts.Slot,
 		opts.SubcommitteeIndex,

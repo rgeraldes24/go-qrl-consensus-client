@@ -16,8 +16,8 @@ package mock
 import (
 	"context"
 
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
 )
 
 // AttestationRewards provides rewards to the given validators for attesting.

@@ -13,7 +13,7 @@
 
 package api
 
-import "github.com/theQRL/go-qrl-consensus-client/spec/capella"
+import "github.com/theQRL/go-qrl-beacon-client/spec/capella"
 
 // ValidatorBalancesOpts are the options for obtaining validator balances.
 type ValidatorBalancesOpts struct {

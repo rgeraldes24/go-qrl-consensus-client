@@ -17,9 +17,9 @@ import (
 	"bytes"
 	"context"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // ForkSchedule provides details of past and future changes in the chain's fork version.
@@ -62,7 +62,7 @@ func (s *Service) ForkSchedule(ctx context.Context,
 	}
 
 	// Up to us to fetch the information.
-	endpoint := "/eth/v1/config/fork_schedule"
+	endpoint := "/qrl/v1/config/fork_schedule"
 
 	httpResponse, err := s.get(ctx, endpoint, "", &opts.Common, false)
 	if err != nil {

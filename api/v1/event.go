@@ -18,8 +18,8 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // Event is the container for events sent from the API.

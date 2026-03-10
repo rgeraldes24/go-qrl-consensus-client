@@ -19,9 +19,9 @@ import (
 	"errors"
 	"fmt"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 type beaconStateRootJSON struct {
@@ -42,7 +42,7 @@ func (s *Service) BeaconStateRoot(ctx context.Context, opts *api.BeaconStateRoot
 		return nil, errors.Join(errors.New("no state specified"), client.ErrInvalidOptions)
 	}
 
-	endpoint := fmt.Sprintf("/eth/v1/beacon/states/%s/root", opts.State)
+	endpoint := fmt.Sprintf("/qrl/v1/beacon/states/%s/root", opts.State)
 
 	httpResponse, err := s.get(ctx, endpoint, "", &opts.Common, false)
 	if err != nil {

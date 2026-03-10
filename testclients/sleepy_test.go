@@ -20,10 +20,10 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
-	consensusclient "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/mock"
-	"github.com/theQRL/go-qrl-consensus-client/testclients"
+	consensusclient "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/mock"
+	"github.com/theQRL/go-qrl-beacon-client/testclients"
 )
 
 func TestSleepyNew(t *testing.T) {

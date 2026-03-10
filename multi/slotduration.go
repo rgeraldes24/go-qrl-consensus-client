@@ -18,7 +18,7 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
-	consensusclient "github.com/theQRL/go-qrl-consensus-client"
+	consensusclient "github.com/theQRL/go-qrl-beacon-client"
 )
 
 // SlotDuration provides the duration of a slot of the chain.

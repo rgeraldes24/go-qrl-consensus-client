@@ -19,10 +19,10 @@ import (
 	"errors"
 	"fmt"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // AggregateAttestation fetches the aggregate attestation for the given options.
@@ -44,7 +44,7 @@ func (s *Service) AggregateAttestation(ctx context.Context,
 		return nil, errors.Join(errors.New("no attestation data root specified"), client.ErrInvalidOptions)
 	}
 
-	endpoint := "/eth/v2/validator/aggregate_attestation"
+	endpoint := "/qrl/v1/validator/aggregate_attestation"
 	query := fmt.Sprintf("slot=%d&attestation_data_root=%#x&committee_index=%d",
 		opts.Slot, opts.AttestationDataRoot, opts.CommitteeIndex)
 

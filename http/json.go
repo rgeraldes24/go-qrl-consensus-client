@@ -20,7 +20,7 @@ import (
 	"io"
 
 	"github.com/huandu/go-clone"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 func decodeJSONResponse[T any](body io.Reader, res T) (T, map[string]any, error) {

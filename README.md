@@ -1,4 +1,4 @@
-# go-qrl-consensus-client
+# go-qrl-beacon-client
 
 Go library providing an abstraction to multiple QRL beacon nodes.  Its external API follows the official [QRL beacon APIs](https://github.com/ethereum/beacon-APIs) specification.
 
@@ -14,21 +14,21 @@ This library is under development; expect APIs and data structures to change unt
 
 ## Install
 
-`go-qrl-consensus-client` is a standard Go module which can be installed with:
+`go-qrl-beacon-client` is a standard Go module which can be installed with:
 
 ```sh
-go get github.com/theQRL/go-qrl-consensus-client
+go get github.com/theQRL/go-qrl-beacon-client
 ```
 
 ## Support
 
-`go-qrl-consensus-client` supports beacon nodes that comply with the standard beacon node API.  To date it has been tested against the following beacon nodes:
+`go-qrl-beacon-client` supports beacon nodes that comply with the standard beacon node API.  To date it has been tested against the following beacon nodes:
 
   - [Qrysm](https://github.com/theQRL/qrysm)
 
 ## Usage
 
-Please read the [Go documentation for this library](https://godoc.org/github.com/theQRL/go-qrl-consensus-client) for interface information.
+Please read the [Go documentation for this library](https://godoc.org/github.com/theQRL/go-qrl-beacon-client) for interface information.
 
 ## Example
 
@@ -41,9 +41,9 @@ import (
     "context"
     "fmt"
     
-    consensusclient "github.com/theQRL/go-qrl-consensus-client"
-    "github.com/theQRL/go-qrl-consensus-client/api"
-    "github.com/theQRL/go-qrl-consensus-client/http"
+    consensusclient "github.com/theQRL/go-qrl-beacon-client"
+    "github.com/theQRL/go-qrl-beacon-client/api"
+    "github.com/theQRL/go-qrl-beacon-client/http"
     "github.com/rs/zerolog"
 )
 
@@ -100,7 +100,7 @@ func main() {
 
 ## Contribute
 
-Contributions welcome. Please check out [the issues](https://github.com/theQRL/go-qrl-consensus-client/issues).
+Contributions welcome. Please check out [the issues](https://github.com/theQRL/go-qrl-beacon-client/issues).
 
 ## License
 

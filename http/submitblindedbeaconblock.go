@@ -19,9 +19,9 @@ import (
 	"encoding/json"
 	"errors"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
 )
 
 // SubmitBlindedBeaconBlock submits a blinded beacon block.
@@ -52,7 +52,7 @@ func (s *Service) SubmitBlindedBeaconBlock(ctx context.Context, block *api.Versi
 		return errors.Join(errors.New("failed to marshal JSON"), err)
 	}
 
-	endpoint := "/eth/v1/beacon/blinded_blocks"
+	endpoint := "/qrl/v1/beacon/blinded_blocks"
 	query := ""
 
 	if _, err := s.post(ctx,

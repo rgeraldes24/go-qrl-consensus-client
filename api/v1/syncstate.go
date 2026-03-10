@@ -19,7 +19,7 @@ import (
 	"strconv"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // SyncState is the data regarding the node's synchronization state to the chain.

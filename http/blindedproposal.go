@@ -19,10 +19,10 @@ import (
 	"errors"
 	"fmt"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1capella "github.com/theQRL/go-qrl-consensus-client/api/v1/capella"
-	"github.com/theQRL/go-qrl-consensus-client/spec"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1capella "github.com/theQRL/go-qrl-beacon-client/api/v1/capella"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
 	"go.opentelemetry.io/otel"
 )
 
@@ -35,7 +35,7 @@ func (s *Service) BlindedProposal(ctx context.Context,
 	*api.Response[*api.VersionedBlindedProposal],
 	error,
 ) {
-	ctx, span := otel.Tracer("attestantio.go-eth2-client.http").Start(ctx, "BlindedProposal")
+	ctx, span := otel.Tracer("theQRL.go-qrl-beacon-client.http").Start(ctx, "BlindedProposal")
 	defer span.End()
 
 	if err := s.assertIsSynced(ctx); err != nil {
@@ -50,13 +50,13 @@ func (s *Service) BlindedProposal(ctx context.Context,
 		return nil, errors.Join(errors.New("no slot specified"), client.ErrInvalidOptions)
 	}
 
-	endpoint := fmt.Sprintf("/eth/v1/validator/blinded_blocks/%d", opts.Slot)
+	endpoint := fmt.Sprintf("/qrl/v1/validator/blinded_blocks/%d", opts.Slot)
 	query := fmt.Sprintf("randao_reveal=%#x&graffiti=%#x", opts.RandaoReveal, opts.Graffiti)
 
 	if opts.SkipRandaoVerification {
-		if !opts.RandaoReveal.IsInfinity() {
+		if !opts.RandaoReveal.IsZero() {
 			return nil, errors.Join(
-				errors.New("randao reveal must be point at infinity if skip randao verification is set"),
+				errors.New("randao reveal must be zero if skip randao verification is set"),
 				client.ErrInvalidOptions,
 			)
 		}

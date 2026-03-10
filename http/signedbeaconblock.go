@@ -20,10 +20,10 @@ import (
 	"fmt"
 
 	dynssz "github.com/pk910/dynamic-ssz"
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // SignedBeaconBlock fetches a signed beacon block given a block ID.
@@ -45,7 +45,7 @@ func (s *Service) SignedBeaconBlock(ctx context.Context,
 		return nil, errors.Join(errors.New("no block specified"), client.ErrInvalidOptions)
 	}
 
-	endpoint := fmt.Sprintf("/eth/v2/beacon/blocks/%s", opts.Block)
+	endpoint := fmt.Sprintf("/qrl/v1/beacon/blocks/%s", opts.Block)
 
 	httpResponse, err := s.get(ctx, endpoint, "", &opts.Common, true)
 	if err != nil {

@@ -20,13 +20,13 @@ import (
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 	zerologger "github.com/rs/zerolog/log"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
-	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
-// Service is a mock Ethereum 2 client service, providing data locally.
+// Service is a mock QRL beacon client service, providing data locally.
 //
 //nolint:revive
 type Service struct {
@@ -84,7 +84,7 @@ type Service struct {
 // log is a service-wide logger.
 var log zerolog.Logger
 
-// New creates a new Ethereum 2 client service, mocking connections.
+// New creates a new QRL beacon client service, mocking connections.
 func New(ctx context.Context, params ...Parameter) (*Service, error) {
 	parameters, err := parseAndCheckParameters(params...)
 	if err != nil {

@@ -13,7 +13,7 @@
 
 package api
 
-import "github.com/theQRL/go-qrl-consensus-client/spec/capella"
+import "github.com/theQRL/go-qrl-beacon-client/spec/capella"
 
 // SyncCommitteeRewardsOpts are the options for obtaining sync committee rewards.
 type SyncCommitteeRewardsOpts struct {

@@ -16,7 +16,7 @@ package spec
 import (
 	"errors"
 
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // VersionedIndexedAttestation contains a versioned indexed attestation.
@@ -58,17 +58,17 @@ func (v *VersionedIndexedAttestation) Data() (*capella.AttestationData, error) {
 	}
 }
 
-// Signature returns the signature of the indexed attestation.
-func (v *VersionedIndexedAttestation) Signature() (capella.MLDSA87Signature, error) {
+// Signatures returns the signatures of the indexed attestation.
+func (v *VersionedIndexedAttestation) Signatures() ([]capella.MLDSA87Signature, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
-			return capella.MLDSA87Signature{}, errors.New("no Capella indexed attestation")
+			return nil, errors.New("no Capella indexed attestation")
 		}
 
-		return v.Capella.Signature, nil
+		return v.Capella.Signatures, nil
 	default:
-		return capella.MLDSA87Signature{}, errors.New("unknown version")
+		return nil, errors.New("unknown version")
 	}
 }
 

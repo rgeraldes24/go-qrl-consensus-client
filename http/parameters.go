@@ -19,7 +19,7 @@ import (
 	"time"
 
 	"github.com/rs/zerolog"
-	"github.com/theQRL/go-qrl-consensus-client/metrics"
+	"github.com/theQRL/go-qrl-beacon-client/metrics"
 )
 
 type parameters struct {

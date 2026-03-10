@@ -19,9 +19,9 @@ import (
 	"encoding/json"
 	"errors"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
 )
 
 // SubmitValidatorRegistrations submits a validator registration.
@@ -68,7 +68,7 @@ func (s *Service) SubmitValidatorRegistrations(ctx context.Context,
 		return errors.Join(errors.New("failed to marshal JSON"), err)
 	}
 
-	endpoint := "/eth/v1/validator/register_validator"
+	endpoint := "/qrl/v1/validator/register_validator"
 	query := ""
 
 	if _, err := s.post(ctx,

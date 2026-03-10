@@ -13,7 +13,7 @@
 
 package api
 
-import apiv2 "github.com/theQRL/go-qrl-consensus-client/api/v2"
+import apiv2 "github.com/theQRL/go-qrl-beacon-client/api/v2"
 
 // SubmitBlindedProposalOpts are the options for submitting proposals.
 type SubmitBlindedProposalOpts struct {

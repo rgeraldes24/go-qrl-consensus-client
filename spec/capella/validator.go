@@ -25,7 +25,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// Validator is the Ethereum 2 validator structure.
+// Validator is the QRL validator structure.
 type Validator struct {
 	PublicKey                  MLDSA87PubKey `ssz-size:"2592"`
 	WithdrawalCredentials      []byte        `ssz-size:"32"`

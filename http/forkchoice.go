@@ -19,9 +19,9 @@ import (
 	"encoding/json"
 	"errors"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
 )
 
 // ForkChoice fetches all current fork choice context.
@@ -39,7 +39,7 @@ func (s *Service) ForkChoice(ctx context.Context,
 		return nil, client.ErrNoOptions
 	}
 
-	endpoint := "/eth/v1/debug/fork_choice"
+	endpoint := "/qrl/v1/debug/fork_choice"
 
 	httpResponse, err := s.get(ctx, endpoint, "", &opts.Common, false)
 	if err != nil {

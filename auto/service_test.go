@@ -21,9 +21,9 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
-	eth2client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/auto"
+	beaconclient "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/auto"
 )
 
 func TestService(t *testing.T) {
@@ -50,7 +50,7 @@ func TestService(t *testing.T) {
 		{
 			name:    "BadPort",
 			address: "localhost:22",
-			err:     "failed to connect to Ethereum 2 client with any known method",
+			err:     "failed to connect to QRL beacon client with any known method",
 		},
 	}
 
@@ -65,7 +65,7 @@ func TestService(t *testing.T) {
 				require.EqualError(t, err, test.err)
 			} else {
 				require.NoError(t, err)
-				version, err := service.(eth2client.NodeVersionProvider).NodeVersion(context.Background(), &api.NodeVersionOpts{})
+				version, err := service.(beaconclient.NodeVersionProvider).NodeVersion(context.Background(), &api.NodeVersionOpts{})
 				require.NoError(t, err)
 				require.Contains(t, version, test.version)
 			}

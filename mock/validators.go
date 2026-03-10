@@ -16,9 +16,9 @@ package mock
 import (
 	"context"
 
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // Validators provides the validators, with their balance and status, for a given state.

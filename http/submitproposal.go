@@ -20,9 +20,9 @@ import (
 	"errors"
 	"strings"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
 )
 
 // SubmitProposal submits a proposal.
@@ -46,7 +46,7 @@ func (s *Service) SubmitProposal(ctx context.Context,
 		return err
 	}
 
-	endpoint := "/eth/v2/beacon/blocks"
+	endpoint := "/qrl/v1/beacon/blocks"
 
 	query := ""
 	if opts.BroadcastValidation != nil {
@@ -54,7 +54,7 @@ func (s *Service) SubmitProposal(ctx context.Context,
 	}
 
 	headers := make(map[string]string)
-	headers["Eth-Consensus-Version"] = strings.ToLower(opts.Proposal.Version.String())
+	headers["Qrl-Consensus-Version"] = strings.ToLower(opts.Proposal.Version.String())
 
 	_, err = s.post(ctx, endpoint, query, &opts.Common, bytes.NewBuffer(body), contentType, headers)
 	if err != nil {

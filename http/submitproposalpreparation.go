@@ -19,8 +19,8 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
 )
 
 // SubmitProposalPreparations provides the beacon node with information required if a proposal for the given validators
@@ -35,7 +35,7 @@ func (s *Service) SubmitProposalPreparations(ctx context.Context, preparations [
 		return errors.Join(errors.New("failed to encode proposal preparations"), err)
 	}
 
-	endpoint := "/eth/v1/validator/prepare_beacon_proposer"
+	endpoint := "/qrl/v1/validator/prepare_beacon_proposer"
 	query := ""
 
 	if _, err := s.post(ctx,

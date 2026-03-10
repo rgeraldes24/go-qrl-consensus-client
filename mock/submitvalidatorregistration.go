@@ -16,7 +16,7 @@ package mock
 import (
 	"context"
 
-	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/api"
 )
 
 // SubmitValidatorRegistrations submits a validator registration.

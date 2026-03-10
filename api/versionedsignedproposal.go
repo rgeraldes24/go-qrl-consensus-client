@@ -17,9 +17,9 @@ import (
 	"errors"
 	"math/big"
 
-	apiv1capella "github.com/theQRL/go-qrl-consensus-client/api/v1/capella"
-	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	apiv1capella "github.com/theQRL/go-qrl-beacon-client/api/v1/capella"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // VersionedSignedProposal contains a versioned signed beacon node proposal.

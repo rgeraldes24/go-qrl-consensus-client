@@ -25,7 +25,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// ContributionAndProof is the Ethereum 2 contribution and proof structure.
+// ContributionAndProof is the QRL contribution and proof structure.
 type ContributionAndProof struct {
 	AggregatorIndex ValidatorIndex
 	Contribution    *SyncCommitteeContribution

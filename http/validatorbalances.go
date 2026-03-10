@@ -20,10 +20,10 @@ import (
 	"errors"
 	"fmt"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // ValidatorBalances provides the validator balances for the given options.
@@ -45,7 +45,7 @@ func (s *Service) ValidatorBalances(ctx context.Context,
 		return nil, errors.Join(errors.New("no state specified"), client.ErrInvalidOptions)
 	}
 
-	endpoint := fmt.Sprintf("/eth/v1/beacon/states/%s/validator_balances", opts.State)
+	endpoint := fmt.Sprintf("/qrl/v1/beacon/states/%s/validator_balances", opts.State)
 	query := ""
 
 	body := make([]string, 0, len(opts.Indices)+len(opts.PubKeys))

@@ -13,7 +13,7 @@
 
 package api
 
-import "github.com/theQRL/go-qrl-consensus-client/spec"
+import "github.com/theQRL/go-qrl-beacon-client/spec"
 
 // SubmitAttestationsOpts are the options for submitting attestations.
 type SubmitAttestationsOpts struct {

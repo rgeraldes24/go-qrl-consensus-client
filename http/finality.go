@@ -18,9 +18,9 @@ import (
 	"context"
 	"fmt"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
 )
 
 // Finality provides the finality given a state ID.
@@ -38,7 +38,7 @@ func (s *Service) Finality(ctx context.Context,
 		return nil, client.ErrNoOptions
 	}
 
-	endpoint := fmt.Sprintf("/eth/v1/beacon/states/%s/finality_checkpoints", opts.State)
+	endpoint := fmt.Sprintf("/qrl/v1/beacon/states/%s/finality_checkpoints", opts.State)
 
 	httpResponse, err := s.get(ctx, endpoint, "", &opts.Common, false)
 	if err != nil {

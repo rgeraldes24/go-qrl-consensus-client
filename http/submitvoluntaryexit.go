@@ -19,8 +19,8 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // SubmitVoluntaryExit submits a voluntary exit.
@@ -34,7 +34,7 @@ func (s *Service) SubmitVoluntaryExit(ctx context.Context, voluntaryExit *capell
 		return errors.Join(errors.New("failed to marshal JSON"), err)
 	}
 
-	endpoint := "/eth/v1/beacon/pool/voluntary_exits"
+	endpoint := "/qrl/v1/beacon/pool/voluntary_exits"
 	query := ""
 
 	if _, err := s.post(ctx,

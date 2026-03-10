@@ -21,7 +21,7 @@ import (
 	"github.com/goccy/go-yaml"
 	"github.com/stretchr/testify/assert"
 	require "github.com/stretchr/testify/require"
-	"github.com/theQRL/go-qrl-consensus-client/api/v1/capella"
+	"github.com/theQRL/go-qrl-beacon-client/api/v1/capella"
 )
 
 func TestBlindedBeaconBlockJSON(t *testing.T) {

@@ -19,8 +19,8 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
 )
 
 // SubmitSyncCommitteeSubscriptions subscribes to sync committees.
@@ -34,7 +34,7 @@ func (s *Service) SubmitSyncCommitteeSubscriptions(ctx context.Context, subscrip
 		return errors.Join(errors.New("failed to encode sync committee subscriptions"), err)
 	}
 
-	endpoint := "/eth/v1/validator/sync_committee_subscriptions"
+	endpoint := "/qrl/v1/validator/sync_committee_subscriptions"
 	query := ""
 
 	if _, err := s.post(ctx,

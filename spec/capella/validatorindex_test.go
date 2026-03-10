@@ -17,7 +17,7 @@ package capella_test
 import (
 	"testing"
 
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 func TestValidatorIndexUnmarshalJSON(t *testing.T) {

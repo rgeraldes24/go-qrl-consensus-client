@@ -14,7 +14,7 @@
 package spec
 
 import (
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // VersionedBeaconBlockBody contains a versioned beacon block body.

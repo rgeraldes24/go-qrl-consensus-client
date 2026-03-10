@@ -20,9 +20,9 @@ import (
 	"errors"
 	"strings"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
 )
 
 // SubmitBlindedProposal submits a blinded proposal.
@@ -57,7 +57,7 @@ func (s *Service) SubmitBlindedProposal(ctx context.Context,
 		return errors.Join(errors.New("failed to marshal JSON"), err)
 	}
 
-	endpoint := "/eth/v2/beacon/blinded_blocks"
+	endpoint := "/qrl/v1/beacon/blinded_blocks"
 
 	query := ""
 	if opts.BroadcastValidation != nil {
@@ -65,7 +65,7 @@ func (s *Service) SubmitBlindedProposal(ctx context.Context,
 	}
 
 	headers := make(map[string]string)
-	headers["Eth-Consensus-Version"] = strings.ToLower(opts.Proposal.Version.String())
+	headers["Qrl-Consensus-Version"] = strings.ToLower(opts.Proposal.Version.String())
 
 	_, err = s.post(ctx, endpoint, query, &opts.Common, bytes.NewBuffer(specJSON), ContentTypeJSON, headers)
 	if err != nil {

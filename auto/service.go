@@ -19,14 +19,14 @@ import (
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 	zerologger "github.com/rs/zerolog/log"
-	consensusclient "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/http"
+	consensusclient "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/http"
 )
 
 // log is a service-wide logger.
 var log zerolog.Logger
 
-// New creates a new Ethereum 2 client service, trying different implementations at the given address.
+// New creates a new QRL beacon client service, trying different implementations at the given address.
 // Deprecated.  Use the `http` module instead.
 func New(ctx context.Context, params ...Parameter) (consensusclient.Service, error) {
 	parameters, err := parseAndCheckParameters(params...)
@@ -49,7 +49,7 @@ func New(ctx context.Context, params ...Parameter) (consensusclient.Service, err
 	log.Trace().Err(err).Msg("Attempt to connect via HTTP API failed")
 
 	// No luck
-	return nil, errors.New("failed to connect to Ethereum 2 client with any known method")
+	return nil, errors.New("failed to connect to QRL beacon client with any known method")
 }
 
 func tryHTTP(ctx context.Context, parameters *parameters) (consensusclient.Service, error) {

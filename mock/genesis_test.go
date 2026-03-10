@@ -18,8 +18,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/mock"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/mock"
 )
 
 func TestGenesis(t *testing.T) {

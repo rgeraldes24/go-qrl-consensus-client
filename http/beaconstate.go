@@ -20,10 +20,10 @@ import (
 	"fmt"
 
 	dynssz "github.com/pk910/dynamic-ssz"
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // BeaconState fetches a beacon state.
@@ -45,7 +45,7 @@ func (s *Service) BeaconState(ctx context.Context,
 		return nil, errors.Join(errors.New("no state specified"), client.ErrInvalidOptions)
 	}
 
-	endpoint := fmt.Sprintf("/eth/v2/debug/beacon/states/%s", opts.State)
+	endpoint := fmt.Sprintf("/qrl/v1/debug/beacon/states/%s", opts.State)
 
 	httpResponse, err := s.get(ctx, endpoint, "", &opts.Common, true)
 	if err != nil {

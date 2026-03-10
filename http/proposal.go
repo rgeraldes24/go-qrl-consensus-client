@@ -22,11 +22,11 @@ import (
 	"strings"
 
 	dynssz "github.com/pk910/dynamic-ssz"
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1capella "github.com/theQRL/go-qrl-consensus-client/api/v1/capella"
-	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1capella "github.com/theQRL/go-qrl-beacon-client/api/v1/capella"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 	"go.opentelemetry.io/otel"
 )
 
@@ -37,7 +37,7 @@ func (s *Service) Proposal(ctx context.Context,
 	*api.Response[*api.VersionedProposal],
 	error,
 ) {
-	ctx, span := otel.Tracer("attestantio.go-eth2-client.http").Start(ctx, "Proposal")
+	ctx, span := otel.Tracer("theQRL.go-qrl-beacon-client.http").Start(ctx, "Proposal")
 	defer span.End()
 
 	if err := s.assertIsSynced(ctx); err != nil {
@@ -52,13 +52,13 @@ func (s *Service) Proposal(ctx context.Context,
 		return nil, errors.Join(errors.New("no slot specified"), client.ErrInvalidOptions)
 	}
 
-	endpoint := fmt.Sprintf("/eth/v3/validator/blocks/%d", opts.Slot)
+	endpoint := fmt.Sprintf("/qrl/v1/validator/blocks/%d", opts.Slot)
 	query := fmt.Sprintf("randao_reveal=%#x&graffiti=%#x", opts.RandaoReveal, opts.Graffiti)
 
 	if opts.SkipRandaoVerification {
-		if !opts.RandaoReveal.IsInfinity() {
+		if !opts.RandaoReveal.IsZero() {
 			return nil, errors.Join(
-				errors.New("randao reveal must be point at infinity if skip randao verification is set"),
+				errors.New("randao reveal must be zero if skip randao verification is set"),
 				client.ErrInvalidOptions,
 			)
 		}
@@ -236,21 +236,21 @@ func (*Service) populateProposalDataFromHeaders(response *api.Response[*api.Vers
 ) error {
 	for k, v := range headers {
 		switch {
-		case strings.EqualFold(k, "Eth-Execution-Payload-Blinded"):
+		case strings.EqualFold(k, "Qrl-Execution-Payload-Blinded"):
 			response.Data.Blinded = strings.EqualFold(v, "true")
-		case strings.EqualFold(k, "Eth-Execution-Payload-Value"):
+		case strings.EqualFold(k, "Qrl-Execution-Payload-Value"):
 			var success bool
 
 			response.Data.ExecutionValue, success = new(big.Int).SetString(v, 10)
 			if !success {
-				return fmt.Errorf("proposal header Eth-Execution-Payload-Value %s not a valid integer", v)
+				return fmt.Errorf("proposal header Qrl-Execution-Payload-Value %s not a valid integer", v)
 			}
-		case strings.EqualFold(k, "Eth-Consensus-Block-Value"):
+		case strings.EqualFold(k, "Qrl-Consensus-Block-Value"):
 			var success bool
 
 			response.Data.ConsensusValue, success = new(big.Int).SetString(v, 10)
 			if !success {
-				return fmt.Errorf("proposal header Eth-Consensus-Block-Value %s not a valid integer", v)
+				return fmt.Errorf("proposal header Qrl-Consensus-Block-Value %s not a valid integer", v)
 			}
 		default:
 			// Unknown header, ignore

@@ -18,8 +18,8 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
-	consensusclient "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/metrics"
+	consensusclient "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/metrics"
 )
 
 type parameters struct {
@@ -127,7 +127,7 @@ func parseAndCheckParameters(params ...Parameter) (*parameters, error) {
 	}
 
 	if len(parameters.clients)+len(parameters.addresses) == 0 {
-		return nil, errors.New("no Ethereum 2 clients specified")
+		return nil, errors.New("no QRL beacon clients specified")
 	}
 
 	return &parameters, nil

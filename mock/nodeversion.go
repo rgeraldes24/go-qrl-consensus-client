@@ -16,7 +16,7 @@ package mock
 import (
 	"context"
 
-	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/api"
 )
 
 // NodeVersion returns a free-text string with the node version.

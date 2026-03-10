@@ -19,9 +19,9 @@ import (
 	"errors"
 	"fmt"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
 )
 
 // BeaconCommittees fetches all beacon committees for the epoch at the given state.
@@ -43,7 +43,7 @@ func (s *Service) BeaconCommittees(ctx context.Context,
 		return nil, errors.Join(errors.New("no state specified"), client.ErrInvalidOptions)
 	}
 
-	endpoint := fmt.Sprintf("/eth/v1/beacon/states/%s/committees", opts.State)
+	endpoint := fmt.Sprintf("/qrl/v1/beacon/states/%s/committees", opts.State)
 
 	query := ""
 	if opts.Epoch != nil {

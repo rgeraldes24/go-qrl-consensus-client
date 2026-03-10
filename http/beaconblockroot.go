@@ -19,9 +19,9 @@ import (
 	"errors"
 	"fmt"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 type beaconBlockRootJSON struct {
@@ -47,7 +47,7 @@ func (s *Service) BeaconBlockRoot(ctx context.Context,
 		return nil, errors.Join(errors.New("no block specified"), client.ErrInvalidOptions)
 	}
 
-	endpoint := fmt.Sprintf("/eth/v1/beacon/blocks/%s/root", opts.Block)
+	endpoint := fmt.Sprintf("/qrl/v1/beacon/blocks/%s/root", opts.Block)
 
 	httpResponse, err := s.get(ctx, endpoint, "", &opts.Common, false)
 	if err != nil {

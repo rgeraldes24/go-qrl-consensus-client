@@ -19,10 +19,10 @@ import (
 	"errors"
 	"fmt"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // ProposerDuties obtains proposer duties for the given options.
@@ -40,7 +40,7 @@ func (s *Service) ProposerDuties(ctx context.Context,
 		return nil, client.ErrNoOptions
 	}
 
-	endpoint := fmt.Sprintf("/eth/v1/validator/duties/proposer/%d", opts.Epoch)
+	endpoint := fmt.Sprintf("/qrl/v1/validator/duties/proposer/%d", opts.Epoch)
 
 	httpResponse, err := s.get(ctx, endpoint, "", &opts.Common, false)
 	if err != nil {

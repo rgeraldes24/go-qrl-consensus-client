@@ -25,7 +25,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// AggregateAndProof is the Ethereum 2 attestation structure.
+// AggregateAndProof is the QRL attestation structure.
 type AggregateAndProof struct {
 	AggregatorIndex ValidatorIndex
 	Aggregate       *Attestation

@@ -20,9 +20,9 @@ import (
 	"errors"
 	"fmt"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 )
@@ -34,7 +34,7 @@ func (s *Service) AttestationRewards(ctx context.Context,
 	*api.Response[*apiv1.AttestationRewards],
 	error,
 ) {
-	ctx, span := otel.Tracer("attestantio.go-eth2-client.http").Start(ctx, "AttestationRewards")
+	ctx, span := otel.Tracer("theQRL.go-qrl-beacon-client.http").Start(ctx, "AttestationRewards")
 	defer span.End()
 
 	if err := s.assertIsActive(ctx); err != nil {
@@ -47,7 +47,7 @@ func (s *Service) AttestationRewards(ctx context.Context,
 
 	span.SetAttributes(attribute.Int("validators", len(opts.Indices)+len(opts.PubKeys)))
 
-	endpoint := fmt.Sprintf("/eth/v1/beacon/rewards/attestations/%d", opts.Epoch)
+	endpoint := fmt.Sprintf("/qrl/v1/beacon/rewards/attestations/%d", opts.Epoch)
 	query := ""
 
 	body := make([]string, 0, len(opts.Indices)+len(opts.PubKeys))

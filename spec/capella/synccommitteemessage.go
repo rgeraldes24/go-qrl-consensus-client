@@ -25,7 +25,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// SyncCommitteeMessage is the Ethereum 2 sync committee message structure.
+// SyncCommitteeMessage is the QRL sync committee message structure.
 type SyncCommitteeMessage struct {
 	Slot            Slot
 	BeaconBlockRoot Root `ssz-size:"32"`

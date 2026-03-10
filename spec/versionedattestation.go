@@ -18,7 +18,7 @@ import (
 	"fmt"
 
 	bitfield "github.com/theQRL/go-bitfield"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // VersionedAttestation contains a versioned attestation.
@@ -98,17 +98,17 @@ func (v *VersionedAttestation) HashTreeRoot() ([32]byte, error) {
 	}
 }
 
-// Signature returns the signature of the attestation.
-func (v *VersionedAttestation) Signature() (capella.MLDSA87Signature, error) {
+// Signatures returns the signatures of the attestation.
+func (v *VersionedAttestation) Signatures() ([]capella.MLDSA87Signature, error) {
 	switch v.Version {
 	case DataVersionCapella:
 		if v.Capella == nil {
-			return capella.MLDSA87Signature{}, errors.New("no Capella attestation")
+			return nil, errors.New("no Capella attestation")
 		}
 
-		return v.Capella.Signature, nil
+		return v.Capella.Signatures, nil
 	default:
-		return capella.MLDSA87Signature{}, errors.New("unknown version")
+		return nil, errors.New("unknown version")
 	}
 }
 

@@ -19,9 +19,9 @@ import (
 	"errors"
 	"fmt"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
 )
 
 // BeaconBlockHeader provides the block header given the opts.
@@ -39,7 +39,7 @@ func (s *Service) BeaconBlockHeader(ctx context.Context,
 		return nil, client.ErrNoOptions
 	}
 
-	endpoint := fmt.Sprintf("/eth/v1/beacon/headers/%s", opts.Block)
+	endpoint := fmt.Sprintf("/qrl/v1/beacon/headers/%s", opts.Block)
 
 	httpResponse, err := s.get(ctx, endpoint, "", &opts.Common, false)
 	if err != nil {

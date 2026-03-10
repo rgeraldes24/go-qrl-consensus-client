@@ -13,7 +13,7 @@
 
 package api
 
-import "github.com/theQRL/go-qrl-consensus-client/spec/capella"
+import "github.com/theQRL/go-qrl-beacon-client/spec/capella"
 
 // ProposerDutiesOpts are the options for obtaining proposer duties.
 type ProposerDutiesOpts struct {

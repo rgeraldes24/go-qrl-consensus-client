@@ -25,8 +25,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/theQRL/go-qrl-consensus-client/http"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-beacon-client/http"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 func TestSpecConformance(t *testing.T) {

@@ -27,14 +27,14 @@ import (
 
 	"github.com/rs/zerolog"
 	zerologger "github.com/rs/zerolog/log"
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 	"golang.org/x/sync/semaphore"
 )
 
-// Service is an Ethereum 2 client service.
+// Service is an QRL beacon client service.
 type Service struct {
 	// log is a service-wide logger.
 	log zerolog.Logger
@@ -76,7 +76,7 @@ type Service struct {
 	customSpecSupport        bool
 }
 
-// New creates a new Ethereum 2 client service, connecting with a standard HTTP.
+// New creates a new QRL beacon client service, connecting with a standard HTTP.
 func New(ctx context.Context, params ...Parameter) (client.Service, error) {
 	parameters, err := parseAndCheckParameters(params...)
 	if err != nil {

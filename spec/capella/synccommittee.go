@@ -24,22 +24,19 @@ import (
 	"github.com/pkg/errors"
 )
 
-// SyncCommittee is the Ethereum 2 sync committee structure.
+// SyncCommittee is the QRL sync committee structure.
 type SyncCommittee struct {
-	Pubkeys         []MLDSA87PubKey `dynssz-size:"SYNC_COMMITTEE_SIZE,48" ssz-size:"512,48"`
-	AggregatePubkey MLDSA87PubKey   `ssz-size:"2592"`
+	Pubkeys []MLDSA87PubKey `dynssz-size:"SYNC_COMMITTEE_SIZE,2592" ssz-size:"128,2592"`
 }
 
 // syncCommitteeJSON is the spec representation of the struct.
 type syncCommitteeJSON struct {
-	Pubkeys         []string `json:"pubkeys"`
-	AggregatePubkey string   `json:"aggregate_pubkey"`
+	Pubkeys []string `json:"pubkeys"`
 }
 
 // syncCommitteeYAML is the spec representation of the struct.
 type syncCommitteeYAML struct {
-	Pubkeys         []string `yaml:"pubkeys"`
-	AggregatePubkey string   `yaml:"aggregate_pubkey"`
+	Pubkeys []string `yaml:"pubkeys"`
 }
 
 // MarshalJSON implements json.Marshaler.
@@ -50,8 +47,7 @@ func (s *SyncCommittee) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(&syncCommitteeJSON{
-		Pubkeys:         pubKeys,
-		AggregatePubkey: fmt.Sprintf("%#x", s.AggregatePubkey),
+		Pubkeys: pubKeys,
 	})
 }
 
@@ -84,21 +80,6 @@ func (s *SyncCommittee) unpack(syncCommitteeJSON *syncCommitteeJSON) error {
 		copy(s.Pubkeys[i][:], pubKey)
 	}
 
-	if syncCommitteeJSON.AggregatePubkey == "" {
-		return errors.New("aggregate public key missing")
-	}
-
-	aggregatePubKey, err := hex.DecodeString(strings.TrimPrefix(syncCommitteeJSON.AggregatePubkey, "0x"))
-	if err != nil {
-		return errors.Wrap(err, "invalid value for aggregate public key")
-	}
-
-	if len(aggregatePubKey) != PublicKeyLength {
-		return errors.New("incorrect length for aggregate public key")
-	}
-
-	copy(s.AggregatePubkey[:], aggregatePubKey)
-
 	return nil
 }
 
@@ -110,8 +91,7 @@ func (s *SyncCommittee) MarshalYAML() ([]byte, error) {
 	}
 
 	yamlBytes, err := yaml.MarshalWithOptions(&syncCommitteeYAML{
-		Pubkeys:         pubKeys,
-		AggregatePubkey: fmt.Sprintf("%#x", s.AggregatePubkey),
+		Pubkeys: pubKeys,
 	}, yaml.Flow(true))
 	if err != nil {
 		return nil, err

@@ -26,8 +26,8 @@ import (
 	"strings"
 
 	"github.com/rs/zerolog"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
@@ -35,7 +35,7 @@ import (
 )
 
 // defaultUserAgent is sent with requests if no other user agent has been supplied.
-const defaultUserAgent = "go-eth2-client/0.28.0"
+const defaultUserAgent = "go-qrl-beacon-client/0.1.0"
 
 // post sends an HTTP post request and returns the body.
 func (s *Service) post(ctx context.Context,
@@ -49,7 +49,7 @@ func (s *Service) post(ctx context.Context,
 	*httpResponse,
 	error,
 ) {
-	ctx, span := otel.Tracer("attestantio.go-eth2-client.http").Start(ctx, "post")
+	ctx, span := otel.Tracer("theQRL.go-qrl-beacon-client.http").Start(ctx, "post")
 	defer span.End()
 
 	// #nosec G404
@@ -239,7 +239,7 @@ func (s *Service) get(ctx context.Context,
 	*httpResponse,
 	error,
 ) {
-	ctx, span := otel.Tracer("attestantio.go-eth2-client.http").Start(ctx, "get")
+	ctx, span := otel.Tracer("theQRL.go-qrl-beacon-client.http").Start(ctx, "get")
 	defer span.End()
 
 	// #nosec G404
@@ -380,7 +380,7 @@ func (s *Service) get(ctx context.Context,
 func populateConsensusVersion(res *httpResponse, resp *http.Response) error {
 	res.consensusVersion = spec.DataVersionUnknown
 
-	respConsensusVersions, exists := resp.Header["Eth-Consensus-Version"]
+	respConsensusVersions, exists := resp.Header["Qrl-Consensus-Version"]
 	if !exists {
 		// No consensus version supplied in response; obtain it from the body if possible.
 		if res.contentType != ContentTypeJSON {

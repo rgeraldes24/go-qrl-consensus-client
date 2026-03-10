@@ -19,7 +19,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/theQRL/go-qrl-consensus-client/spec"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
 )
 
 func readFile(fileName string) ([]byte, error) {
@@ -36,7 +36,7 @@ func readVersionedBeaconState(t *testing.T, fileName string, version spec.DataVe
 	/*
 		// Read the state from the file
 		// To download state files for testing, run the following command:
-		// curl -X GET "https://<beacon-node-url>/eth/v2/debug/beacon/states/{slot_id}" -H "accept: application/octet-stream" > {netowrkname}_beaconstate_{slot_id}.ssz
+		// curl -X GET "https://<beacon-node-url>/qrl/v1/debug/beacon/states/{slot_id}" -H "accept: application/octet-stream" > {netowrkname}_beaconstate_{slot_id}.ssz
 		stateBytes, err := readFile(fileName)
 		if err != nil {
 			return nil, err

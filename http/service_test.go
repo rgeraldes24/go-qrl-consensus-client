@@ -21,8 +21,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	client "github.com/theQRL/go-qrl-consensus-client"
-	v1 "github.com/theQRL/go-qrl-consensus-client/http"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	v1 "github.com/theQRL/go-qrl-beacon-client/http"
 )
 
 func TestService(t *testing.T) {

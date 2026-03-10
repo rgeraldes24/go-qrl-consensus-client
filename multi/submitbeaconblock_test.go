@@ -19,11 +19,11 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
-	consensusclient "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/mock"
-	"github.com/theQRL/go-qrl-consensus-client/multi"
-	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/testclients"
+	consensusclient "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/mock"
+	"github.com/theQRL/go-qrl-beacon-client/multi"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
+	"github.com/theQRL/go-qrl-beacon-client/testclients"
 )
 
 func TestSubmitBeaconBlock(t *testing.T) {

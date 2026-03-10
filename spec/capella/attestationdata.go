@@ -25,7 +25,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// AttestationData is the Ethereum 2 specification structure.
+// AttestationData is the QRL specification structure.
 type AttestationData struct {
 	Slot            Slot
 	Index           CommitteeIndex

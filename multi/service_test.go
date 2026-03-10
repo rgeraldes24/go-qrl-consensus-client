@@ -20,9 +20,9 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/mock"
-	"github.com/theQRL/go-qrl-consensus-client/multi"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/mock"
+	"github.com/theQRL/go-qrl-beacon-client/multi"
 )
 
 func TestService(t *testing.T) {
@@ -47,7 +47,7 @@ func TestService(t *testing.T) {
 			params: []multi.Parameter{
 				multi.WithLogLevel(zerolog.Disabled),
 			},
-			err: "problem with parameters: no Ethereum 2 clients specified",
+			err: "problem with parameters: no QRL beacon clients specified",
 		},
 		{
 			name: "AllClientsInactive",

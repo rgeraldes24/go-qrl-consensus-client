@@ -19,7 +19,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"github.com/theQRL/go-qrl-consensus-client/spec"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
 )
 
 func TestAggregateAttestationDecode(t *testing.T) {

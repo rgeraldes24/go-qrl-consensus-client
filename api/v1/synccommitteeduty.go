@@ -21,7 +21,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // SyncCommitteeDuty is the data regarding which validators have the duty to contribute to sync committees in a slot.

@@ -19,8 +19,8 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // SubmitAttesterSlashing submits an attester slashing.
@@ -34,7 +34,7 @@ func (s *Service) SubmitAttesterSlashing(ctx context.Context, slashing *capella.
 		return errors.Join(errors.New("failed to marshal JSON"), err)
 	}
 
-	endpoint := "/eth/v1/beacon/pool/attester_slashings"
+	endpoint := "/qrl/v1/beacon/pool/attester_slashings"
 	query := ""
 
 	if _, err := s.post(ctx,

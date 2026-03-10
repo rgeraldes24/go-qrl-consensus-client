@@ -20,20 +20,20 @@ import (
 	"math/rand"
 	"time"
 
-	consensusclient "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
-	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	consensusclient "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
-// Erroring is an Ethereum 2 client that errors at a given rate.
+// Erroring is a QRL beacon client that errors at a given rate.
 type Erroring struct {
 	errorRate float64
 	next      consensusclient.Service
 }
 
-// NewErroring creates a new Ethereum 2 client that errors at a given rate.
+// NewErroring creates a new QRL beacon client that errors at a given rate.
 func NewErroring(_ context.Context,
 	errorRate float64,
 	next consensusclient.Service,
@@ -867,7 +867,7 @@ func (s *Erroring) GenesisTime(ctx context.Context) (time.Time, error) {
 	return next.GenesisTime(ctx)
 }
 
-// DepositContract provides details of the Ethereum 1 deposit contract for the chain.
+// DepositContract provides details of the QRL deposit contract for the chain.
 func (s *Erroring) DepositContract(ctx context.Context,
 	opts *api.DepositContractOpts,
 ) (

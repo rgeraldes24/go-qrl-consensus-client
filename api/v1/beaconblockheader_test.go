@@ -19,7 +19,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	require "github.com/stretchr/testify/require"
-	api "github.com/theQRL/go-qrl-consensus-client/api/v1"
+	api "github.com/theQRL/go-qrl-beacon-client/api/v1"
 )
 
 func TestBeaconBlockHeaderJSON(t *testing.T) {

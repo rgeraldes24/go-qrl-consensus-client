@@ -17,13 +17,13 @@ import (
 	"context"
 	"time"
 
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
-	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
-// Service is the service providing a connection to an Ethereum 2 client.
+// Service is the service providing a connection to a QRL consensus client.
 type Service interface {
 	// Name returns the name of the client implementation.
 	Name() string

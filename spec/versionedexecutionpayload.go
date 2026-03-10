@@ -17,7 +17,7 @@ import (
 	"errors"
 
 	"github.com/holiman/uint256"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // VersionedExecutionPayload contains a versioned execution payload.

@@ -13,7 +13,7 @@
 
 package capella
 
-import "github.com/theQRL/go-qrl-consensus-client/spec/capella"
+import "github.com/theQRL/go-qrl-beacon-client/spec/capella"
 
 // ExecutionPayloadTransactions provides information about transactions.
 type ExecutionPayloadTransactions struct {

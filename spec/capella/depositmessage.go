@@ -25,7 +25,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// DepositMessage provides information about a deposit made on Ethereum 1.
+// DepositMessage provides information about a deposit made on QRL.
 type DepositMessage struct {
 	PublicKey             MLDSA87PubKey `ssz-size:"2592"`
 	WithdrawalCredentials []byte        `ssz-size:"32"`

@@ -18,8 +18,8 @@ import (
 	"context"
 
 	"github.com/pkg/errors"
-	consensusclient "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	consensusclient "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // emptyDomain is used for comparison purposes.

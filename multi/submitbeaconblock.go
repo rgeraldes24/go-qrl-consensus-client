@@ -16,8 +16,8 @@ package multi
 import (
 	"context"
 
-	consensusclient "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/spec"
+	consensusclient "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
 )
 
 // SubmitBeaconBlock submits a beacon block.

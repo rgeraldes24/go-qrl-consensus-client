@@ -25,10 +25,10 @@ import (
 	"github.com/golang/snappy"
 	clone "github.com/huandu/go-clone/generic"
 	require "github.com/stretchr/testify/require"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
-// TestConsensusSpec tests the types against the Ethereum consensus spec tests.
+// TestConsensusSpec tests the types against the QRL consensus spec tests.
 func TestConsensusSpec(t *testing.T) {
 	if os.Getenv("CONSENSUS_SPEC_TESTS_DIR") == "" {
 		t.Skip("CONSENSUS_SPEC_TESTS_DIR not supplied, not running spec tests")

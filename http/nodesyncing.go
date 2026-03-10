@@ -17,9 +17,9 @@ import (
 	"bytes"
 	"context"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
 )
 
 // NodeSyncing provides the syncing information for the node.
@@ -30,7 +30,7 @@ func (s *Service) NodeSyncing(ctx context.Context, opts *api.NodeSyncingOpts) (*
 		return nil, client.ErrNoOptions
 	}
 
-	endpoint := "/eth/v1/node/syncing"
+	endpoint := "/qrl/v1/node/syncing"
 
 	httpResponse, err := s.get(ctx, endpoint, "", &opts.Common, false)
 	if err != nil {

@@ -20,10 +20,10 @@ import (
 	"fmt"
 	"strings"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // AttestationPool obtains the attestation pool for the given options.
@@ -41,7 +41,7 @@ func (s *Service) AttestationPool(ctx context.Context,
 		return nil, client.ErrNoOptions
 	}
 
-	endpoint := "/eth/v2/beacon/pool/attestations"
+	endpoint := "/qrl/v1/beacon/pool/attestations"
 
 	queryItems := make([]string, 0)
 	if opts.Slot != nil {

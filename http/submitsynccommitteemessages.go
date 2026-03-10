@@ -19,8 +19,8 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // SubmitSyncCommitteeMessages submits sync committee messages.
@@ -34,7 +34,7 @@ func (s *Service) SubmitSyncCommitteeMessages(ctx context.Context, messages []*c
 		return errors.Join(errors.New("failed to marshal JSON"), err)
 	}
 
-	endpoint := "/eth/v1/beacon/pool/sync_committees"
+	endpoint := "/qrl/v1/beacon/pool/sync_committees"
 	query := ""
 
 	if _, err := s.post(ctx,

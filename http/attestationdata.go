@@ -19,9 +19,9 @@ import (
 	"errors"
 	"fmt"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // AttestationData obtains attestation data given the options.
@@ -39,7 +39,7 @@ func (s *Service) AttestationData(ctx context.Context,
 		return nil, client.ErrNoOptions
 	}
 
-	endpoint := "/eth/v1/validator/attestation_data"
+	endpoint := "/qrl/v1/validator/attestation_data"
 	query := fmt.Sprintf("slot=%d&committee_index=%d", opts.Slot, opts.CommitteeIndex)
 
 	httpResponse, err := s.get(ctx, endpoint, query, &opts.Common, false)

@@ -17,9 +17,9 @@ import (
 	"bytes"
 	"context"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
 )
 
 // DepositContract provides details of the execution deposit contract for the chain.
@@ -62,7 +62,7 @@ func (s *Service) DepositContract(ctx context.Context,
 	}
 
 	// Up to us to fetch the information.
-	endpoint := "/eth/v1/config/deposit_contract"
+	endpoint := "/qrl/v1/config/deposit_contract"
 
 	httpResponse, err := s.get(ctx, endpoint, "", &opts.Common, false)
 	if err != nil {

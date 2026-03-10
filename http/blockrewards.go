@@ -19,9 +19,9 @@ import (
 	"errors"
 	"fmt"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
 	"go.opentelemetry.io/otel"
 )
 
@@ -32,7 +32,7 @@ func (s *Service) BlockRewards(ctx context.Context,
 	*api.Response[*apiv1.BlockRewards],
 	error,
 ) {
-	ctx, span := otel.Tracer("attestantio.go-eth2-client.http").Start(ctx, "BlockRewards")
+	ctx, span := otel.Tracer("theQRL.go-qrl-beacon-client.http").Start(ctx, "BlockRewards")
 	defer span.End()
 
 	if err := s.assertIsActive(ctx); err != nil {
@@ -47,7 +47,7 @@ func (s *Service) BlockRewards(ctx context.Context,
 		return nil, errors.Join(errors.New("no block specified"), client.ErrInvalidOptions)
 	}
 
-	endpoint := fmt.Sprintf("/eth/v1/beacon/rewards/blocks/%s", opts.Block)
+	endpoint := fmt.Sprintf("/qrl/v1/beacon/rewards/blocks/%s", opts.Block)
 	query := ""
 
 	httpResponse, err := s.get(ctx, endpoint, query, &opts.Common, false)

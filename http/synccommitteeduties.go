@@ -19,9 +19,9 @@ import (
 	"errors"
 	"fmt"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
 )
 
 // SyncCommitteeDuties obtains sync committee duties.
@@ -64,7 +64,7 @@ func (s *Service) SyncCommitteeDuties(ctx context.Context,
 		return nil, errors.Join(errors.New("failed to write end of validator index array"), err)
 	}
 
-	endpoint := fmt.Sprintf("/eth/v1/validator/duties/sync/%d", opts.Epoch)
+	endpoint := fmt.Sprintf("/qrl/v1/validator/duties/sync/%d", opts.Epoch)
 	query := ""
 
 	httpResponse, err := s.post(ctx,

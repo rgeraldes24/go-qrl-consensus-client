@@ -17,8 +17,8 @@ import (
 	"errors"
 
 	ssz "github.com/ferranbt/fastssz"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
-	proofutil "github.com/theQRL/go-qrl-consensus-client/util/proof"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
+	proofutil "github.com/theQRL/go-qrl-beacon-client/util/proof"
 )
 
 // VersionedBeaconState contains a versioned beacon state.

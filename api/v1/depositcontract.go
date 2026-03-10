@@ -23,7 +23,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// DepositContract represents the details of the Ethereum 1 deposit contract for a chain.
+// DepositContract represents the details of the QRL deposit contract for a chain.
 type DepositContract struct {
 	ChainID uint64
 	Address []byte

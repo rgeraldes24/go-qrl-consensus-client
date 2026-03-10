@@ -19,8 +19,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	apiv1 "github.com/theQRL/go-qrl-consensus-client/api/v1"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	apiv1 "github.com/theQRL/go-qrl-beacon-client/api/v1"
 )
 
 // NodePeers obtains the peers of a node.
@@ -30,7 +30,7 @@ func (s *Service) NodePeers(ctx context.Context, opts *api.NodePeersOpts) (*api.
 	}
 
 	// all options are considered optional
-	endpoint := "/eth/v1/node/peers"
+	endpoint := "/qrl/v1/node/peers"
 	query := ""
 	additionalFields := make([]string, 0, len(opts.State)+len(opts.Direction))
 

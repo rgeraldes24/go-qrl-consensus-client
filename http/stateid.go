@@ -20,8 +20,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // SlotFromStateID parses the state ID and returns the relevant slot.

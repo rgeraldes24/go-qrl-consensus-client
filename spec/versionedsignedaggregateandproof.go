@@ -16,7 +16,7 @@ package spec
 import (
 	"errors"
 
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // VersionedSignedAggregateAndProof contains a versioned signed aggregate and proof.

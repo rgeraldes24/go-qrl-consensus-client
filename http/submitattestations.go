@@ -20,9 +20,9 @@ import (
 	"errors"
 	"strings"
 
-	client "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/spec"
+	client "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/spec"
 )
 
 // SubmitAttestations submits versioned attestations.
@@ -51,12 +51,12 @@ func (s *Service) SubmitAttestations(ctx context.Context, opts *api.SubmitAttest
 		return errors.Join(errors.New("failed to marshal JSON"), err)
 	}
 
-	endpoint := "/eth/v2/beacon/pool/attestations"
+	endpoint := "/qrl/v1/beacon/pool/attestations"
 	query := ""
 
 	headers := make(map[string]string)
 
-	headers["Eth-Consensus-Version"] = strings.ToLower(attestations[0].Version.String())
+	headers["Qrl-Consensus-Version"] = strings.ToLower(attestations[0].Version.String())
 	if _, err = s.post(ctx,
 		endpoint,
 		query,

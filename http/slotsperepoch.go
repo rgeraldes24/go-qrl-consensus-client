@@ -16,7 +16,7 @@ package http
 import (
 	"context"
 
-	"github.com/theQRL/go-qrl-consensus-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/api"
 )
 
 // SlotsPerEpoch provides the number of slots per epoch for the chain.

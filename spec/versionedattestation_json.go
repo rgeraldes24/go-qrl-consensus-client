@@ -17,7 +17,7 @@ import (
 	"encoding/json"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // attestationIdentificationJSON contains fields that allow us to identify the attestation variant.

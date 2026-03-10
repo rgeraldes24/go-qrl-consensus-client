@@ -18,7 +18,7 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	"github.com/theQRL/go-qrl-consensus-client/spec/capella"
+	"github.com/theQRL/go-qrl-beacon-client/spec/capella"
 )
 
 // Finality is the data regarding finality checkpoints at a given state.

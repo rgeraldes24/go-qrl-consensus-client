@@ -8,9 +8,9 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	consensusclient "github.com/theQRL/go-qrl-consensus-client"
-	"github.com/theQRL/go-qrl-consensus-client/api"
-	"github.com/theQRL/go-qrl-consensus-client/http"
+	consensusclient "github.com/theQRL/go-qrl-beacon-client"
+	"github.com/theQRL/go-qrl-beacon-client/api"
+	"github.com/theQRL/go-qrl-beacon-client/http"
 )
 
 func TestError(t *testing.T) {
@@ -18,10 +18,10 @@ func TestError(t *testing.T) {
 	defaultResponse := []byte("data")
 	srv := httptest.NewServer(nethttp.HandlerFunc(func(w nethttp.ResponseWriter, r *nethttp.Request) {
 		switch r.URL.Path {
-		case "/eth/v1/node/version":
+		case "/qrl/v1/node/version":
 			w.WriteHeader(nethttp.StatusOK)
 			_, _ = w.Write([]byte(`{"data":{"version":"test"}}`))
-		case "/eth/v1/node/syncing":
+		case "/qrl/v1/node/syncing":
 			w.WriteHeader(nethttp.StatusOK)
 			_, _ = w.Write([]byte(`{"data":{"is_syncing":false,"is_optimistic":false,"el_offline":false,"head_slot":"8504736","sync_distance":"0"}}`))
 		default:
@@ -44,7 +44,7 @@ func TestError(t *testing.T) {
 	require.Equal(t, defaultStatus, apiError.StatusCode)
 	require.Equal(t, defaultResponse, apiError.Data)
 	require.Equal(t, nethttp.MethodGet, apiError.Method)
-	require.Equal(t, "/eth/v1/beacon/genesis", apiError.Endpoint)
+	require.Equal(t, "/qrl/v1/beacon/genesis", apiError.Endpoint)
 }
 
 func TestClientShouldSendExtraHeadersWhenProvided(t *testing.T) {
@@ -57,10 +57,10 @@ func TestClientShouldSendExtraHeadersWhenProvided(t *testing.T) {
 			return
 		}
 		switch r.URL.Path {
-		case "/eth/v1/node/version":
+		case "/qrl/v1/node/version":
 			w.WriteHeader(nethttp.StatusOK)
 			_, _ = w.Write([]byte(`{"data":{"version":"test"}}`))
-		case "/eth/v1/node/syncing":
+		case "/qrl/v1/node/syncing":
 			w.WriteHeader(nethttp.StatusOK)
 			_, _ = w.Write([]byte(`{"data":{"is_syncing":false,"is_optimistic":false,"el_offline":false,"head_slot":"8504736","sync_distance":"0"}}`))
 		default:
