@@ -212,7 +212,7 @@ func (v *VersionedSignedBeaconBlock) RandaoReveal() (capella.MLDSA87Signature, e
 	}
 }
 
-// ExecutionData returns the eth1 data of the beacon block.
+// ExecutionData returns the execution data of the beacon block.
 func (v *VersionedSignedBeaconBlock) ExecutionData() (*capella.ExecutionData, error) {
 	switch v.Version {
 	case DataVersionCapella:

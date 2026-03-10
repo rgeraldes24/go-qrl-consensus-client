@@ -68,7 +68,7 @@ func (d *DepositContract) UnmarshalJSON(input []byte) error {
 		return errors.Wrap(err, "invalid value for address")
 	}
 
-	if len(d.Address) != eth1AddressLength {
+	if len(d.Address) != executionAddressLength {
 		return fmt.Errorf("incorrect length %d for address", len(d.Address))
 	}
 

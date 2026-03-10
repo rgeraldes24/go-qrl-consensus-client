@@ -31,19 +31,19 @@ func TestClient(t *testing.T) {
 
 	consensusClient, err := mock.New(ctx)
 	require.NoError(t, err)
-	eth1ClientErroring1, err := testclients.NewErroring(ctx, 0.1, consensusClient)
+	executionClientErroring1, err := testclients.NewErroring(ctx, 0.1, consensusClient)
 	require.NoError(t, err)
-	eth1ClientErroring2, err := testclients.NewErroring(ctx, 0.1, consensusClient)
+	executionClientErroring2, err := testclients.NewErroring(ctx, 0.1, consensusClient)
 	require.NoError(t, err)
-	eth1ClientErroring3, err := testclients.NewErroring(ctx, 0.1, consensusClient)
+	executionClientErroring3, err := testclients.NewErroring(ctx, 0.1, consensusClient)
 	require.NoError(t, err)
 
 	s, err := multi.New(ctx,
 		multi.WithLogLevel(zerolog.Disabled),
 		multi.WithClients([]consensusclient.Service{
-			eth1ClientErroring1,
-			eth1ClientErroring2,
-			eth1ClientErroring3,
+			executionClientErroring1,
+			executionClientErroring2,
+			executionClientErroring3,
 			consensusClient,
 		}),
 	)

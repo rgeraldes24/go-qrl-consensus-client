@@ -21,7 +21,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// MLDSA87Signature is a BLS12-381 signature.
+// MLDSA87Signature is a ML-DSA-87 signature.
 type MLDSA87Signature [4627]byte
 
 // SignatureLength is the number of bytes in a signature.

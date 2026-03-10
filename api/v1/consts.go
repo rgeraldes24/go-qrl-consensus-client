@@ -14,8 +14,8 @@
 package v1
 
 const (
-	publicKeyLength   = 48
-	rootLength        = 32
-	forkLength        = 4
-	eth1AddressLength = 20
+	publicKeyLength        = 2592
+	rootLength             = 32
+	forkLength             = 4
+	executionAddressLength = 20
 )

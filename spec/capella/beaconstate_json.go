@@ -253,7 +253,7 @@ func (s *BeaconState) unpack(data *beaconStateJSON) error {
 	}
 
 	if data.ExecutionData == nil {
-		return errors.New("eth1 data missing")
+		return errors.New("execution data missing")
 	}
 
 	s.ExecutionData = data.ExecutionData
@@ -279,11 +279,11 @@ func (s *BeaconState) unpack(data *beaconStateJSON) error {
 
 	s.Validators = data.Validators
 	if data.ExecutionDepositIndex == "" {
-		return errors.New("eth1 deposit index missing")
+		return errors.New("execution deposit index missing")
 	}
 
 	if s.ExecutionDepositIndex, err = strconv.ParseUint(data.ExecutionDepositIndex, 10, 64); err != nil {
-		return errors.Wrap(err, "invalid value for eth1 deposit index")
+		return errors.Wrap(err, "invalid value for execution deposit index")
 	}
 
 	s.Balances = make([]Gwei, len(data.Balances))

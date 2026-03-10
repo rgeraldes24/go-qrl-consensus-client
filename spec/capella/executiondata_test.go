@@ -37,7 +37,7 @@ func TestExecutionDataJSON(t *testing.T) {
 		{
 			name:  "JSONBad",
 			input: []byte("[]"),
-			err:   "invalid JSON: json: cannot unmarshal array into Go value of type capella.eth1DataJSON",
+			err:   "invalid JSON: json: cannot unmarshal array into Go value of type capella.executionDataJSON",
 		},
 		{
 			name:  "DepositRootMissing",
@@ -47,7 +47,7 @@ func TestExecutionDataJSON(t *testing.T) {
 		{
 			name:  "DepositRootWrongType",
 			input: []byte(`{"deposit_root":true,"deposit_count":"10","block_hash":"0x202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"}`),
-			err:   "invalid JSON: json: cannot unmarshal bool into Go struct field eth1DataJSON.deposit_root of type string",
+			err:   "invalid JSON: json: cannot unmarshal bool into Go struct field executionDataJSON.deposit_root of type string",
 		},
 		{
 			name:  "DepositRootInvalid",
@@ -72,7 +72,7 @@ func TestExecutionDataJSON(t *testing.T) {
 		{
 			name:  "DepositCountWrongType",
 			input: []byte(`{"deposit_root":"0x000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f","deposit_count":true,"block_hash":"0x202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"}`),
-			err:   "invalid JSON: json: cannot unmarshal bool into Go struct field eth1DataJSON.deposit_count of type string",
+			err:   "invalid JSON: json: cannot unmarshal bool into Go struct field executionDataJSON.deposit_count of type string",
 		},
 		{
 			name:  "DepositCountInvalid",
@@ -87,7 +87,7 @@ func TestExecutionDataJSON(t *testing.T) {
 		{
 			name:  "BlockHashWrongType",
 			input: []byte(`{"deposit_root":"0x000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f","deposit_count":"10","block_hash":true}`),
-			err:   "invalid JSON: json: cannot unmarshal bool into Go struct field eth1DataJSON.block_hash of type string",
+			err:   "invalid JSON: json: cannot unmarshal bool into Go struct field executionDataJSON.block_hash of type string",
 		},
 		{
 			name:  "BlockHashInvalid",

@@ -21,7 +21,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// MLDSA87PubKey is a BLS12-381 public key.
+// MLDSA87PubKey is a ML-DSA-87 public key.
 type MLDSA87PubKey [2592]byte
 
 var (
